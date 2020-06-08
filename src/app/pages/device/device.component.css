@@ -1,0 +1,11 @@
+h1 {
+    margin-bottom: 0;
+}
+
+p.description {
+    font-style: italic;
+}
+
+button {
+    margin-right: 10px;
+}

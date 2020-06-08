@@ -1,28 +1,40 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { PageNotFoundComponent } from './shared/components';
+import { NgModule } from "@angular/core";
+import { Routes, RouterModule } from "@angular/router";
 
-import { HomeRoutingModule } from './home/home-routing.module';
-import { DetailRoutingModule } from './detail/detail-routing.module';
+import { DevicesComponent } from "./pages/devices/devices.component";
+import { DeviceComponent } from "./pages/device/device.component";
+import { SubrackComponent } from "./pages/subrack/subrack.component";
+import { HomeComponent } from "./pages/home/home.component";
 
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
-  },
-  {
-    path: '**',
-    component: PageNotFoundComponent
-  }
+    {
+        path: "",
+        pathMatch: "full",
+        component: HomeComponent,
+    },
+    {
+        path: "devices",
+        component: DevicesComponent,
+        children: [
+            {
+                path: ":id",
+                component: DeviceComponent,
+            },
+            {
+                path: ":id/:subrack",
+                component: SubrackComponent,
+            },
+        ],
+    },
+
+    {
+        path: "**",
+        redirectTo: "/",
+    },
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes),
-    HomeRoutingModule,
-    DetailRoutingModule
-  ],
-  exports: [RouterModule]
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -1,0 +1,14 @@
+ul.menu {
+    padding-left: 105px;
+    height: 64px;
+    line-height: 64px;
+}
+
+ul.menu > li {
+    height: 64px;
+}
+
+li.logo img {
+    height: 30px;
+    margin: 0 20px;
+}

@@ -1,0 +1,32 @@
+<div *ngIf="device">
+    <h1>{{ device.vendor }} {{ device.model }} {{ device.version }}</h1>
+
+    <p class="description">{{ device.description }}</p>
+
+    <button nz-button nzShape="circle" nzType="primary"><i nz-icon nzType="block" nzTheme="outline"></i></button>
+    <button nz-button nzShape="circle" nzType="danger"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+
+    <h5 style="margin-top: 35px;">CREDENTIALS</h5>
+    <button nz-button nzType="primary">Show Credentials</button>
+
+    <h5 style="margin-top: 35px;">DETAILS</h5>
+    <p style="margin: 0;">Vendor: {{ device.vendor }}</p>
+    <p style="margin: 0;">Model: {{ device.model }}</p>
+    <p style="margin: 0;">Version: {{ device.version }}</p>
+
+    <h5 style="margin-top: 35px;">PROFILES</h5>
+    <i *ngIf="profilesRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
+    <ul *ngIf="profilesRequest === 'success'" style="padding-left: 25px;">
+        <li *ngFor="let profile of profiles">
+            <a nz-button nzType="link" nzSize="small">Profile {{ profile.id }}</a>
+        </li>
+    </ul>
+
+    <h5 style="margin-top: 35px;">SUBRACKS</h5>
+    <i *ngIf="subracksRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
+    <ul *ngIf="subracksRequest === 'success'" style="padding-left: 25px;">
+        <li *ngFor="let subrack of subracks">
+            <a nz-button nzType="link" nzSize="small">Profile {{ subrack.id }}</a>
+        </li>
+    </ul>
+</div>

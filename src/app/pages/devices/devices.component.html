@@ -1,0 +1,19 @@
+<div class="page">
+    <ul class="menu" nz-menu nzMode="inline">
+        <li *ngFor="let name of vendorNames" nz-submenu [nzTitle]="name">
+            <ul>
+                <li nz-menu-item *ngFor="let device of vendors[name].devices" [routerLink]="[device.uuid]">
+                    {{ device.model }} {{ device.version }}
+                </li>
+            </ul>
+        </li>
+
+        <nz-divider style="margin: 12px 0;"></nz-divider>
+
+        <li nz-menu-item><i nz-icon nzType="plus" nzTheme="outline"></i>Create New</li>
+    </ul>
+
+    <div class="content">
+        <router-outlet></router-outlet>
+    </div>
+</div>

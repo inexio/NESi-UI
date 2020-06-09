@@ -1,0 +1,49 @@
+<div class="wrapper">
+    <div class="terminal">
+        <pre>
+tox -e example-restcli
+
+/ ____|      / _| | | |
+| (___   ___ | |_| |_| |__   _____  _____ _ __
+\___ \ / _ \|  _| __| ‘_ \ / _ \ \/ / _ \ ‘_ \
+____) | (_) | | | |_| |_) | (_) >  <  __/ | | |
+|_____/ \___/|_|  \__|_.__/ \___/_/\_\___|_| |_|
+
+
+Hint: login credentials: admin/secret
+
+login:admin
+Password:secret
+Last login on 01.03.2020
+</pre
+        >
+    </div>
+
+    <div class="commands">
+        <nz-list nzBordered nzSize="small">
+            <nz-list-header style="padding: 8px;">
+                <nz-input-group [nzSuffix]="suffixIconSearch">
+                    <input
+                        type="text"
+                        nz-input
+                        placeholder="Search"
+                        [(ngModel)]="searchTerm"
+                        (ngModelChange)="filter(searchTerm)"
+                    />
+                </nz-input-group>
+
+                <ng-template #suffixIconSearch>
+                    <i nz-icon nzType="search"></i>
+                </ng-template>
+            </nz-list-header>
+            <nz-list-item *ngFor="let command of filteredCommands">
+                <div class="command">
+                    <p class="command">
+                        <span>$ </span><span appCodeCopy>{{ command.command }}</span>
+                    </p>
+                    <p class="description">{{ command.description }}</p>
+                </div>
+            </nz-list-item>
+        </nz-list>
+    </div>
+</div>

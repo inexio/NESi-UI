@@ -1,0 +1,23 @@
+div.wrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+div.commands {
+    width: 250px;
+}
+
+div.command > p {
+    margin-bottom: 0;
+}
+
+div.command > p.command {
+    color: #ffffff;
+    font-weight: 600;
+    font-family: monospace;
+}
+
+nz-list {
+    max-height: calc(100vh - 125px);
+}

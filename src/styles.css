@@ -10,11 +10,28 @@ div.page {
 
 div.page > ul.menu {
     width: 250px;
-    height: calc(100vh - 50px);
+    height: calc(100vh - 64px);
 }
 
 div.page > div.content {
     width: 100%;
     box-sizing: border-box;
     padding: 30px;
+}
+
+div.code {
+    font-family: monospace;
+    padding: 5px 5px 5px 10px;
+    border-radius: 4px;
+    border: 2px solid #ffffff6e;
+    color: #ffffff;
+}
+
+div.code > p {
+    margin: 0;
+}
+
+div.ant-list-items {
+    max-height: calc(100vh - 175px);
+    overflow: scroll;
 }

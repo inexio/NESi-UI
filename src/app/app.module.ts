@@ -21,9 +21,28 @@ import { NzDividerModule } from "ng-zorro-antd/divider";
 import { SubrackComponent } from "./pages/subrack/subrack.component";
 import { DeviceComponent } from "./pages/device/device.component";
 import { NzButtonModule } from "ng-zorro-antd/button";
+import { NzModalModule } from "ng-zorro-antd/modal";
+import { NzMessageModule } from "ng-zorro-antd/message";
+import { NzListModule } from "ng-zorro-antd/list";
+import { NzInputModule } from "ng-zorro-antd/input";
+import { NzBreadCrumbModule } from "ng-zorro-antd/breadcrumb";
+import { CodeCopyDirective } from "./core/directives/code-copy/code-copy.directive";
+import { HidePasswordDirective } from "./core/directives/hide-password/hide-password.directive";
+import { TerminalComponent } from "./pages/terminal/terminal.component";
+import { CardComponent } from './pages/card/card.component';
 
 @NgModule({
-    declarations: [AppComponent, DevicesComponent, HomeComponent, SubrackComponent, DeviceComponent],
+    declarations: [
+        AppComponent,
+        DevicesComponent,
+        HomeComponent,
+        SubrackComponent,
+        DeviceComponent,
+        CodeCopyDirective,
+        HidePasswordDirective,
+        TerminalComponent,
+        CardComponent,
+    ],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
@@ -36,6 +55,11 @@ import { NzButtonModule } from "ng-zorro-antd/button";
         NzMenuModule,
         NzIconModule,
         NzDividerModule,
+        NzModalModule,
+        NzMessageModule,
+        NzListModule,
+        NzInputModule,
+        NzBreadCrumbModule,
     ],
     providers: [],
     bootstrap: [AppComponent],

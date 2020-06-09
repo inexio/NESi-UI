@@ -1,8 +1,13 @@
 <div class="page">
     <ul class="menu" nz-menu nzMode="inline">
-        <li *ngFor="let name of vendorNames" nz-submenu [nzTitle]="name">
+        <li *ngFor="let name of api.vendorNames" nz-submenu [nzTitle]="name">
             <ul>
-                <li nz-menu-item *ngFor="let device of vendors[name].devices" [routerLink]="[device.uuid]">
+                <li
+                    nz-menu-item
+                    *ngFor="let device of api.vendors[name].devices"
+                    [routerLink]="[device.uuid]"
+                    [nzMatchRouter]="true"
+                >
                     {{ device.model }} {{ device.version }}
                 </li>
             </ul>

@@ -3,11 +3,16 @@
 
     <p class="description">{{ device.description }}</p>
 
-    <button nz-button nzShape="circle" nzType="primary"><i nz-icon nzType="block" nzTheme="outline"></i></button>
+    <button nz-button nzShape="circle" nzType="primary" (click)="openSshModal(ssh)">
+        <i nz-icon nzType="block" nzTheme="outline"></i>
+    </button>
+    <button nz-button nzShape="circle" nzType="primary" [routerLink]="['terminal']">
+        <i nz-icon nzType="code" nzTheme="outline"></i>
+    </button>
     <button nz-button nzShape="circle" nzType="danger"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
 
     <h5 style="margin-top: 35px;">CREDENTIALS</h5>
-    <button nz-button nzType="primary">Show Credentials</button>
+    <button nz-button nzType="primary" (click)="openCredentialsModal(credentials)">Show Credentials</button>
 
     <h5 style="margin-top: 35px;">DETAILS</h5>
     <p style="margin: 0;">Vendor: {{ device.vendor }}</p>
@@ -26,7 +31,38 @@
     <i *ngIf="subracksRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
     <ul *ngIf="subracksRequest === 'success'" style="padding-left: 25px;">
         <li *ngFor="let subrack of subracks">
-            <a nz-button nzType="link" nzSize="small">Profile {{ subrack.id }}</a>
+            <a nz-button nzType="link" nzSize="small" [routerLink]="['subrack', subrack.id]"
+                >Subrack {{ subrack.id }}</a
+            >
         </li>
     </ul>
 </div>
+
+<ng-template #ssh>
+    <h5>SSH COMMAND</h5>
+    <div class="code">
+        <p>
+            <span style="user-select: none;">$ </span
+            ><span appCodeCopy>ssh root@{{ device.mgmt_address }} -p {{ device.model }}</span>
+        </p>
+    </div>
+
+    <h5 style="margin-top: 20px;">PASSWORD</h5>
+    <div class="code">
+        <p><span appCodeCopy appHidePassword>Password</span></p>
+    </div>
+</ng-template>
+
+<ng-template #credentials>
+    <h5>USERNAME</h5>
+    <div class="code">
+        <p>
+            <span appCodeCopy>Username</span>
+        </p>
+    </div>
+
+    <h5 style="margin-top: 20px;">PASSWORD</h5>
+    <div class="code">
+        <p><span appCodeCopy appHidePassword>Password</span></p>
+    </div>
+</ng-template>

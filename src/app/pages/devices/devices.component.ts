@@ -9,36 +9,7 @@ import { Device } from "../../core/interfaces/device.interface";
     styleUrls: ["./devices.component.css"],
 })
 export class DevicesComponent implements OnInit {
-    constructor(private api: ApiService) {
-        console.log(this);
-    }
+    constructor(public api: ApiService) {}
 
-    public devices: Device[] = [];
-    public vendorNames: string[] = [];
-    public vendors: { [key: string]: { devices: Device[] } } = {};
-
-    public devicesRequest: RequestState = "idle";
-
-    ngOnInit(): void {
-        this.devicesRequest = "pending";
-        this.api.getDevices().subscribe({
-            next: (devices) => {
-                this.devices = devices;
-                devices.map((device) => {
-                    if (!this.vendorNames.includes(device.vendor)) {
-                        this.vendorNames.push(device.vendor);
-                        this.vendors[device.vendor] = { devices: [] };
-                        this.vendors[device.vendor].devices = [device];
-                    } else {
-                        this.vendors[device.vendor].devices.push(device);
-                    }
-                });
-                this.devicesRequest = "success";
-            },
-            error: (error) => {
-                console.error(error);
-                this.devicesRequest = "error";
-            },
-        });
-    }
+    ngOnInit(): void {}
 }

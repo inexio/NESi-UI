@@ -1,0 +1,33 @@
+<div *ngIf="ontPort">
+    <nz-affix [nzOffsetTop]="0" [nzTarget]="core.devicesContentWrapper.nativeElement" (nzChange)="affixEvent($event)">
+        <nz-page-header
+            class="page-header"
+            [ngClass]="{ affixed: isAffixed }"
+            nzBackIcon
+            [nzTitle]="ontPort.name"
+            [nzSubtitle]="ontPort.description"
+            (nzBack)="navigateUp()"
+        >
+        </nz-page-header>
+    </nz-affix>
+
+    <h5 style="margin-top: 35px;">ATTRIBUTES</h5>
+    <div class="details">
+        <p *ngFor="let attribute of attributes">
+            {{ attribute.key }}:
+            <span class="field-value"
+                ><span appCodeCopy>{{ attribute.value }}</span></span
+            >
+        </p>
+    </div>
+
+    <h5 style="margin-top: 35px;">CPE</h5>
+    <i *ngIf="cpesRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
+    <ul *ngIf="cpesRequest === 'success'" style="padding-left: 25px;">
+        <li *ngFor="let cpe of cpes">
+            <a nz-button nzType="link" nzSize="small" [routerLink]="['/devices', parentDeviceId, 'cpe', cpe.id]"
+                >CPE {{ cpe.id }}</a
+            >
+        </li>
+    </ul>
+</div>

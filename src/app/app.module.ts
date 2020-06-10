@@ -18,8 +18,8 @@ import { DevicesComponent } from "./pages/devices/devices.component";
 import { HomeComponent } from "./pages/home/home.component";
 import { NzIconModule } from "ng-zorro-antd/icon";
 import { NzDividerModule } from "ng-zorro-antd/divider";
-import { SubrackComponent } from "./pages/subrack/subrack.component";
-import { DeviceComponent } from "./pages/device/device.component";
+import { SubrackComponent } from "./pages/devices/subrack/subrack.component";
+import { DeviceComponent } from "./pages/devices/device/device.component";
 import { NzButtonModule } from "ng-zorro-antd/button";
 import { NzModalModule } from "ng-zorro-antd/modal";
 import { NzMessageModule } from "ng-zorro-antd/message";
@@ -28,8 +28,19 @@ import { NzInputModule } from "ng-zorro-antd/input";
 import { NzBreadCrumbModule } from "ng-zorro-antd/breadcrumb";
 import { CodeCopyDirective } from "./core/directives/code-copy/code-copy.directive";
 import { HidePasswordDirective } from "./core/directives/hide-password/hide-password.directive";
-import { TerminalComponent } from "./pages/terminal/terminal.component";
-import { CardComponent } from './pages/card/card.component';
+import { TerminalComponent } from "./pages/devices/terminal/terminal.component";
+import { CardComponent } from "./pages/devices/card/card.component";
+import { NzAffixModule } from "ng-zorro-antd/affix";
+import { NzPageHeaderModule } from "ng-zorro-antd/page-header";
+import { PortComponent } from './pages/devices/port/port.component';
+import { OntComponent } from './pages/devices/ont/ont.component';
+import { OntPortComponent } from './pages/devices/ont-port/ont-port.component';
+import { CpeComponent } from './pages/devices/cpe/cpe.component';
+import { CpePortComponent } from './pages/devices/cpe-port/cpe-port.component';
+import { VlanComponent } from './pages/devices/vlan/vlan.component';
+import { VlanConnectionComponent } from './pages/devices/vlan-connection/vlan-connection.component';
+import { PortProfileComponent } from './pages/devices/port-profile/port-profile.component';
+import { PortProfileConnectionComponent } from './pages/devices/port-profile-connection/port-profile-connection.component';
 
 @NgModule({
     declarations: [
@@ -42,6 +53,15 @@ import { CardComponent } from './pages/card/card.component';
         HidePasswordDirective,
         TerminalComponent,
         CardComponent,
+        PortComponent,
+        OntComponent,
+        OntPortComponent,
+        CpeComponent,
+        CpePortComponent,
+        VlanComponent,
+        VlanConnectionComponent,
+        PortProfileComponent,
+        PortProfileConnectionComponent,
     ],
     imports: [
         BrowserModule,
@@ -60,6 +80,8 @@ import { CardComponent } from './pages/card/card.component';
         NzListModule,
         NzInputModule,
         NzBreadCrumbModule,
+        NzAffixModule,
+        NzPageHeaderModule,
     ],
     providers: [],
     bootstrap: [AppComponent],

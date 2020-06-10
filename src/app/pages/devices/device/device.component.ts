@@ -1,10 +1,10 @@
 import { Component, OnInit, TemplateRef } from "@angular/core";
-import { Device } from "../../core/interfaces/device.interface";
-import { ApiService } from "../../core/services/api/api.service";
+import { Device } from "../../../core/interfaces/device.interface";
+import { ApiService } from "../../../core/services/api/api.service";
 import { ActivatedRoute } from "@angular/router";
-import { Profile } from "../../core/interfaces/profile.interface";
-import { Subrack } from "../../core/interfaces/subrack.interface";
-import { RequestState } from "../../core/interfaces/request-state.type";
+import { Profile } from "../../../core/interfaces/profile.interface";
+import { Subrack } from "../../../core/interfaces/subrack.interface";
+import { RequestState } from "../../../core/interfaces/request-state.type";
 import { NzModalService } from "ng-zorro-antd/modal";
 
 @Component({

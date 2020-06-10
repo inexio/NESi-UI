@@ -6,6 +6,7 @@ ul.menu {
 
 ul.menu > li {
     height: 64px;
+    z-index: 250;
 }
 
 li.logo img {

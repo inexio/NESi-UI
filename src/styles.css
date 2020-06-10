@@ -17,6 +17,8 @@ div.page > div.content {
     width: 100%;
     box-sizing: border-box;
     padding: 30px;
+    max-height: calc(100vh - 64px);
+    overflow: scroll;
 }
 
 div.code {

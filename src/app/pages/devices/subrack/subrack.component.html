@@ -1,0 +1,89 @@
+<div *ngIf="subrack">
+    <nz-affix [nzOffsetTop]="0" [nzTarget]="core.devicesContentWrapper.nativeElement" (nzChange)="affixEvent($event)">
+        <nz-page-header
+            class="page-header"
+            [ngClass]="{ affixed: isAffixed }"
+            nzBackIcon
+            [nzTitle]="subrack.name"
+            [nzSubtitle]="subrack.description"
+            (nzBack)="navigateUp()"
+        >
+        </nz-page-header>
+    </nz-affix>
+
+    <h5 style="margin-top: 35px;">DETAILS</h5>
+    <div class="details">
+        <p>
+            Serial Number:
+            <span class="field-value"
+                ><span appCodeCopy>{{ subrack.serial_no }}</span></span
+            >
+        </p>
+        <p>
+            Variant:
+            <span class="field-value"
+                ><span appCodeCopy>{{ subrack.variant }}</span></span
+            >
+        </p>
+        <p>
+            Subrack Class:
+            <span class="field-value"
+                ><span appCodeCopy>{{ subrack.subrack_class }}</span></span
+            >
+        </p>
+        <p>
+            Mode:
+            <span class="field-value"
+                ><span appCodeCopy>{{ subrack.mode }}</span></span
+            >
+        </p>
+    </div>
+
+    <h5 style="margin-top: 35px;">TYPES</h5>
+    <div class="details">
+        <p>
+            Planned Type:
+            <span class="field-value"
+                ><span appCodeCopy>{{ subrack.planned_type }}</span></span
+            >
+        </p>
+        <p>
+            Actual Type:
+            <span class="field-value"
+                ><span appCodeCopy>{{ subrack.actual_type }}</span></span
+            >
+        </p>
+    </div>
+
+    <h5 style="margin-top: 35px;">STATES</h5>
+    <div class="details">
+        <p>
+            Admin State:
+            <span class="field-value"
+                ><span appCodeCopy>{{ subrack.adm_state }}</span></span
+            >
+        </p>
+        <p>
+            Operating State:
+            <span class="field-value"
+                ><span appCodeCopy>{{ subrack.opr_state }}</span></span
+            >
+        </p>
+        <p>
+            Error State:
+            <span class="field-value"
+                ><span appCodeCopy>{{ subrack.err_state }}</span></span
+            >
+        </p>
+    </div>
+
+    <h5 style="margin-top: 35px;">CARDS</h5>
+    <i *ngIf="cardsRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
+    <ul *ngIf="cardsRequest === 'success'" style="padding-left: 25px;">
+        <li *ngFor="let card of cards">
+            <a nz-button nzType="link" nzSize="small" [routerLink]="['/devices', parentDeviceId, 'card', card.id]"
+                >Card {{ card.id }}</a
+            >
+        </li>
+    </ul>
+</div>

@@ -86,6 +86,6 @@ export class VlanConnectionComponent implements OnInit {
      * Method used to navigate one layer up
      */
     public navigateUp(): void {
-        this.router.navigate(["/devices", this.parentDeviceId, "vlan", this.vlanConnectionRequest.vlan_id]);
+        this.router.navigate(["/devices", this.parentDeviceId, "vlan", this.vlanConnection.vlan_id]);
     }
 }

@@ -1,15 +1,15 @@
-import { Directive, Input, ElementRef, HostListener, OnInit } from "@angular/core";
+import { Directive, Input, ElementRef, HostListener, OnInit, AfterViewInit } from "@angular/core";
 
 @Directive({
     selector: "[appHidePassword]",
 })
-export class HidePasswordDirective implements OnInit {
+export class HidePasswordDirective implements AfterViewInit {
     // Password
     private password: string;
 
     constructor(private element: ElementRef) {}
 
-    ngOnInit(): void {
+    ngAfterViewInit(): void {
         // Store password
         this.password = this.element.nativeElement.innerText;
 

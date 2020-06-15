@@ -1,35 +1,57 @@
 <div class="wrapper">
     <div class="terminal">
-        <pre>
-tox -e example-restcli
+        <nz-skeleton [nzActive]="true" *ngIf="terminalInit === 'pending'"></nz-skeleton>
 
-/ ____|      / _| | | |
-| (___   ___ | |_| |_| |__   _____  _____ _ __
-\___ \ / _ \|  _| __| ‘_ \ / _ \ \/ / _ \ ‘_ \
-____) | (_) | | | |_| |_) | (_) >  <  __/ | | |
-|_____/ \___/|_|  \__|_.__/ \___/_/\_\___|_| |_|
+        <div class="content" *ngIf="terminalInit === 'success'" #terminalContentElement>
+            <p>Setting up new virutal device {{ device.vendor }} {{ device.model }} {{ device.version }}...<br /><br /></p>
 
+            <p *ngFor="let line of terminalContent">
+                <span class="timestamp">[{{ line.timestamp }}] </span>
+                <span appCodeCopy>{{ line.body }}</span>
+            </p>
 
-Hint: login credentials: admin/secret
+            <p *ngIf="commandRequest === 'pending'" class="awaiting">
+                <i nz-icon nzType="loading" nzTheme="outline"></i> Awaiting Response...
+            </p>
+        </div>
 
-login:admin
-Password:secret
-Last login on 01.03.2020
-</pre
-        >
+        <div *ngIf="commandParts && commandParts.length > 0" class="command-line">
+            <nz-divider></nz-divider>
+
+            <div class="command-values">
+                <span>$ </span>
+                <div class="command">
+                    <ng-container *ngFor="let part of commandParts; let i = index">
+                        <ng-container *ngIf="part.type === 'value'">
+                            <input
+                                nz-input
+                                nzSize="small"
+                                [placeholder]="part.part"
+                                [(ngModel)]="commandParts[i].value"
+                                class="inline-value"
+                                appPlaceholderWidth
+                            />
+                        </ng-container>
+
+                        <span *ngIf="part.type === 'part'">{{ part.part }} </span>
+                    </ng-container>
+                </div>
+
+                <div>
+                    <button nz-button style="margin-right: 10px;" (click)="copyToClipboard(getCommand())">
+                        <i nz-icon nzType="copy"></i>
+                    </button>
+                    <button nz-button nzType="primary" (click)="runCommand(getCommand())"><i nz-icon nzType="arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="commands">
+    <div class="commands" *ngIf="terminalInit === 'success'">
         <nz-list nzBordered nzSize="small">
             <nz-list-header style="padding: 8px;">
                 <nz-input-group [nzSuffix]="suffixIconSearch">
-                    <input
-                        type="text"
-                        nz-input
-                        placeholder="Search"
-                        [(ngModel)]="searchTerm"
-                        (ngModelChange)="filter(searchTerm)"
-                    />
+                    <input type="text" nz-input placeholder="Search" [(ngModel)]="searchTerm" (ngModelChange)="filter(searchTerm)" />
                 </nz-input-group>
 
                 <ng-template #suffixIconSearch>
@@ -39,7 +61,10 @@ Last login on 01.03.2020
             <nz-list-item *ngFor="let command of filteredCommands">
                 <div class="command">
                     <p class="command">
-                        <span>$ </span><span appCodeCopy>{{ command.command }}</span>
+                        <span>$ </span>
+                        <span nz-tooltip nzTooltipTitle="Click to run command" (click)="prepareCommand(command.command)">
+                            {{ command.command }}
+                        </span>
                     </p>
                     <p class="description">{{ command.description }}</p>
                 </div>

@@ -6,6 +6,7 @@ div.wrapper {
 
 div.commands {
     width: 250px;
+    margin-left: 30px;
 }
 
 div.command > p {
@@ -16,8 +17,67 @@ div.command > p.command {
     color: #ffffff;
     font-weight: 600;
     font-family: monospace;
+    cursor: pointer;
 }
 
 nz-list {
     max-height: calc(100vh - 125px);
+}
+
+div.terminal {
+    width: 100%;
+    max-height: calc(100vh - 125px);
+    font-family: monospace;
+    white-space: pre;
+    color: #ffffff;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+div.terminal > div.content {
+    overflow-y: scroll;
+}
+
+div.terminal > div.command-line {
+    flex: 2;
+}
+
+div.terminal > div.content span.timestamp {
+    color: #ffffffa6;
+}
+
+div.terminal > div.content > p {
+    margin: 0;
+}
+
+div.terminal div.command-values {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+div.terminal div.command-values > div.command {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+div.terminal > div.content > p.awaiting {
+    opacity: 0.5;
+}
+
+input.inline-value {
+    width: auto;
+    min-width: auto;
+    max-width: 150px;
+    border: none !important;
+    padding: 0;
+    margin-right: 10px;
+}
+
+input.inline-value:focus {
+    outline: none;
+    box-shadow: none;
 }

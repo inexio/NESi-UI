@@ -12,7 +12,10 @@
     <button nz-button nzShape="circle" nzType="danger"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
 
     <h5 style="margin-top: 35px;">CREDENTIALS</h5>
-    <button nz-button nzType="primary" (click)="openCredentialsModal(credentials)">Show Credentials</button>
+    <button nz-button nzType="primary" (click)="openCredentialsModal(credentials)">
+        <i nz-icon nzType="lock"></i>
+        Show Credentials
+    </button>
 
     <h5 style="margin-top: 35px;">DETAILS</h5>
     <p style="margin: 0;">Vendor: {{ device.vendor }}</p>
@@ -23,7 +26,15 @@
     <i *ngIf="profilesRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
     <ul *ngIf="profilesRequest === 'success'" style="padding-left: 25px;">
         <li *ngFor="let profile of profiles">
-            <a nz-button nzType="link" nzSize="small">Profile {{ profile.id }}</a>
+            <a nz-button nzType="link" nzSize="small" [routerLink]="['port-profile', profile.id]">Profile {{ profile.id }}</a>
+        </li>
+    </ul>
+
+    <h5 style="margin-top: 35px;">V-LANS</h5>
+    <i *ngIf="vlansRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
+    <ul *ngIf="vlansRequest === 'success'" style="padding-left: 25px;">
+        <li *ngFor="let vlan of vlans">
+            <a nz-button nzType="link" nzSize="small" [routerLink]="['vlan', vlan.id]">V-Lan {{ vlan.id }}</a>
         </li>
     </ul>
 
@@ -31,9 +42,7 @@
     <i *ngIf="subracksRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
     <ul *ngIf="subracksRequest === 'success'" style="padding-left: 25px;">
         <li *ngFor="let subrack of subracks">
-            <a nz-button nzType="link" nzSize="small" [routerLink]="['subrack', subrack.id]"
-                >Subrack {{ subrack.id }}</a
-            >
+            <a nz-button nzType="link" nzSize="small" [routerLink]="['subrack', subrack.id]">Subrack {{ subrack.id }}</a>
         </li>
     </ul>
 </div>
@@ -43,13 +52,15 @@
     <div class="code">
         <p>
             <span style="user-select: none;">$ </span
-            ><span appCodeCopy>ssh root@{{ device.mgmt_address }} -p {{ device.model }}</span>
+            ><span appCodeCopy>ssh {{ device.credentials[0].username }}@{{ device.mgmt_address }} -p {{ device.network_port }}</span>
         </p>
     </div>
 
     <h5 style="margin-top: 20px;">PASSWORD</h5>
     <div class="code">
-        <p><span appCodeCopy appHidePassword>Password</span></p>
+        <p>
+            <span appCodeCopy appHidePassword>{{ device.credentials[0].password }}</span>
+        </p>
     </div>
 </ng-template>
 
@@ -57,12 +68,14 @@
     <h5>USERNAME</h5>
     <div class="code">
         <p>
-            <span appCodeCopy>Username</span>
+            <span appCodeCopy>{{ device.credentials[0].username }}</span>
         </p>
     </div>
 
     <h5 style="margin-top: 20px;">PASSWORD</h5>
     <div class="code">
-        <p><span appCodeCopy appHidePassword>Password</span></p>
+        <p>
+            <span appCodeCopy appHidePassword>{{ device.credentials[0].password }}</span>
+        </p>
     </div>
 </ng-template>

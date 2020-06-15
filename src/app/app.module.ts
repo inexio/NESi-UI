@@ -32,15 +32,19 @@ import { TerminalComponent } from "./pages/devices/terminal/terminal.component";
 import { CardComponent } from "./pages/devices/card/card.component";
 import { NzAffixModule } from "ng-zorro-antd/affix";
 import { NzPageHeaderModule } from "ng-zorro-antd/page-header";
-import { PortComponent } from './pages/devices/port/port.component';
-import { OntComponent } from './pages/devices/ont/ont.component';
-import { OntPortComponent } from './pages/devices/ont-port/ont-port.component';
-import { CpeComponent } from './pages/devices/cpe/cpe.component';
-import { CpePortComponent } from './pages/devices/cpe-port/cpe-port.component';
-import { VlanComponent } from './pages/devices/vlan/vlan.component';
-import { VlanConnectionComponent } from './pages/devices/vlan-connection/vlan-connection.component';
-import { PortProfileComponent } from './pages/devices/port-profile/port-profile.component';
-import { PortProfileConnectionComponent } from './pages/devices/port-profile-connection/port-profile-connection.component';
+import { PortComponent } from "./pages/devices/port/port.component";
+import { OntComponent } from "./pages/devices/ont/ont.component";
+import { OntPortComponent } from "./pages/devices/ont-port/ont-port.component";
+import { CpeComponent } from "./pages/devices/cpe/cpe.component";
+import { CpePortComponent } from "./pages/devices/cpe-port/cpe-port.component";
+import { VlanComponent } from "./pages/devices/vlan/vlan.component";
+import { VlanConnectionComponent } from "./pages/devices/vlan-connection/vlan-connection.component";
+import { PortProfileComponent } from "./pages/devices/port-profile/port-profile.component";
+import { PortProfileConnectionComponent } from "./pages/devices/port-profile-connection/port-profile-connection.component";
+import { DeviceListComponent } from "./pages/devices/device-list/device-list.component";
+import { NzSkeletonModule } from "ng-zorro-antd/skeleton";
+import { NzToolTipModule } from "ng-zorro-antd/tooltip";
+import { PlaceholderWidthDirective } from "./core/directives/placeholder-width/placeholder-width.directive";
 
 @NgModule({
     declarations: [
@@ -62,6 +66,8 @@ import { PortProfileConnectionComponent } from './pages/devices/port-profile-con
         VlanConnectionComponent,
         PortProfileComponent,
         PortProfileConnectionComponent,
+        DeviceListComponent,
+        PlaceholderWidthDirective,
     ],
     imports: [
         BrowserModule,
@@ -78,10 +84,12 @@ import { PortProfileConnectionComponent } from './pages/devices/port-profile-con
         NzModalModule,
         NzMessageModule,
         NzListModule,
-        NzInputModule,
         NzBreadCrumbModule,
         NzAffixModule,
         NzPageHeaderModule,
+        NzSkeletonModule,
+        NzToolTipModule,
+        NzInputModule,
     ],
     providers: [],
     bootstrap: [AppComponent],

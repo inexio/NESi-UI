@@ -4,6 +4,7 @@ import { ApiService } from "../../../core/services/api/api.service";
 import { ActivatedRoute } from "@angular/router";
 import { Profile } from "../../../core/interfaces/profile.interface";
 import { Subrack } from "../../../core/interfaces/subrack.interface";
+import { Vlan } from "../../../core/interfaces/Vlan.interface";
 import { RequestState } from "../../../core/interfaces/request-state.type";
 import { NzModalService } from "ng-zorro-antd/modal";
 
@@ -21,6 +22,9 @@ export class DeviceComponent implements OnInit {
 
     public subracks: Subrack[];
     public subracksRequest: RequestState = "idle";
+
+    public vlans: Vlan[];
+    public vlansRequest: RequestState = "idle";
 
     constructor(private api: ApiService, private route: ActivatedRoute, private modal: NzModalService) {}
 
@@ -62,6 +66,19 @@ export class DeviceComponent implements OnInit {
                 error: (error) => {
                     console.error(error);
                     this.subracksRequest = "error";
+                },
+            });
+
+            // Get Vlans
+            this.vlansRequest = "pending";
+            this.api.getVlans(params.id).subscribe({
+                next: (vlans) => {
+                    this.vlans = vlans;
+                    this.vlansRequest = "success";
+                },
+                error: (error) => {
+                    console.error(error);
+                    this.vlansRequest = "error";
                 },
             });
         });

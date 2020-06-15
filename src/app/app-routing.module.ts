@@ -16,6 +16,7 @@ import { VlanComponent } from "./pages/devices/vlan/vlan.component";
 import { VlanConnectionComponent } from "./pages/devices/vlan-connection/vlan-connection.component";
 import { PortProfileComponent } from "./pages/devices/port-profile/port-profile.component";
 import { PortProfileConnectionComponent } from "./pages/devices/port-profile-connection/port-profile-connection.component";
+import { DeviceListComponent } from "./pages/devices/device-list/device-list.component";
 
 const routes: Routes = [
     {
@@ -27,6 +28,10 @@ const routes: Routes = [
         path: "devices",
         component: DevicesComponent,
         children: [
+            {
+                path: "",
+                component: DeviceListComponent,
+            },
             {
                 path: ":id",
                 component: DeviceComponent,

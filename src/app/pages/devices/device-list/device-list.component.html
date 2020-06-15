@@ -1,0 +1,19 @@
+<div class="devices">
+    <div class="device" *ngFor="let device of api.devices" (click)="router.navigate(['/devices', device.uuid])">
+        <div class="image-wrapper">
+            <img src="assets/images/box.svg" />
+        </div>
+
+        <h5>{{ device.vendor.toUpperCase() }}</h5>
+        <h3>{{ device.model }} {{ device.version }}</h3>
+    </div>
+
+    <div class="device new">
+        <div class="image-wrapper">
+            <img src="assets/images/add.svg" />
+        </div>
+
+        <h5>CREATE</h5>
+        <h3>New Device</h3>
+    </div>
+</div>

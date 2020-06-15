@@ -1,0 +1,54 @@
+div.devices {
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+}
+
+div.device,
+div.device.new {
+    margin: 20px;
+    padding: 5px 20px 20px 20px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    border: 2px solid #303030;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+div.device.new {
+    padding: 20px;
+}
+
+div.device:hover {
+    border: 2px solid #ffffff;
+}
+
+div.device.new {
+    border: 2px dashed #303030;
+}
+
+div.device.new:hover {
+    border: 2px dashed #ffffff;
+}
+
+div.device div.image-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+div.device img {
+    width: 80px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+div.device.new img {
+    width: 60px;
+    margin-bottom: 20px;
+}
+
+div.device > h3,
+h5 {
+    margin: 0;
+}

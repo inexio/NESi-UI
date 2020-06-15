@@ -6,4 +6,6 @@ export interface Device {
     description?: string;
     hostname?: string;
     mgmt_address?: string;
+    network_port?: string;
+    credentials?: { id: string; username: string; password: string }[];
 }

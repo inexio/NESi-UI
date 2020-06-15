@@ -11,6 +11,16 @@
         </nz-page-header>
     </nz-affix>
 
+    <h5 style="margin-top: 35px;">CARDS</h5>
+    <i *ngIf="cardsRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
+    <ul *ngIf="cardsRequest === 'success'" style="padding-left: 25px;">
+        <li *ngFor="let card of cards">
+            <a nz-button nzType="link" nzSize="small" [routerLink]="['/devices', parentDeviceId, 'card', card.id]"
+                >Card {{ card.id }}</a
+            >
+        </li>
+    </ul>
+
     <h5 style="margin-top: 35px;">DETAILS</h5>
     <div class="details">
         <p>
@@ -76,14 +86,4 @@
             >
         </p>
     </div>
-
-    <h5 style="margin-top: 35px;">CARDS</h5>
-    <i *ngIf="cardsRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
-    <ul *ngIf="cardsRequest === 'success'" style="padding-left: 25px;">
-        <li *ngFor="let card of cards">
-            <a nz-button nzType="link" nzSize="small" [routerLink]="['/devices', parentDeviceId, 'card', card.id]"
-                >Card {{ card.id }}</a
-            >
-        </li>
-    </ul>
 </div>

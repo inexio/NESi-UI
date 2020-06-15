@@ -11,16 +11,6 @@
         </nz-page-header>
     </nz-affix>
 
-    <h5 style="margin-top: 35px;">ATTRIBUTES</h5>
-    <div class="details">
-        <p *ngFor="let attribute of attributes">
-            {{ attribute.key }}:
-            <span class="field-value"
-                ><span appCodeCopy>{{ attribute.value }}</span></span
-            >
-        </p>
-    </div>
-
     <h5 style="margin-top: 35px;">ONT PORTS</h5>
     <i *ngIf="ontPortsRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
     <ul *ngIf="ontPortsRequest === 'success'" style="padding-left: 25px;">
@@ -30,4 +20,14 @@
             >
         </li>
     </ul>
+
+    <h5 style="margin-top: 35px;">ATTRIBUTES</h5>
+    <div class="details">
+        <p *ngFor="let attribute of attributes">
+            {{ attribute.key }}:
+            <span class="field-value"
+                ><span appCodeCopy>{{ attribute.value }}</span></span
+            >
+        </p>
+    </div>
 </div>

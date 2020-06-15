@@ -102,46 +102,40 @@ export class ApiService {
 
     public getProfiles(deviceId: string): Observable<Profile[]> {
         return this.http
-            .get<{ count: number; members: Profile[] }>(
-                `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/port_profiles`,
-                {
-                    headers: this.credentials.requestHeaders,
-                },
-            )
+            .get<{ count: number; members: Profile[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/port_profiles`, {
+                headers: this.credentials.requestHeaders,
+            })
             .pipe(map((res) => res.members));
+    }
+
+    public getProfile(deviceId: string, profileId: string): Observable<Profile> {
+        return this.http.get<Profile>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/port_profiles/${profileId}`, {
+            headers: this.credentials.requestHeaders,
+        });
     }
 
     public getSubracks(deviceId: string): Observable<Subrack[]> {
         return this.http
-            .get<{ count: Number; members: Subrack[] }>(
-                `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/subracks`,
-                {
-                    headers: this.credentials.requestHeaders,
-                },
-            )
+            .get<{ count: Number; members: Subrack[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/subracks`, {
+                headers: this.credentials.requestHeaders,
+            })
             .pipe(map((res) => res.members));
     }
 
     public getSubrack(deviceId: string, subrackId: string): Observable<Subrack> {
-        return this.http.get<Subrack>(
-            `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/subracks/${subrackId}`,
-            {
-                headers: this.credentials.requestHeaders,
-            },
-        );
+        return this.http.get<Subrack>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/subracks/${subrackId}`, {
+            headers: this.credentials.requestHeaders,
+        });
     }
 
     public getCards(deviceId: string, subrackId: string): Observable<{ id: string }[]> {
         return this.http
-            .get<{ count: number; members: { id: string }[] }>(
-                `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/cards`,
-                {
-                    params: {
-                        subrack_id: subrackId,
-                    },
-                    headers: this.credentials.requestHeaders,
+            .get<{ count: number; members: { id: string }[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/cards`, {
+                params: {
+                    subrack_id: subrackId,
                 },
-            )
+                headers: this.credentials.requestHeaders,
+            })
             .pipe(map((res) => res.members));
     }
 
@@ -153,15 +147,12 @@ export class ApiService {
 
     public getPorts(deviceId: string, cardId: string): Observable<{ id: string }[]> {
         return this.http
-            .get<{ count: number; members: { id: string }[] }>(
-                `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/ports`,
-                {
-                    params: {
-                        card_id: cardId,
-                    },
-                    headers: this.credentials.requestHeaders,
+            .get<{ count: number; members: { id: string }[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/ports`, {
+                params: {
+                    card_id: cardId,
                 },
-            )
+                headers: this.credentials.requestHeaders,
+            })
             .pipe(map((res) => res.members));
     }
 
@@ -173,15 +164,12 @@ export class ApiService {
 
     public getOnts(deviceId: string, portId: string): Observable<{ id: string }[]> {
         return this.http
-            .get<{ count: number; members: { id: string }[] }>(
-                `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/onts`,
-                {
-                    params: {
-                        port_id: portId,
-                    },
-                    headers: this.credentials.requestHeaders,
+            .get<{ count: number; members: { id: string }[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/onts`, {
+                params: {
+                    port_id: portId,
                 },
-            )
+                headers: this.credentials.requestHeaders,
+            })
             .pipe(map((res) => res.members));
     }
 
@@ -193,15 +181,12 @@ export class ApiService {
 
     public getOntPorts(deviceId: string, ontId: string): Observable<{ id: string }[]> {
         return this.http
-            .get<{ count: number; members: { id: string }[] }>(
-                `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/ont_ports`,
-                {
-                    params: {
-                        ont_id: ontId,
-                    },
-                    headers: this.credentials.requestHeaders,
+            .get<{ count: number; members: { id: string }[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/ont_ports`, {
+                params: {
+                    ont_id: ontId,
                 },
-            )
+                headers: this.credentials.requestHeaders,
+            })
             .pipe(map((res) => res.members));
     }
 
@@ -216,38 +201,29 @@ export class ApiService {
 
     public getCpes(deviceId: string, ontPortId: string): Observable<{ id: string }[]> {
         return this.http
-            .get<{ count: number; members: { id: string }[] }>(
-                `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/cpes`,
-                {
-                    params: {
-                        ont_port_id: ontPortId,
-                    },
-                    headers: this.credentials.requestHeaders,
+            .get<{ count: number; members: { id: string }[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/cpes`, {
+                params: {
+                    ont_port_id: ontPortId,
                 },
-            )
+                headers: this.credentials.requestHeaders,
+            })
             .pipe(map((res) => res.members));
     }
 
     public getCpe(deviceId: string, cpeId: string): Observable<{ [key: string]: any }> {
-        return this.http.get<{ [key: string]: any }>(
-            `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/cpes/${cpeId}`,
-            {
-                headers: this.credentials.requestHeaders,
-            },
-        );
+        return this.http.get<{ [key: string]: any }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/cpes/${cpeId}`, {
+            headers: this.credentials.requestHeaders,
+        });
     }
 
     public getCpePorts(deviceId: string, cpeId: string): Observable<{ id: string }[]> {
         return this.http
-            .get<{ count: number; members: { id: string }[] }>(
-                `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/cpe_ports`,
-                {
-                    params: {
-                        cpe_id: cpeId,
-                    },
-                    headers: this.credentials.requestHeaders,
+            .get<{ count: number; members: { id: string }[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/cpe_ports`, {
+                params: {
+                    cpe_id: cpeId,
                 },
-            )
+                headers: this.credentials.requestHeaders,
+            })
             .pipe(map((res) => res.members));
     }
 
@@ -260,24 +236,18 @@ export class ApiService {
         );
     }
 
-    public getVlans(deviceId: string): Observable<{ id: string }[]> {
+    public getVlans(deviceId: string): Observable<{ id: number }[]> {
         return this.http
-            .get<{ count: number; members: { id: string }[] }>(
-                `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/vlans`,
-                {
-                    headers: this.credentials.requestHeaders,
-                },
-            )
+            .get<{ count: number; members: { id: number }[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/vlans`, {
+                headers: this.credentials.requestHeaders,
+            })
             .pipe(map((res) => res.members));
     }
 
     public getVlan(deviceId: string, vlanId: string): Observable<{ [key: string]: any }> {
-        return this.http.get<{ [key: string]: any }>(
-            `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/vlans/${vlanId}`,
-            {
-                headers: this.credentials.requestHeaders,
-            },
-        );
+        return this.http.get<{ [key: string]: any }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/vlans/${vlanId}`, {
+            headers: this.credentials.requestHeaders,
+        });
     }
 
     public getVlanConnections(deviceId: string, vlanId: string): Observable<{ id: string }[]> {
@@ -334,15 +304,51 @@ export class ApiService {
             .pipe(map((res) => res.members));
     }
 
-    public getPortProfileConnection(
-        deviceId: string,
-        portProfileConnectionId: string,
-    ): Observable<{ [key: string]: any }> {
+    public getPortProfileConnection(deviceId: string, portProfileConnectionId: string): Observable<{ [key: string]: any }> {
         return this.http.get<{ [key: string]: any }>(
             `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/port_profile_connections/${portProfileConnectionId}`,
             {
                 headers: this.credentials.requestHeaders,
             },
         );
+    }
+
+    public runCommand(command: string): Observable<string> {
+        return new Observable((subscriber) => {
+            // Return command to display it in terminal
+            subscriber.next(`${command}`);
+
+            switch (command) {
+                case "tox -e example-restcli":
+                    setTimeout(() => {
+                        subscriber.next(`\n
+ / ____|     /  _| | | |
+| (___   ___ | |_| |_| |__   _____  _____ _ __
+ \\___ \\ / _ \\|  _| __| '_ \\ / _ \\ \\/ / _ \\ '_ \\
+ ____) | (_) | | | |_| |_) | (_) >  <  __/ | | |
+|_____/ \\___/|_|  \\__|_.__/ \\___/_/\\_\\___|_| |_|
+                       
+Hint: login credentials: admin/secret
+
+`);
+                        subscriber.complete();
+                    }, 1500);
+                    return;
+
+                case "login":
+                    setTimeout(() => {
+                        subscriber.next("Successfully logged in!");
+                        subscriber.complete();
+                    }, 1500);
+                    return;
+
+                default:
+                    setTimeout(() => {
+                        subscriber.next("Example response!");
+                        subscriber.complete();
+                    }, 1500);
+                    return;
+            }
+        });
     }
 }

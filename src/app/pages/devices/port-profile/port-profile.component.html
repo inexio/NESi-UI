@@ -1,1 +1,37 @@
-<p>port-profile works!</p>
+<div *ngIf="profile">
+    <nz-affix [nzOffsetTop]="0" [nzTarget]="core.devicesContentWrapper.nativeElement" (nzChange)="affixEvent($event)">
+        <nz-page-header
+            class="page-header"
+            [ngClass]="{ affixed: isAffixed }"
+            nzBackIcon
+            [nzTitle]="profile.name"
+            [nzSubtitle]="profile.description"
+            (nzBack)="navigateUp()"
+        >
+        </nz-page-header>
+    </nz-affix>
+
+    <h5 style="margin-top: 35px;">PORT PROFILE CONNECTIONS</h5>
+    <i *ngIf="profileConnectionsRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
+    <ul *ngIf="profileConnectionsRequest === 'success'" style="padding-left: 25px;">
+        <li *ngFor="let profileConnection of profileConnections">
+            <a
+                nz-button
+                nzType="link"
+                nzSize="small"
+                [routerLink]="['/devices', parentDeviceId, 'port-profile-connection', profileConnection.id]"
+                >Port Profile Connection {{ profileConnection.id }}</a
+            >
+        </li>
+    </ul>
+
+    <h5 style="margin-top: 35px;">ATTRIBUTES</h5>
+    <div class="details">
+        <p *ngFor="let attribute of attributes">
+            {{ attribute.key }}:
+            <span class="field-value"
+                ><span appCodeCopy>{{ attribute.value }}</span></span
+            >
+        </p>
+    </div>
+</div>

@@ -1,0 +1,7 @@
+<img src="assets/images/port.svg" />
+
+<div class="onts">
+    <div class="ont" *ngFor="let ont of onts">
+        <app-ont-visual [parentDevice]="parentDevice" [ontId]="ont.id"></app-ont-visual>
+    </div>
+</div>

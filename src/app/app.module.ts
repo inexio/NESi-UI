@@ -45,6 +45,12 @@ import { DeviceListComponent } from "./pages/devices/device-list/device-list.com
 import { NzSkeletonModule } from "ng-zorro-antd/skeleton";
 import { NzToolTipModule } from "ng-zorro-antd/tooltip";
 import { PlaceholderWidthDirective } from "./core/directives/placeholder-width/placeholder-width.directive";
+import { CardVisualComponent } from "./core/components/card-visual/card-visual.component";
+import { SubrackVisualComponent } from "./core/components/subrack-visual/subrack-visual.component";
+import { NzBadgeModule } from "ng-zorro-antd/badge";
+import { OntVisualComponent } from "./core/components/ont-visual/ont-visual.component";
+import { PortVisualComponent } from "./core/components/port-visual/port-visual.component";
+import { NzSpaceModule } from "ng-zorro-antd/space";
 
 @NgModule({
     declarations: [
@@ -68,6 +74,10 @@ import { PlaceholderWidthDirective } from "./core/directives/placeholder-width/p
         PortProfileConnectionComponent,
         DeviceListComponent,
         PlaceholderWidthDirective,
+        CardVisualComponent,
+        SubrackVisualComponent,
+        OntVisualComponent,
+        PortVisualComponent,
     ],
     imports: [
         BrowserModule,
@@ -90,6 +100,8 @@ import { PlaceholderWidthDirective } from "./core/directives/placeholder-width/p
         NzSkeletonModule,
         NzToolTipModule,
         NzInputModule,
+        NzBadgeModule,
+        NzSpaceModule,
     ],
     providers: [],
     bootstrap: [AppComponent],

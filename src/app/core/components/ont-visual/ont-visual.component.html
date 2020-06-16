@@ -1,0 +1,18 @@
+<div class="ont">
+    <div class="port" style="margin: 17px 20px 0 10px;">
+        <img class="power" src="assets/images/power_in.svg" />
+        <p class="port-label">POWER</p>
+    </div>
+
+    <div class="port">
+        <img class="in" src="assets/images/port_alt.svg" />
+        <p class="port-label">OPT IN</p>
+    </div>
+
+    <div class="ports">
+        <div class="port" *ngFor="let port of ontPorts; let i = index">
+            <img [src]="port.opr_state === 'up' ? 'assets/images/port_active.svg' : 'assets/images/port.svg'" />
+            <p class="port-label">LAN {{ i + 1 }}</p>
+        </div>
+    </div>
+</div>

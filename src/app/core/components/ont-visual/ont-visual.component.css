@@ -1,0 +1,33 @@
+div.ont {
+    width: 100%;
+    height: auto;
+    border: 2px solid #ffffff;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 20px 15px;
+    display: flex;
+    align-items: center;
+}
+
+div.ont img.in {
+    height: 42px;
+}
+
+div.ont div.port {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    max-width: 50px;
+}
+
+div.ont p.port-label {
+    text-align: center;
+    margin: 3px 0 0 0;
+    font-weight: 700;
+}
+
+div.ont div.ports {
+    border-left: 2px solid #ffffff;
+    margin-left: 35px;
+    padding-left: 35px;
+}

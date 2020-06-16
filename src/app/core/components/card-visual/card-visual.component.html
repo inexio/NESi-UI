@@ -1,0 +1,21 @@
+<div class="card" *ngIf="card">
+    <h4 style="margin: 0 0 0 5px;" [routerLink]="['/devices', parentDevice, 'card', card.id]">
+        <nz-badge [nzStatus]="card.opr_state === 'enabled' ? 'success' : 'error'"></nz-badge> {{ card.name.toUpperCase() }}
+    </h4>
+
+    <div class="ports">
+        <ng-container *ngFor="let port of ports; let i = index">
+            <div class="pair" *ngIf="!(i % 2)">
+                <div class="port" *ngIf="ports[i + 2]" [routerLink]="['/devices', parentDevice, 'port', port.id]">
+                    <p class="port-index">{{ i + 2 }}</p>
+                    <img [src]="ports[i + 1].opr_state === 'up' ? 'assets/images/port_active.svg' : 'assets/images/port.svg'" />
+                </div>
+
+                <div class="port" [routerLink]="['/devices', parentDevice, 'port', port.id]">
+                    <img [src]="ports[i].opr_state === 'up' ? 'assets/images/port_active.svg' : 'assets/images/port.svg'" />
+                    <p class="port-index">{{ i + 1 }}</p>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>

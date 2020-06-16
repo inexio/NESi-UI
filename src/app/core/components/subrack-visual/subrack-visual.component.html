@@ -1,0 +1,5 @@
+<div class="subrack" *ngIf="cards">
+    <ng-container *ngFor="let card of cards">
+        <app-card-visual [parentDevice]="parentDevice" [cardId]="card.id"></app-card-visual>
+    </ng-container>
+</div>

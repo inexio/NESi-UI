@@ -1,0 +1,18 @@
+div.subrack {
+    width: 100%;
+    height: auto;
+    border: 2px solid #ffffff;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 15px 40px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+    background-image: url(assets/images/rack_mount.svg), url(assets/images/rack_mount.svg);
+    background-position: left top, right top;
+    background-repeat: repeat-y, repeat-y;
+    background-size: 25px, 25px;
+}
+
+app-card-visual:nth-child(n + 2) {
+    margin-top: 20px;
+}

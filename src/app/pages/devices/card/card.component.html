@@ -11,13 +11,13 @@
         </nz-page-header>
     </nz-affix>
 
+    <app-card-visual [parentDevice]="parentDeviceId" [card]="card"></app-card-visual>
+
     <h5 style="margin-top: 35px;">PORTS</h5>
     <i *ngIf="portsRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
     <ul *ngIf="portsRequest === 'success'" style="padding-left: 25px;">
         <li *ngFor="let port of ports">
-            <a nz-button nzType="link" nzSize="small" [routerLink]="['/devices', parentDeviceId, 'port', port.id]"
-                >Port {{ port.id }}</a
-            >
+            <a nz-button nzType="link" nzSize="small" [routerLink]="['/devices', parentDeviceId, 'port', port.id]">Port {{ port.id }}</a>
         </li>
     </ul>
 

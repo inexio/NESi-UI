@@ -11,6 +11,8 @@
         </nz-page-header>
     </nz-affix>
 
+    <app-ont-visual [parentDevice]="parentDeviceId" [ontId]="ont.id"></app-ont-visual>
+
     <h5 style="margin-top: 35px;">ONT PORTS</h5>
     <i *ngIf="ontPortsRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
     <ul *ngIf="ontPortsRequest === 'success'" style="padding-left: 25px;">

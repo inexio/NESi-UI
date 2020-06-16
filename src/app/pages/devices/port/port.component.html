@@ -11,13 +11,13 @@
         </nz-page-header>
     </nz-affix>
 
+    <app-port-visual [parentDevice]="parentDeviceId" [portId]="port.id"></app-port-visual>
+
     <h5 style="margin-top: 35px;">ONTS</h5>
     <i *ngIf="ontsRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
     <ul *ngIf="ontsRequest === 'success'" style="padding-left: 25px;">
         <li *ngFor="let ont of onts">
-            <a nz-button nzType="link" nzSize="small" [routerLink]="['/devices', parentDeviceId, 'ont', ont.id]"
-                >ONT {{ ont.id }}</a
-            >
+            <a nz-button nzType="link" nzSize="small" [routerLink]="['/devices', parentDeviceId, 'ont', ont.id]">ONT {{ ont.id }}</a>
         </li>
     </ul>
 

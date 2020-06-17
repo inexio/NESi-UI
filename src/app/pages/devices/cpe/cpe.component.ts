@@ -81,7 +81,7 @@ export class CpeComponent implements OnInit {
              * Get CPE Ports
              */
             this.cpePortsRequest = "pending";
-            this.api.getCpePorts(params.id, params.ontPort).subscribe({
+            this.api.getCpePorts(params.id, params.cpe).subscribe({
                 next: (cpePorts) => {
                     this.cpePorts = cpePorts;
                     this.cpePortsRequest = "success";

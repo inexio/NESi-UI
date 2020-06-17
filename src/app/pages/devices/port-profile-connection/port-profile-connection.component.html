@@ -4,7 +4,7 @@
             class="page-header"
             [ngClass]="{ affixed: isAffixed }"
             nzBackIcon
-            [nzTitle]="portProfileConnection.name"
+            [nzTitle]="'Port Profile Connection ' + portProfileConnection.name"
             [nzSubtitle]="portProfileConnection.description"
             (nzBack)="navigateUp()"
         >

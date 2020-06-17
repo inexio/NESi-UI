@@ -4,14 +4,16 @@
             class="page-header"
             [ngClass]="{ affixed: isAffixed }"
             nzBackIcon
-            [nzTitle]="subrack.name"
+            [nzTitle]="'Subrack ' + subrack.name"
             [nzSubtitle]="subrack.description"
             (nzBack)="navigateUp()"
         >
         </nz-page-header>
     </nz-affix>
 
-    <app-subrack-visual [parentDevice]="parentDeviceId" [cards]="cards"></app-subrack-visual>
+    <div style="margin-top: 25px;">
+        <app-subrack-visual [subrack]="subrack"></app-subrack-visual>
+    </div>
 
     <h5 style="margin-top: 35px;">CARDS</h5>
     <i *ngIf="cardsRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>

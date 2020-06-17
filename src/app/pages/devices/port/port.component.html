@@ -4,14 +4,16 @@
             class="page-header"
             [ngClass]="{ affixed: isAffixed }"
             nzBackIcon
-            [nzTitle]="port.name"
+            [nzTitle]="'Port ' + port.name"
             [nzSubtitle]="port.description"
             (nzBack)="navigateUp()"
         >
         </nz-page-header>
     </nz-affix>
 
-    <app-port-visual [parentDevice]="parentDeviceId" [portId]="port.id"></app-port-visual>
+    <div style="margin-top: 25px;">
+        <app-port-visual [port]="port"></app-port-visual>
+    </div>
 
     <h5 style="margin-top: 35px;">ONTS</h5>
     <i *ngIf="ontsRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
@@ -25,9 +27,9 @@
     <div class="details">
         <p *ngFor="let attribute of attributes">
             {{ attribute.key }}:
-            <span class="field-value"
-                ><span appCodeCopy>{{ attribute.value }}</span></span
-            >
+            <span class="field-value">
+                <span appCodeCopy>{{ attribute.value }}</span>
+            </span>
         </p>
     </div>
 </div>

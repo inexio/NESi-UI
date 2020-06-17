@@ -4,7 +4,7 @@
             class="page-header"
             [ngClass]="{ affixed: isAffixed }"
             nzBackIcon
-            [nzTitle]="cpePort.name"
+            [nzTitle]="'CPE Port ' + cpePort.name"
             [nzSubtitle]="cpePort.description"
             (nzBack)="navigateUp()"
         >

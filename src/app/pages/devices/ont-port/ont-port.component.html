@@ -4,20 +4,22 @@
             class="page-header"
             [ngClass]="{ affixed: isAffixed }"
             nzBackIcon
-            [nzTitle]="ontPort.name"
+            [nzTitle]="'ONT Port ' + ontPort.name"
             [nzSubtitle]="ontPort.description"
             (nzBack)="navigateUp()"
         >
         </nz-page-header>
     </nz-affix>
 
-    <h5 style="margin-top: 35px;">CPE</h5>
+    <div style="margin-top: 25px;">
+        <app-ont-port-visual [ontPort]="ontPort"></app-ont-port-visual>
+    </div>
+
+    <h5 style="margin-top: 35px;">CPES</h5>
     <i *ngIf="cpesRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
     <ul *ngIf="cpesRequest === 'success'" style="padding-left: 25px;">
         <li *ngFor="let cpe of cpes">
-            <a nz-button nzType="link" nzSize="small" [routerLink]="['/devices', parentDeviceId, 'cpe', cpe.id]"
-                >CPE {{ cpe.id }}</a
-            >
+            <a nz-button nzType="link" nzSize="small" [routerLink]="['/devices', parentDeviceId, 'cpe', cpe.id]">CPE {{ cpe.id }}</a>
         </li>
     </ul>
 

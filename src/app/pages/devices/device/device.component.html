@@ -1,8 +1,8 @@
 <div *ngIf="device">
     <h1>{{ device.vendor }} {{ device.model }} {{ device.version }}</h1>
-
     <p class="description">{{ device.description }}</p>
 
+    <!-- Quick Access buttons -->
     <button nz-button nzShape="circle" nzType="primary" (click)="openSshModal(ssh)">
         <i nz-icon nzType="block" nzTheme="outline"></i>
     </button>
@@ -11,17 +11,34 @@
     </button>
     <button nz-button nzShape="circle" nzType="danger"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
 
+    <!-- Show Credentials button -->
     <h5 style="margin-top: 35px;">CREDENTIALS</h5>
     <button nz-button nzType="primary" (click)="openCredentialsModal(credentials)">
         <i nz-icon nzType="lock"></i>
         Show Credentials
     </button>
 
+    <!-- Device Preview -->
+    <!-- <div style="margin-top: 25px;">
+        <app-device-visual [device]="device"> </app-device-visual>
+    </div> -->
+
+    <!-- Device details -->
     <h5 style="margin-top: 35px;">DETAILS</h5>
     <p style="margin: 0;">Vendor: {{ device.vendor }}</p>
     <p style="margin: 0;">Model: {{ device.model }}</p>
     <p style="margin: 0;">Version: {{ device.version }}</p>
 
+    <!-- Subracks list -->
+    <h5 style="margin-top: 35px;">SUBRACKS</h5>
+    <i *ngIf="subracksRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
+    <ul *ngIf="subracksRequest === 'success'" style="padding-left: 25px;">
+        <li *ngFor="let subrack of subracks">
+            <a nz-button nzType="link" nzSize="small" [routerLink]="['subrack', subrack.id]">Subrack {{ subrack.id }}</a>
+        </li>
+    </ul>
+
+    <!-- Profiles list -->
     <h5 style="margin-top: 35px;">PROFILES</h5>
     <i *ngIf="profilesRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
     <ul *ngIf="profilesRequest === 'success'" style="padding-left: 25px;">
@@ -30,6 +47,7 @@
         </li>
     </ul>
 
+    <!-- V-Lans list -->
     <h5 style="margin-top: 35px;">V-LANS</h5>
     <i *ngIf="vlansRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
     <ul *ngIf="vlansRequest === 'success'" style="padding-left: 25px;">
@@ -37,45 +55,39 @@
             <a nz-button nzType="link" nzSize="small" [routerLink]="['vlan', vlan.id]">V-Lan {{ vlan.id }}</a>
         </li>
     </ul>
-
-    <h5 style="margin-top: 35px;">SUBRACKS</h5>
-    <i *ngIf="subracksRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
-    <ul *ngIf="subracksRequest === 'success'" style="padding-left: 25px;">
-        <li *ngFor="let subrack of subracks">
-            <a nz-button nzType="link" nzSize="small" [routerLink]="['subrack', subrack.id]">Subrack {{ subrack.id }}</a>
-        </li>
-    </ul>
 </div>
 
+<!-- SSH Command modal template -->
 <ng-template #ssh>
     <h5>SSH COMMAND</h5>
     <div class="code">
         <p>
             <span style="user-select: none;">$ </span
-            ><span appCodeCopy>ssh {{ device.credentials[0].username }}@{{ device.mgmt_address }} -p {{ device.network_port }}</span>
+            ><span appCodeCopy>ssh {{ device.credential_details[0].username }}@{{ device.mgmt_address }} -p {{ device.network_port }}</span>
         </p>
     </div>
 
     <h5 style="margin-top: 20px;">PASSWORD</h5>
     <div class="code">
         <p>
-            <span appCodeCopy appHidePassword>{{ device.credentials[0].password }}</span>
+            <span appCodeCopy appHidePassword>{{ device.credential_details[0].password }}</span>
         </p>
     </div>
 </ng-template>
 
+<!-- Credentials modal template -->
 <ng-template #credentials>
     <h5>USERNAME</h5>
     <div class="code">
         <p>
-            <span appCodeCopy>{{ device.credentials[0].username }}</span>
+            <span appCodeCopy>{{ device.credential_details[0].username }}</span>
         </p>
     </div>
 
     <h5 style="margin-top: 20px;">PASSWORD</h5>
     <div class="code">
         <p>
-            <span appCodeCopy appHidePassword>{{ device.credentials[0].password }}</span>
+            <span appCodeCopy appHidePassword>{{ device.credential_details[0].password }}</span>
         </p>
     </div>
 </ng-template>

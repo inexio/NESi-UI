@@ -1,18 +1,35 @@
-<div class="ont">
-    <div class="port" style="margin: 17px 20px 0 10px;">
-        <img class="power" src="assets/images/power_in.svg" />
-        <p class="port-label">POWER</p>
-    </div>
+<div class="ont" *ngIf="ont">
+    <!-- ONT Name and Description -->
+    <h4 class="name" [routerLink]="['/devices', parentDeviceId, 'ont', ont.id]">
+        ONT {{ ont.name.toUpperCase() }}
+        <span class="description">{{ ont.description ? ont.description.toUpperCase() : "" }}</span>
+    </h4>
 
-    <div class="port">
-        <img class="in" src="assets/images/port_alt.svg" />
-        <p class="port-label">OPT IN</p>
-    </div>
+    <div class="content">
+        <!-- Power Port -->
+        <div class="port disabled" style="margin: 17px 20px 0 10px;">
+            <img class="power" src="assets/images/power_in.svg" />
+            <p class="port-label">POWER</p>
+        </div>
 
-    <div class="ports">
-        <div class="port" *ngFor="let port of ontPorts; let i = index">
-            <img [src]="port.opr_state === 'up' ? 'assets/images/port_active.svg' : 'assets/images/port.svg'" />
-            <p class="port-label">LAN {{ i + 1 }}</p>
+        <!-- Optical Input Port -->
+        <div class="port disabled">
+            <img class="in" src="assets/images/port_alt.svg" />
+            <p class="port-label">OPT IN</p>
+        </div>
+
+        <!-- List of available ONT Ports the user can interact with -->
+        <div class="ports">
+            <div class="port" *ngFor="let port of ports; let i = index" [ngClass]="{ disabled: port.id === null }">
+                <img
+                    nz-popover
+                    [nzPopoverTitle]="port.name ? 'ONT Port ' + port.name : 'Unassigned Port'"
+                    [nzPopoverContent]="port.name ? 'Click on Port to see more details' : 'This Port has not been assigned yet'"
+                    [src]="port.opr_state === 'up' ? 'assets/images/port_active.svg' : 'assets/images/port.svg'"
+                    [routerLink]="['/devices', parentDeviceId, 'ont-port', port.id]"
+                />
+                <p class="port-label">LAN {{ i + 1 }}</p>
+            </div>
         </div>
     </div>
 </div>

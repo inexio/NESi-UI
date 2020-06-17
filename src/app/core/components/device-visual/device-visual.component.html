@@ -1,0 +1,5 @@
+<div class="device" *ngIf="device">
+    <div class="subrack" *ngFor="let subrack of device.subrack_details || []">
+        <app-subrack-visual [subrackId]="subrack.id"></app-subrack-visual>
+    </div>
+</div>

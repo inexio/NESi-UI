@@ -1,0 +1,6 @@
+div.device {
+    box-sizing: border-box;
+    padding: 15px;
+    border: 2px solid #ffffff;
+    border-radius: 10px;
+}

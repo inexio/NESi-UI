@@ -1,0 +1,14 @@
+<img
+    class="port"
+    [src]="ontPort.opr_state === 'up' ? 'assets/images/port_active.svg' : 'assets/images/port.svg'"
+    [routerLink]="['/devices', parentDeviceId, 'ont', ontPort.ont_id]"
+    nz-popover
+    [nzPopoverTitle]="'ONT Port ' + ontPort.name"
+    [nzPopoverContent]="'Click to go back to ONT view'"
+/>
+
+<div class="cpes" *ngIf="ontPort">
+    <div class="cpe" *ngFor="let cpe of ontPort.cpes">
+        <app-cpe-visual [cpeId]="cpe.id"></app-cpe-visual>
+    </div>
+</div>

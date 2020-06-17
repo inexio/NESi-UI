@@ -4,22 +4,22 @@
             class="page-header"
             [ngClass]="{ affixed: isAffixed }"
             nzBackIcon
-            [nzTitle]="cpe.name"
+            [nzTitle]="'CPE ' + cpe.name"
             [nzSubtitle]="cpe.description"
             (nzBack)="navigateUp()"
         >
         </nz-page-header>
     </nz-affix>
 
+    <div style="margin-top: 25px;">
+        <app-cpe-visual [cpe]="cpe"></app-cpe-visual>
+    </div>
+
     <h5 style="margin-top: 35px;">CPE PORTS</h5>
     <i *ngIf="cpePortsRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
     <ul *ngIf="cpePortsRequest === 'success'" style="padding-left: 25px;">
         <li *ngFor="let cpePort of cpePorts">
-            <a
-                nz-button
-                nzType="link"
-                nzSize="small"
-                [routerLink]="['/devices', parentDeviceId, 'cpe-port', cpePort.id]"
+            <a nz-button nzType="link" nzSize="small" [routerLink]="['/devices', parentDeviceId, 'cpe-port', cpePort.id]"
                 >CPE Port {{ cpePort.id }}</a
             >
         </li>

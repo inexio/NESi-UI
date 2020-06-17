@@ -51,6 +51,10 @@ import { NzBadgeModule } from "ng-zorro-antd/badge";
 import { OntVisualComponent } from "./core/components/ont-visual/ont-visual.component";
 import { PortVisualComponent } from "./core/components/port-visual/port-visual.component";
 import { NzSpaceModule } from "ng-zorro-antd/space";
+import { NzPopoverModule } from "ng-zorro-antd/popover";
+import { CpeVisualComponent } from "./core/components/cpe-visual/cpe-visual.component";
+import { OntPortVisualComponent } from "./core/components/ont-port-visual/ont-port-visual.component";
+import { DeviceVisualComponent } from "./core/components/device-visual/device-visual.component";
 
 @NgModule({
     declarations: [
@@ -78,6 +82,9 @@ import { NzSpaceModule } from "ng-zorro-antd/space";
         SubrackVisualComponent,
         OntVisualComponent,
         PortVisualComponent,
+        CpeVisualComponent,
+        OntPortVisualComponent,
+        DeviceVisualComponent,
     ],
     imports: [
         BrowserModule,
@@ -102,6 +109,7 @@ import { NzSpaceModule } from "ng-zorro-antd/space";
         NzInputModule,
         NzBadgeModule,
         NzSpaceModule,
+        NzPopoverModule,
     ],
     providers: [],
     bootstrap: [AppComponent],

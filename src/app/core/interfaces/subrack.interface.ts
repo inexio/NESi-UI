@@ -1,3 +1,5 @@
+import { Card } from "./card.interface";
+
 export interface Subrack {
     id: number;
     name?: string;
@@ -12,4 +14,5 @@ export interface Subrack {
     mode?: string;
     subrack_class?: string;
     variant?: string;
+    cards: Card[];
 }

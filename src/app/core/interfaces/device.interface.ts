@@ -7,5 +7,6 @@ export interface Device {
     hostname?: string;
     mgmt_address?: string;
     network_port?: string;
-    credentials?: { id: string; username: string; password: string }[];
+    credential_details?: { id: number; username: string; password: string }[];
+    subrack_details?: { id: number | string }[];
 }

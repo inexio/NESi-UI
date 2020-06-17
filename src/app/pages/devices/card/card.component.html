@@ -4,14 +4,16 @@
             class="page-header"
             [ngClass]="{ affixed: isAffixed }"
             nzBackIcon
-            [nzTitle]="card.name"
+            [nzTitle]="'Card ' + card.name"
             [nzSubtitle]="card.description"
             (nzBack)="navigateUp()"
         >
         </nz-page-header>
     </nz-affix>
 
-    <app-card-visual [parentDevice]="parentDeviceId" [card]="card"></app-card-visual>
+    <div style="margin-top: 25px;">
+        <app-card-visual [card]="card"></app-card-visual>
+    </div>
 
     <h5 style="margin-top: 35px;">PORTS</h5>
     <i *ngIf="portsRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>

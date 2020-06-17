@@ -13,13 +13,28 @@ import { Port } from "../../interfaces/port.interface";
     providedIn: "root",
 })
 export class ApiService {
+    /**
+     * Credentials object retrieved from LocalStorage
+     */
     public credentials: Credentials;
 
+    /**
+     * Array of created Devices
+     */
     public devices: Device[] = [];
+
+    /**
+     * Array of vendor names as strings, used to categorize devices by vendors
+     */
     public vendorNames: string[] = [];
+
+    /**
+     * Vendors object where vendor names are keys and arrays of devices as values
+     */
     public vendors: { [key: string]: { devices: Device[] } } = {};
 
     constructor(private http: HttpClient) {
+        // Get Credentials from LocalStorage
         this.getStoredCredentials().subscribe({
             next: (credentials) => {
                 console.log(credentials);
@@ -29,9 +44,12 @@ export class ApiService {
             },
         });
 
+        // Get devices from API
         this.getDevices().subscribe({
             next: (devices) => {
                 this.devices = devices;
+
+                // Parse devices into vendors array and object
                 devices.map((device) => {
                     if (!this.vendorNames.includes(device.vendor)) {
                         this.vendorNames.push(device.vendor);
@@ -81,6 +99,9 @@ export class ApiService {
         });
     }
 
+    /**
+     * Get array of all created devices from API
+     */
     public getDevices(): Observable<Device[]> {
         return this.http
             .get<{ count: number; members: Device[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen`, {
@@ -89,18 +110,18 @@ export class ApiService {
             .pipe(map((res) => res.members));
     }
 
-    public getDevice(id: string): Observable<Device> {
+    public getDevice(id: number | string): Observable<Device> {
         return this.http.get<Device>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${id}`, {
             headers: this.credentials.requestHeaders,
         });
     }
 
-    public getDeviceName(id: string): string {
+    public getDeviceName(id: number | string): string {
         const device = this.devices.find((device) => device.uuid === id);
         return device ? `${device.vendor} ${device.model} ${device.version}` : "DEVICE NOT FOUND";
     }
 
-    public getProfiles(deviceId: string): Observable<Profile[]> {
+    public getProfiles(deviceId: number | string): Observable<Profile[]> {
         return this.http
             .get<{ count: number; members: Profile[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/port_profiles`, {
                 headers: this.credentials.requestHeaders,
@@ -108,13 +129,13 @@ export class ApiService {
             .pipe(map((res) => res.members));
     }
 
-    public getProfile(deviceId: string, profileId: string): Observable<Profile> {
+    public getProfile(deviceId: number | string, profileId: number | string): Observable<Profile> {
         return this.http.get<Profile>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/port_profiles/${profileId}`, {
             headers: this.credentials.requestHeaders,
         });
     }
 
-    public getSubracks(deviceId: string): Observable<Subrack[]> {
+    public getSubracks(deviceId: number | string): Observable<Subrack[]> {
         return this.http
             .get<{ count: Number; members: Subrack[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/subracks`, {
                 headers: this.credentials.requestHeaders,
@@ -122,75 +143,75 @@ export class ApiService {
             .pipe(map((res) => res.members));
     }
 
-    public getSubrack(deviceId: string, subrackId: string): Observable<Subrack> {
+    public getSubrack(deviceId: number | string, subrackId: number | string): Observable<Subrack> {
         return this.http.get<Subrack>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/subracks/${subrackId}`, {
             headers: this.credentials.requestHeaders,
         });
     }
 
-    public getCards(deviceId: string, subrackId: string): Observable<{ id: string }[]> {
+    public getCards(deviceId: number | string, subrackId: number | string): Observable<{ id: string }[]> {
         return this.http
             .get<{ count: number; members: { id: string }[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/cards`, {
                 params: {
-                    subrack_id: subrackId,
+                    subrack_id: subrackId.toString(),
                 },
                 headers: this.credentials.requestHeaders,
             })
             .pipe(map((res) => res.members));
     }
 
-    public getCard(deviceId: string, cardId: string): Observable<Card> {
+    public getCard(deviceId: number | string, cardId: number | string): Observable<Card> {
         return this.http.get<Card>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/cards/${cardId}`, {
             headers: this.credentials.requestHeaders,
         });
     }
 
-    public getPorts(deviceId: string, cardId: string): Observable<{ id: string }[]> {
+    public getPorts(deviceId: number | string, cardId: number | string): Observable<{ id: string }[]> {
         return this.http
             .get<{ count: number; members: { id: string }[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/ports`, {
                 params: {
-                    card_id: cardId,
+                    card_id: cardId.toString(),
                 },
                 headers: this.credentials.requestHeaders,
             })
             .pipe(map((res) => res.members));
     }
 
-    public getPort(deviceId: string, portId: string): Observable<Port> {
+    public getPort(deviceId: number | string, portId: number | string): Observable<Port> {
         return this.http.get<Port>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/ports/${portId}`, {
             headers: this.credentials.requestHeaders,
         });
     }
 
-    public getOnts(deviceId: string, portId: string): Observable<{ id: string }[]> {
+    public getOnts(deviceId: number | string, portId: number | string): Observable<{ id: string }[]> {
         return this.http
             .get<{ count: number; members: { id: string }[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/onts`, {
                 params: {
-                    port_id: portId,
+                    port_id: portId.toString(),
                 },
                 headers: this.credentials.requestHeaders,
             })
             .pipe(map((res) => res.members));
     }
 
-    public getOnt(deviceId: string, ontId: string): Observable<Port> {
+    public getOnt(deviceId: number | string, ontId: number | string): Observable<Port> {
         return this.http.get<Port>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/onts/${ontId}`, {
             headers: this.credentials.requestHeaders,
         });
     }
 
-    public getOntPorts(deviceId: string, ontId: string): Observable<{ id: string }[]> {
+    public getOntPorts(deviceId: number | string, ontId: number | string): Observable<{ id: string }[]> {
         return this.http
             .get<{ count: number; members: { id: string }[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/ont_ports`, {
                 params: {
-                    ont_id: ontId,
+                    ont_id: ontId.toString(),
                 },
                 headers: this.credentials.requestHeaders,
             })
             .pipe(map((res) => res.members));
     }
 
-    public getOntPort(deviceId: string, ontPortId: string): Observable<{ [key: string]: any }> {
+    public getOntPort(deviceId: number | string, ontPortId: number | string): Observable<{ [key: string]: any }> {
         return this.http.get<{ [key: string]: any }>(
             `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/ont_ports/${ontPortId}`,
             {
@@ -199,35 +220,35 @@ export class ApiService {
         );
     }
 
-    public getCpes(deviceId: string, ontPortId: string): Observable<{ id: string }[]> {
+    public getCpes(deviceId: number | string, ontPortId: number | string): Observable<{ id: string }[]> {
         return this.http
             .get<{ count: number; members: { id: string }[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/cpes`, {
                 params: {
-                    ont_port_id: ontPortId,
+                    ont_port_id: ontPortId.toString(),
                 },
                 headers: this.credentials.requestHeaders,
             })
             .pipe(map((res) => res.members));
     }
 
-    public getCpe(deviceId: string, cpeId: string): Observable<{ [key: string]: any }> {
+    public getCpe(deviceId: number | string, cpeId: number | string): Observable<{ [key: string]: any }> {
         return this.http.get<{ [key: string]: any }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/cpes/${cpeId}`, {
             headers: this.credentials.requestHeaders,
         });
     }
 
-    public getCpePorts(deviceId: string, cpeId: string): Observable<{ id: string }[]> {
+    public getCpePorts(deviceId: number | string, cpeId: number | string): Observable<{ id: string }[]> {
         return this.http
             .get<{ count: number; members: { id: string }[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/cpe_ports`, {
                 params: {
-                    cpe_id: cpeId,
+                    cpe_id: cpeId.toString(),
                 },
                 headers: this.credentials.requestHeaders,
             })
             .pipe(map((res) => res.members));
     }
 
-    public getCpePort(deviceId: string, cpePortId: string): Observable<{ [key: string]: any }> {
+    public getCpePort(deviceId: number | string, cpePortId: number | string): Observable<{ [key: string]: any }> {
         return this.http.get<{ [key: string]: any }>(
             `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/cpe_ports/${cpePortId}`,
             {
@@ -236,7 +257,7 @@ export class ApiService {
         );
     }
 
-    public getVlans(deviceId: string): Observable<{ id: number }[]> {
+    public getVlans(deviceId: number | string): Observable<{ id: number }[]> {
         return this.http
             .get<{ count: number; members: { id: number }[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/vlans`, {
                 headers: this.credentials.requestHeaders,
@@ -244,19 +265,19 @@ export class ApiService {
             .pipe(map((res) => res.members));
     }
 
-    public getVlan(deviceId: string, vlanId: string): Observable<{ [key: string]: any }> {
+    public getVlan(deviceId: number | string, vlanId: number | string): Observable<{ [key: string]: any }> {
         return this.http.get<{ [key: string]: any }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/vlans/${vlanId}`, {
             headers: this.credentials.requestHeaders,
         });
     }
 
-    public getVlanConnections(deviceId: string, vlanId: string): Observable<{ id: string }[]> {
+    public getVlanConnections(deviceId: number | string, vlanId: number | string): Observable<{ id: string }[]> {
         return this.http
             .get<{ count: number; members: { id: string }[] }>(
                 `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/vlan_connections`,
                 {
                     params: {
-                        vlan_id: vlanId,
+                        vlan_id: vlanId.toString(),
                     },
                     headers: this.credentials.requestHeaders,
                 },
@@ -264,7 +285,7 @@ export class ApiService {
             .pipe(map((res) => res.members));
     }
 
-    public getVlanConnection(deviceId: string, vlanConnectionId: string): Observable<{ [key: string]: any }> {
+    public getVlanConnection(deviceId: number | string, vlanConnectionId: number | string): Observable<{ [key: string]: any }> {
         return this.http.get<{ [key: string]: any }>(
             `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/vlan_connections/${vlanConnectionId}`,
             {
@@ -273,7 +294,7 @@ export class ApiService {
         );
     }
 
-    public getPortProfiles(deviceId: string): Observable<{ id: string }[]> {
+    public getPortProfiles(deviceId: number | string): Observable<{ id: string }[]> {
         return this.http
             .get<{ count: number; members: { id: string }[] }>(
                 `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/port_profiles`,
@@ -284,7 +305,7 @@ export class ApiService {
             .pipe(map((res) => res.members));
     }
 
-    public getPortProfile(deviceId: string, portProfileId: string): Observable<{ [key: string]: any }> {
+    public getPortProfile(deviceId: number | string, portProfileId: number | string): Observable<{ [key: string]: any }> {
         return this.http.get<{ [key: string]: any }>(
             `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/port_profiles/${portProfileId}`,
             {
@@ -293,7 +314,7 @@ export class ApiService {
         );
     }
 
-    public getPortProfileConnections(deviceId: string): Observable<{ id: string }[]> {
+    public getPortProfileConnections(deviceId: number | string): Observable<{ id: string }[]> {
         return this.http
             .get<{ count: number; members: { id: string }[] }>(
                 `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/port_profile_connections`,
@@ -304,7 +325,10 @@ export class ApiService {
             .pipe(map((res) => res.members));
     }
 
-    public getPortProfileConnection(deviceId: string, portProfileConnectionId: string): Observable<{ [key: string]: any }> {
+    public getPortProfileConnection(
+        deviceId: number | string,
+        portProfileConnectionId: number | string,
+    ): Observable<{ [key: string]: any }> {
         return this.http.get<{ [key: string]: any }>(
             `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/port_profile_connections/${portProfileConnectionId}`,
             {

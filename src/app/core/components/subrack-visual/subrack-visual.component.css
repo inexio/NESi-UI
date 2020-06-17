@@ -6,7 +6,6 @@ div.subrack {
     box-sizing: border-box;
     padding: 15px 40px;
     flex-wrap: wrap;
-    margin-top: 25px;
     background-image: url(assets/images/rack_mount.svg), url(assets/images/rack_mount.svg);
     background-position: left top, right top;
     background-repeat: repeat-y, repeat-y;
@@ -15,4 +14,8 @@ div.subrack {
 
 app-card-visual:nth-child(n + 2) {
     margin-top: 20px;
+}
+
+div.card:nth-child(n + 2) {
+    margin-top: 15px;
 }

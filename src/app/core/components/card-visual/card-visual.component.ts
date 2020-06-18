@@ -70,9 +70,11 @@ export class CardVisualComponent implements OnInit {
             if (!(i % 2)) {
                 this.portPairs.push([
                     this.card.ports[i] ? this.card.ports[i] : { id: null, opr_state: null },
-                    this.card.ports[i - 1] ? this.card.ports[i - 1] : { id: null, opr_state: null },
+                    this.card.ports[i + 1] ? this.card.ports[i + 1] : { id: null, opr_state: null },
                 ]);
             }
         }
+
+        console.log(this.portPairs);
     }
 }

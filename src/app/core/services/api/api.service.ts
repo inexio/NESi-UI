@@ -1,23 +1,18 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { Credentials } from "../../interfaces/credentials.interface";
 import { Device } from "../../interfaces/device.interface";
 import { Profile } from "../../interfaces/profile.interface";
 import { Subrack } from "../../interfaces/subrack.interface";
 import { map } from "rxjs/operators";
 import { Card } from "../../interfaces/card.interface";
 import { Port } from "../../interfaces/port.interface";
+import { Ont } from "../../interfaces/ont.interface";
 
 @Injectable({
     providedIn: "root",
 })
 export class ApiService {
-    /**
-     * Credentials object retrieved from LocalStorage
-     */
-    public credentials: Credentials;
-
     /**
      * Array of created Devices
      */
@@ -34,19 +29,10 @@ export class ApiService {
     public vendors: { [key: string]: { devices: Device[] } } = {};
 
     constructor(private http: HttpClient) {
-        // Get Credentials from LocalStorage
-        this.getStoredCredentials().subscribe({
-            next: (credentials) => {
-                console.log(credentials);
-            },
-            error: (error) => {
-                console.log(error);
-            },
-        });
-
-        // Get devices from API
+        // Get Devices on start up
         this.getDevices().subscribe({
             next: (devices) => {
+                // Store Devices
                 this.devices = devices;
 
                 // Parse devices into vendors array and object
@@ -60,283 +46,299 @@ export class ApiService {
                     }
                 });
             },
-            error: (error) => {
-                console.error(error);
+            error: () => {
+                throw new Error("An Error occurred trying to request Devices");
             },
         });
     }
 
     /**
-     * Checks for Credentials object stored inside localStorage
+     * Get array of all created Devices
      */
-    public getStoredCredentials(): Observable<Credentials> {
-        return new Observable((subscriber) => {
-            let credentials: string = localStorage.getItem("credentials");
-
-            if (credentials) {
-                try {
-                    const parsed: Credentials = JSON.parse(credentials);
-
-                    this.credentials = parsed;
-                    this.credentials.requestUrl = `${parsed.protocol}://${parsed.host}:${parsed.port}`;
-                    this.credentials.requestHeaders = new HttpHeaders().append(
-                        "Authorization",
-                        `Basic ${btoa(`${parsed.auth.username}:${parsed.auth.password}`)}`,
-                    );
-
-                    subscriber.next(parsed);
-                    subscriber.complete();
-                } catch (error) {
-                    console.error("Error parsing `credentials` item from localStorage");
-                    subscriber.error(error);
-                    subscriber.complete();
-                }
-            } else {
-                console.warn("No `credentials` item found in localStorage.");
-                subscriber.error();
-                subscriber.complete();
-            }
-        });
+    public getDevices(): Observable<Device[]> {
+        return this.http.get<{ count: number; members: Device[] }>("boxen").pipe(map((res) => res.members));
     }
 
     /**
-     * Get array of all created devices from API
+     * Get Device by its id
+     * @param id Id of the device to get
      */
-    public getDevices(): Observable<Device[]> {
-        return this.http
-            .get<{ count: number; members: Device[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen`, {
-                headers: this.credentials.requestHeaders,
-            })
-            .pipe(map((res) => res.members));
-    }
-
     public getDevice(id: number | string): Observable<Device> {
-        return this.http.get<Device>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${id}`, {
-            headers: this.credentials.requestHeaders,
-        });
+        return this.http.get<Device>(`boxen/${id}`);
     }
 
+    /**
+     * Returns the name of a Device from its id
+     * @param id Id of the device to get name for
+     */
     public getDeviceName(id: number | string): string {
         const device = this.devices.find((device) => device.uuid === id);
         return device ? `${device.vendor} ${device.model} ${device.version}` : "DEVICE NOT FOUND";
     }
 
+    /**
+     * Get Profiles for specific Device
+     * @param deviceId Id of the Device to get Profiles for
+     */
     public getProfiles(deviceId: number | string): Observable<Profile[]> {
-        return this.http
-            .get<{ count: number; members: Profile[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/port_profiles`, {
-                headers: this.credentials.requestHeaders,
-            })
-            .pipe(map((res) => res.members));
+        return this.http.get<{ count: number; members: Profile[] }>(`boxen/${deviceId}/port_profiles`).pipe(map((res) => res.members));
     }
 
+    /**
+     * Get specific Profile from specific Device
+     * @param deviceId Id of the Device to get Profile for
+     * @param profileId Id of the Profile to get
+     */
     public getProfile(deviceId: number | string, profileId: number | string): Observable<Profile> {
-        return this.http.get<Profile>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/port_profiles/${profileId}`, {
-            headers: this.credentials.requestHeaders,
-        });
+        return this.http.get<Profile>(`boxen/${deviceId}/port_profiles/${profileId}`);
     }
 
+    /**
+     * Get list of Subracks inside Device
+     * @param deviceId Id of the Device to get Subracks for
+     */
     public getSubracks(deviceId: number | string): Observable<Subrack[]> {
-        return this.http
-            .get<{ count: Number; members: Subrack[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/subracks`, {
-                headers: this.credentials.requestHeaders,
-            })
-            .pipe(map((res) => res.members));
+        return this.http.get<{ count: Number; members: Subrack[] }>(`boxen/${deviceId}/subracks`).pipe(map((res) => res.members));
     }
 
+    /**
+     * Get a Subrack by its Id
+     * @param deviceId Id of the Device which holds the Subrack
+     * @param subrackId Id of the Subrack to get
+     */
     public getSubrack(deviceId: number | string, subrackId: number | string): Observable<Subrack> {
-        return this.http.get<Subrack>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/subracks/${subrackId}`, {
-            headers: this.credentials.requestHeaders,
-        });
+        return this.http.get<Subrack>(`boxen/${deviceId}/subracks/${subrackId}`);
     }
 
-    public getCards(deviceId: number | string, subrackId: number | string): Observable<{ id: string }[]> {
+    /**
+     * Get list of Cards inside specific Subrack of a Device
+     * @param deviceId Id of the Device which holds the Cards
+     * @param subrackId Id of the Subrack which holds the Cards
+     */
+    public getCards(deviceId: number | string, subrackId: number | string): Observable<{ id: number }[]> {
         return this.http
-            .get<{ count: number; members: { id: string }[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/cards`, {
+            .get<{ count: number; members: { id: number }[] }>(`boxen/${deviceId}/cards`, {
                 params: {
                     subrack_id: subrackId.toString(),
                 },
-                headers: this.credentials.requestHeaders,
             })
             .pipe(map((res) => res.members));
     }
 
+    /**
+     * Get a Card by its Id
+     * @param deviceId Id of the Device which holds the Card
+     * @param cardId Id of the Card to get
+     */
     public getCard(deviceId: number | string, cardId: number | string): Observable<Card> {
-        return this.http.get<Card>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/cards/${cardId}`, {
-            headers: this.credentials.requestHeaders,
-        });
+        return this.http.get<Card>(`boxen/${deviceId}/cards/${cardId}`);
     }
 
-    public getPorts(deviceId: number | string, cardId: number | string): Observable<{ id: string }[]> {
+    /**
+     * Get a list of all Ports of a Card
+     * @param deviceId Id of the Device which holds the Card
+     * @param cardId Id of the Card to get Ports for
+     */
+    public getPorts(deviceId: number | string, cardId: number | string): Observable<{ id: number }[]> {
         return this.http
-            .get<{ count: number; members: { id: string }[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/ports`, {
+            .get<{ count: number; members: { id: number }[] }>(`boxen/${deviceId}/ports`, {
                 params: {
                     card_id: cardId.toString(),
                 },
-                headers: this.credentials.requestHeaders,
             })
             .pipe(map((res) => res.members));
     }
 
+    /**
+     * Get a Port by its Id
+     * @param deviceId Id of the Device which contains the Port
+     * @param portId Id of the Port to get
+     */
     public getPort(deviceId: number | string, portId: number | string): Observable<Port> {
-        return this.http.get<Port>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/ports/${portId}`, {
-            headers: this.credentials.requestHeaders,
-        });
+        return this.http.get<Port>(`boxen/${deviceId}/ports/${portId}`);
     }
 
-    public getOnts(deviceId: number | string, portId: number | string): Observable<{ id: string }[]> {
+    /**
+     * Get a list of ONTs attached to a Port
+     * @param deviceId Id of the Device containing the ONTs
+     * @param portId Id of the Port the ONT is attached to
+     */
+    public getOnts(deviceId: number | string, portId: number | string): Observable<{ id: number }[]> {
         return this.http
-            .get<{ count: number; members: { id: string }[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/onts`, {
+            .get<{ count: number; members: { id: number }[] }>(`boxen/${deviceId}/onts`, {
                 params: {
                     port_id: portId.toString(),
                 },
-                headers: this.credentials.requestHeaders,
             })
             .pipe(map((res) => res.members));
     }
 
-    public getOnt(deviceId: number | string, ontId: number | string): Observable<Port> {
-        return this.http.get<Port>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/onts/${ontId}`, {
-            headers: this.credentials.requestHeaders,
-        });
+    /**
+     * Get an ONT by its Id
+     * @param deviceId Id of the Device containing the ONT
+     * @param ontId Id of the ONT to get
+     */
+    public getOnt(deviceId: number | string, ontId: number | string): Observable<Ont> {
+        return this.http.get<Ont>(`boxen/${deviceId}/onts/${ontId}`);
     }
 
-    public getOntPorts(deviceId: number | string, ontId: number | string): Observable<{ id: string }[]> {
+    /**
+     * Get a list of ONT Ports of an ONT
+     * @param deviceId Id of the Device containing the ONT Ports
+     * @param ontId Id of the ONT holding the ONT Port
+     */
+    public getOntPorts(deviceId: number | string, ontId: number | string): Observable<{ id: number }[]> {
         return this.http
-            .get<{ count: number; members: { id: string }[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/ont_ports`, {
+            .get<{ count: number; members: { id: number }[] }>(`boxen/${deviceId}/ont_ports`, {
                 params: {
                     ont_id: ontId.toString(),
                 },
-                headers: this.credentials.requestHeaders,
             })
             .pipe(map((res) => res.members));
     }
 
+    /**
+     * Get an ONT Port by its Id
+     * @param deviceId Id of the Device containing the ONT Port
+     * @param ontPortId Id of the ONT Port to get
+     */
     public getOntPort(deviceId: number | string, ontPortId: number | string): Observable<{ [key: string]: any }> {
-        return this.http.get<{ [key: string]: any }>(
-            `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/ont_ports/${ontPortId}`,
-            {
-                headers: this.credentials.requestHeaders,
-            },
-        );
+        return this.http.get<{ [key: string]: any }>(`boxen/${deviceId}/ont_ports/${ontPortId}`);
     }
 
-    public getCpes(deviceId: number | string, ontPortId: number | string): Observable<{ id: string }[]> {
+    /**
+     * Get a list of CPEs attached to given ONT Port
+     * @param deviceId Id of the device containing the CPEs
+     * @param ontPortId Id of the ONT Port to get CPEs for
+     */
+    public getCpes(deviceId: number | string, ontPortId: number | string): Observable<{ id: number }[]> {
         return this.http
-            .get<{ count: number; members: { id: string }[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/cpes`, {
+            .get<{ count: number; members: { id: number }[] }>(`boxen/${deviceId}/cpes`, {
                 params: {
                     ont_port_id: ontPortId.toString(),
                 },
-                headers: this.credentials.requestHeaders,
             })
             .pipe(map((res) => res.members));
     }
 
-    public getCpe(deviceId: number | string, cpeId: number | string): Observable<{ [key: string]: any }> {
-        return this.http.get<{ [key: string]: any }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/cpes/${cpeId}`, {
-            headers: this.credentials.requestHeaders,
-        });
+    /**
+     * Get a CPE by its Id
+     * @param deviceId Id of the Device containing the CPE
+     * @param cpeId Id of the CPE to get
+     */
+    public getCpe(deviceId: number, cpeId: number): Observable<{ [key: string]: any }> {
+        return this.http.get<{ [key: string]: any }>(`boxen/${deviceId}/cpes/${cpeId}`);
     }
 
-    public getCpePorts(deviceId: number | string, cpeId: number | string): Observable<{ id: string }[]> {
+    /**
+     * Get CPE Ports of a specific CPE
+     * @param deviceId Id of the Device which contains teh CPE
+     * @param cpeId Id of the CPE of the Ports we want to get
+     */
+    public getCpePorts(deviceId: number, cpeId: number): Observable<{ id: number }[]> {
         return this.http
-            .get<{ count: number; members: { id: string }[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/cpe_ports`, {
+            .get<{ count: number; members: { id: number }[] }>(`boxen/${deviceId}/cpe_ports`, {
                 params: {
                     cpe_id: cpeId.toString(),
                 },
-                headers: this.credentials.requestHeaders,
             })
             .pipe(map((res) => res.members));
     }
 
-    public getCpePort(deviceId: number | string, cpePortId: number | string): Observable<{ [key: string]: any }> {
-        return this.http.get<{ [key: string]: any }>(
-            `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/cpe_ports/${cpePortId}`,
-            {
-                headers: this.credentials.requestHeaders,
-            },
-        );
+    /**
+     * Get a CPE Port of a specific CPE by its Id
+     * @param deviceId Id of the Device containing the CPE Port
+     * @param cpePortId Id of the CPE Port to get
+     */
+    public getCpePort(deviceId: number, cpePortId: number): Observable<{ [key: string]: any }> {
+        return this.http.get<{ [key: string]: any }>(`boxen/${deviceId}/cpe_ports/${cpePortId}`);
     }
 
-    public getVlans(deviceId: number | string): Observable<{ id: number }[]> {
+    /**
+     * Get a list of V-Lans of a Device
+     * @param deviceId Id of the Device to get V-Lans for
+     */
+    public getVlans(deviceId: number): Observable<{ id: number }[]> {
+        return this.http.get<{ count: number; members: { id: number }[] }>(`boxen/${deviceId}/vlans`).pipe(map((res) => res.members));
+    }
+
+    /**
+     * Get a V-Lan by its Id
+     * @param deviceId Id of the Device containing the V-Lan
+     * @param vlanId Id of the V-Lan to get
+     */
+    public getVlan(deviceId: number, vlanId: number): Observable<{ [key: string]: any }> {
+        return this.http.get<{ [key: string]: any }>(`boxen/${deviceId}/vlans/${vlanId}`, {});
+    }
+
+    /**
+     * Get a list of V-Lan Connections for a Device
+     * @param deviceId Id of the Device holding the V-Lan Connections
+     * @param vlanId Id of the V-Lan we want to get the Connections of
+     */
+    public getVlanConnections(deviceId: number, vlanId: number): Observable<{ id: number }[]> {
         return this.http
-            .get<{ count: number; members: { id: number }[] }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/vlans`, {
-                headers: this.credentials.requestHeaders,
+            .get<{ count: number; members: { id: number }[] }>(`boxen/${deviceId}/vlan_connections`, {
+                params: {
+                    vlan_id: vlanId.toString(),
+                },
             })
             .pipe(map((res) => res.members));
     }
 
-    public getVlan(deviceId: number | string, vlanId: number | string): Observable<{ [key: string]: any }> {
-        return this.http.get<{ [key: string]: any }>(`${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/vlans/${vlanId}`, {
-            headers: this.credentials.requestHeaders,
-        });
+    /**
+     * Get a V-Lan Connection by its Id
+     * @param deviceId Id of the Device containing the V-Lan Connection
+     * @param vlanConnectionId Id of the V-Lan Connection to get
+     */
+    public getVlanConnection(deviceId: number, vlanConnectionId: number): Observable<{ [key: string]: any }> {
+        return this.http.get<{ [key: string]: any }>(`boxen/${deviceId}/vlan_connections/${vlanConnectionId}`);
     }
 
-    public getVlanConnections(deviceId: number | string, vlanId: number | string): Observable<{ id: string }[]> {
+    /**
+     * Get a list of Port Profiles of a given Device
+     * @param deviceId Id of the Device to get Port Profile for
+     */
+    public getPortProfiles(deviceId: number): Observable<{ id: number }[]> {
         return this.http
-            .get<{ count: number; members: { id: string }[] }>(
-                `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/vlan_connections`,
-                {
-                    params: {
-                        vlan_id: vlanId.toString(),
-                    },
-                    headers: this.credentials.requestHeaders,
-                },
-            )
+            .get<{ count: number; members: { id: number }[] }>(`boxen/${deviceId}/port_profiles`)
             .pipe(map((res) => res.members));
     }
 
-    public getVlanConnection(deviceId: number | string, vlanConnectionId: number | string): Observable<{ [key: string]: any }> {
-        return this.http.get<{ [key: string]: any }>(
-            `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/vlan_connections/${vlanConnectionId}`,
-            {
-                headers: this.credentials.requestHeaders,
-            },
-        );
+    /**
+     * Get a Port Profile by its Id
+     * @param deviceId Id of the Device containing the Port Profile
+     * @param portProfileId Id of the Port Profile to get
+     */
+    public getPortProfile(deviceId: number, portProfileId: number): Observable<{ [key: string]: any }> {
+        return this.http.get<{ [key: string]: any }>(`boxen/${deviceId}/port_profiles/${portProfileId}`);
     }
 
-    public getPortProfiles(deviceId: number | string): Observable<{ id: string }[]> {
+    /**
+     * Get a list of Port Profile Connections of a Device
+     * @param deviceId Id of the Device to get Port Profile Connections for
+     */
+    public getPortProfileConnections(deviceId: number): Observable<{ id: string }[]> {
         return this.http
-            .get<{ count: number; members: { id: string }[] }>(
-                `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/port_profiles`,
-                {
-                    headers: this.credentials.requestHeaders,
-                },
-            )
+            .get<{ count: number; members: { id: string }[] }>(`boxen/${deviceId}/port_profile_connections`)
             .pipe(map((res) => res.members));
     }
 
-    public getPortProfile(deviceId: number | string, portProfileId: number | string): Observable<{ [key: string]: any }> {
-        return this.http.get<{ [key: string]: any }>(
-            `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/port_profiles/${portProfileId}`,
-            {
-                headers: this.credentials.requestHeaders,
-            },
-        );
+    /**
+     * Get a Port Profile Connection by its Id
+     * @param deviceId Id of the Device which contains Port Profile Connection
+     * @param portProfileConnectionId Id of the Port Profile Connection to get
+     */
+    public getPortProfileConnection(deviceId: number, portProfileConnectionId: number): Observable<{ [key: string]: any }> {
+        return this.http.get<{ [key: string]: any }>(`boxen/${deviceId}/port_profile_connections/${portProfileConnectionId}`);
     }
 
-    public getPortProfileConnections(deviceId: number | string): Observable<{ id: string }[]> {
-        return this.http
-            .get<{ count: number; members: { id: string }[] }>(
-                `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/port_profile_connections`,
-                {
-                    headers: this.credentials.requestHeaders,
-                },
-            )
-            .pipe(map((res) => res.members));
-    }
-
-    public getPortProfileConnection(
-        deviceId: number | string,
-        portProfileConnectionId: number | string,
-    ): Observable<{ [key: string]: any }> {
-        return this.http.get<{ [key: string]: any }>(
-            `${this.credentials.requestUrl}/softboxen/v1/boxen/${deviceId}/port_profile_connections/${portProfileConnectionId}`,
-            {
-                headers: this.credentials.requestHeaders,
-            },
-        );
-    }
-
+    /**
+     * Run a command inside a Terminal session
+     * @param command Command to run inside Terminal
+     *
+     * TODO: Placeholder function to simulate usability
+     */
     public runCommand(command: string): Observable<string> {
         return new Observable((subscriber) => {
             // Return command to display it in terminal

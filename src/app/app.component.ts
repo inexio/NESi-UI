@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { ElectronService } from "./core/services";
 import { AppConfig } from "../environments/environment";
+import { AuthService } from "./core/services/auth/auth.service";
 
 @Component({
     selector: "app-root",
@@ -8,7 +9,7 @@ import { AppConfig } from "../environments/environment";
     styleUrls: ["./app.component.css"],
 })
 export class AppComponent {
-    constructor(public electronService: ElectronService) {
+    constructor(public electronService: ElectronService, private auth: AuthService) {
         console.log("AppConfig", AppConfig);
 
         if (electronService.isElectron) {
@@ -19,5 +20,15 @@ export class AppComponent {
         } else {
             console.log("Mode web");
         }
+
+        this.auth.getStoredCredentials().subscribe({
+            next: (credentials) => {
+                console.log("🔒 Found stored Credentials");
+                this.auth.credentials = credentials;
+            },
+            error: (error) => {
+                console.error(error);
+            },
+        });
     }
 }

@@ -28,7 +28,7 @@ export class CpeComponent implements OnInit {
     /**
      * CPE Ports and CPE Ports request
      */
-    public cpePorts: { id: string }[];
+    public cpePorts: { id: number }[];
     public cpePortsRequest: RequestState = "idle";
 
     /**

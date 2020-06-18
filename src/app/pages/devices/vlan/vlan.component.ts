@@ -28,7 +28,7 @@ export class VlanComponent implements OnInit {
     /**
      * Vlans connections data and Vlan connections data request
      */
-    public vlanConnections: { id: string }[];
+    public vlanConnections: { id: number }[];
     public vlanConnectionsRequest: RequestState = "idle";
 
     /**
@@ -78,9 +78,9 @@ export class VlanComponent implements OnInit {
             });
 
             this.vlanConnectionsRequest = "pending";
-            this.api.getOnts(params.id, params.port).subscribe({
-                next: (onts) => {
-                    this.vlanConnections = onts;
+            this.api.getVlanConnections(params.id, params.port).subscribe({
+                next: (vlanConnections) => {
+                    this.vlanConnections = vlanConnections;
                     this.vlanConnectionsRequest = "success";
                 },
                 error: (error) => {

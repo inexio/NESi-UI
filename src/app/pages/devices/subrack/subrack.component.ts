@@ -28,7 +28,7 @@ export class SubrackComponent implements OnInit {
     /**
      * Card Ids and Cards request status
      */
-    public cards: { id: string }[] = [];
+    public cards: { id: number }[] = [];
     public cardsRequest: RequestState = "idle";
 
     /**

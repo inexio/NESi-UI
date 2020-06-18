@@ -33,7 +33,7 @@ export class CardComponent implements OnInit {
     /**
      * Array of Ports and Ports request status
      */
-    public ports: { id: string }[] = [];
+    public ports: { id: number }[] = [];
     public portsRequest: RequestState = "idle";
 
     /**
@@ -71,21 +71,6 @@ export class CardComponent implements OnInit {
                 error: (error) => {
                     console.error(error);
                     this.cardRequest = "error";
-                },
-            });
-
-            /**
-             * Get Ports
-             */
-            this.portsRequest = "pending";
-            this.api.getPorts(params.id, params.card).subscribe({
-                next: (ports) => {
-                    this.ports = ports;
-                    this.portsRequest = "success";
-                },
-                error: (error) => {
-                    console.error(error);
-                    this.portsRequest = "error";
                 },
             });
         });

@@ -4,7 +4,7 @@
             class="page-header"
             [ngClass]="{ affixed: isAffixed }"
             nzBackIcon
-            [nzTitle]="'Port Profile Connection ' + portProfileConnection.name"
+            [nzTitle]="'Port Profile Connection'"
             [nzSubtitle]="portProfileConnection.description"
             (nzBack)="navigateUp()"
         >
@@ -15,9 +15,9 @@
     <div class="details">
         <p *ngFor="let attribute of attributes">
             {{ attribute.key }}:
-            <span class="field-value"
-                ><span appCodeCopy>{{ attribute.value }}</span></span
-            >
+            <span class="field-value">
+                <span appCodeCopy>{{ attribute.value }}</span>
+            </span>
         </p>
     </div>
 </div>

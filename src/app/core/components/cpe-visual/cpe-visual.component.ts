@@ -13,13 +13,13 @@ export class CpeVisualComponent implements OnInit {
     /**
      * Id of the parent device used for routing and requesting Cpe data
      */
-    public parentDeviceId: number | string;
+    public parentDeviceId: number;
 
     /**
      * Cpe  object, either given as input or retrieved through the API
      */
     @Input("cpe") public cpe?: Cpe;
-    @Input("cpeId") public cpeId?: number | string;
+    @Input("cpeId") public cpeId?: number;
 
     /**
      * Request state of the Ont if it has to be retrieved through the API

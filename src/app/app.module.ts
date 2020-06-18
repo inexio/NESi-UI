@@ -4,7 +4,7 @@ import "../polyfills";
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { HttpClientModule, HttpClient } from "@angular/common/http";
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { CoreModule } from "./core/core.module";
 import { SharedModule } from "./shared/shared.module";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -55,6 +55,7 @@ import { NzPopoverModule } from "ng-zorro-antd/popover";
 import { CpeVisualComponent } from "./core/components/cpe-visual/cpe-visual.component";
 import { OntPortVisualComponent } from "./core/components/ont-port-visual/ont-port-visual.component";
 import { DeviceVisualComponent } from "./core/components/device-visual/device-visual.component";
+import { HttpRequestInterceptor } from "./core/interceptors/http-request.interceptor";
 
 @NgModule({
     declarations: [
@@ -111,7 +112,13 @@ import { DeviceVisualComponent } from "./core/components/device-visual/device-vi
         NzSpaceModule,
         NzPopoverModule,
     ],
-    providers: [],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            multi: true,
+            useClass: HttpRequestInterceptor,
+        },
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

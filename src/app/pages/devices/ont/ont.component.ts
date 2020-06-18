@@ -28,7 +28,7 @@ export class OntComponent implements OnInit {
     /**
      * ONT Ports and ONT Ports request
      */
-    public ontPorts: { id: string }[];
+    public ontPorts: { id: number }[];
     public ontPortsRequest: RequestState = "idle";
 
     /**

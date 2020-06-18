@@ -1,6 +1,6 @@
 export interface Device {
     model: string;
-    uuid: string;
+    uuid: number;
     vendor: string;
     version: string;
     description?: string;

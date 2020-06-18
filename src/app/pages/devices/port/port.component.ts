@@ -28,7 +28,7 @@ export class PortComponent implements OnInit {
     /**
      * Port data and Port data request
      */
-    public onts: { id: string }[];
+    public onts: { id: number }[];
     public ontsRequest: RequestState = "idle";
 
     /**

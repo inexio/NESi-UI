@@ -28,7 +28,7 @@ export class OntPortComponent implements OnInit {
     /**
      * CPEs and CPEs Request
      */
-    public cpes: { id: string }[];
+    public cpes: { id: number }[];
     public cpesRequest: RequestState = "idle";
 
     /**

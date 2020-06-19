@@ -1,6 +1,12 @@
-<ul class="menu" nz-menu nzMode="horizontal" style="-webkit-app-region: drag;">
+<ul
+    class="menu"
+    [ngStyle]="{ 'padding-left': electronService.isElectron ? '105px' : '0' }"
+    nz-menu
+    nzMode="horizontal"
+    style="-webkit-app-region: drag;"
+>
     <li class="logo" nz-menu-item nzSelected routerLink="/" [nzMatchRouter]="true" [nzMatchRouterExact]="true">
-        <img src="./assets/images/logo.svg" />
+        <i class="loading" *ngIf="core.requestPending; else appLogo" nz-icon [nzType]="'loading'"></i>
     </li>
 
     <li nz-menu-item routerLink="devices" [nzMatchRouter]="true">
@@ -12,3 +18,7 @@
 </ul>
 
 <router-outlet></router-outlet>
+
+<ng-template #appLogo>
+    <img src="./assets/images/logo.svg" />
+</ng-template>

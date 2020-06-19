@@ -377,4 +377,31 @@ Hint: login credentials: admin/secret
             }
         });
     }
+
+    /**
+     * Update properties of a given Object
+     * @param deviceId Id of the Device containing the Object subject to the edit
+     * @param objectType Type of the Object to edit, see possible options below
+     * @param objectId Id of the Object to edit
+     * @param properties Object containining properties and their values subject to edit
+     */
+    public updateObjectProperty(
+        deviceId: number,
+        objectType:
+            | "subracks"
+            | "cards"
+            | "ports"
+            | "onts"
+            | "ont_ports"
+            | "cpes"
+            | "cpe_ports"
+            | "vlans"
+            | "vlan_connections"
+            | "port_profiles"
+            | "port_profile_connections",
+        objectId: number,
+        properties: { [key: string]: any },
+    ): Observable<any> {
+        return this.http.put<any>(`boxen/${deviceId}/${objectType}/${objectId}`, properties);
+    }
 }

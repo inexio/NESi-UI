@@ -25,7 +25,13 @@
                     nz-popover
                     [nzPopoverTitle]="port.name ? 'ONT Port ' + port.name : 'Unassigned Port'"
                     [nzPopoverContent]="port.name ? 'Click on Port to see more details' : 'This Port has not been assigned yet'"
-                    [src]="port.opr_state === 'up' ? 'assets/images/port_active.svg' : 'assets/images/port.svg'"
+                    [src]="
+                        port.adm_state === 'up'
+                            ? port.opr_state === 'up'
+                                ? 'assets/images/port_opr.svg'
+                                : 'assets/images/port_adm.svg'
+                            : 'assets/images/port.svg'
+                    "
                     [routerLink]="['/devices', parentDeviceId, 'ont-port', port.id]"
                 />
                 <p class="port-label">LAN {{ i + 1 }}</p>

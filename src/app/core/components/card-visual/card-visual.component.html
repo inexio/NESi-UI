@@ -15,9 +15,17 @@
                     [ngClass]="{ disabled: pair[1].id === null }"
                     [routerLink]="pair[1].id !== null ? ['/devices', parentDeviceId, 'port', pair[1].id] : null"
                 >
-                    <p class="port-index">{{ index * 2 + 2 }}</p>
+                    <p class="port-index">
+                        {{ index * 2 + 2 }}
+                    </p>
                     <img
-                        [src]="pair[1].opr_state === 'up' ? 'assets/images/port_active.svg' : 'assets/images/port.svg'"
+                        [src]="
+                            pair[1].adm_state === 'up'
+                                ? pair[1].opr_state === 'up'
+                                    ? 'assets/images/port_opr.svg'
+                                    : 'assets/images/port_adm.svg'
+                                : 'assets/images/port.svg'
+                        "
                         nz-popover
                         [nzPopoverTitle]="pair[1].name ? 'Port ' + pair[1].name : 'Unassigned Port'"
                         [nzPopoverContent]="pair[1].name ? 'Click on Port to see more details' : 'This Port has not been assigned yet'"
@@ -31,7 +39,13 @@
                     [routerLink]="pair[0].id !== null ? ['/devices', parentDeviceId, 'port', pair[0].id] : null"
                 >
                     <img
-                        [src]="pair[0].opr_state === 'up' ? 'assets/images/port_active.svg' : 'assets/images/port.svg'"
+                        [src]="
+                            pair[0].adm_state === 'up'
+                                ? pair[0].opr_state === 'up'
+                                    ? 'assets/images/port_opr.svg'
+                                    : 'assets/images/port_adm.svg'
+                                : 'assets/images/port.svg'
+                        "
                         nz-popover
                         [nzPopoverTitle]="pair[0].name ? 'Port ' + pair[0].name : 'Unassigned Port'"
                         [nzPopoverContent]="pair[0].name ? 'Click on Port to see more details' : 'This Port has not been assigned yet'"

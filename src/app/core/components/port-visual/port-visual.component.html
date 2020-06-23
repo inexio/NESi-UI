@@ -1,7 +1,13 @@
 <img
     *ngIf="port"
     class="port"
-    [src]="port.opr_state === 'up' ? 'assets/images/port_active.svg' : 'assets/images/port.svg'"
+    [src]="
+        port.adm_state === 'up'
+            ? port.opr_state === 'up'
+                ? 'assets/images/port_opr.svg'
+                : 'assets/images/port_adm.svg'
+            : 'assets/images/port.svg'
+    "
     [routerLink]="['/devices', parentDeviceId, 'card', port.card_id]"
     nz-popover
     [nzPopoverTitle]="'Port ' + port.name"

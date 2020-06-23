@@ -1,6 +1,12 @@
 <img
     class="port"
-    [src]="ontPort.opr_state === 'up' ? 'assets/images/port_active.svg' : 'assets/images/port.svg'"
+    [src]="
+        ontPort.adm_state === 'up'
+            ? ontPort.opr_state === 'up'
+                ? 'assets/images/port_opr.svg'
+                : 'assets/images/port_adm.svg'
+            : 'assets/images/port.svg'
+    "
     [routerLink]="['/devices', parentDeviceId, 'ont', ontPort.ont_id]"
     nz-popover
     [nzPopoverTitle]="'ONT Port ' + ontPort.name"

@@ -56,6 +56,15 @@ import { CpeVisualComponent } from "./core/components/cpe-visual/cpe-visual.comp
 import { OntPortVisualComponent } from "./core/components/ont-port-visual/ont-port-visual.component";
 import { DeviceVisualComponent } from "./core/components/device-visual/device-visual.component";
 import { HttpRequestInterceptor } from "./core/interceptors/http-request.interceptor";
+import { LoginComponent } from "./pages/login/login.component";
+import { CredentialsComponent } from "./pages/credentials/credentials.component";
+import { NzCheckboxModule } from "ng-zorro-antd/checkbox";
+import { NzSelectModule } from "ng-zorro-antd/select";
+import { NzTypographyModule } from "ng-zorro-antd/typography";
+import { EditPropertyComponent } from "./core/components/edit-property/edit-property.component";
+import { NzSwitchModule } from "ng-zorro-antd/switch";
+import { NzAvatarModule } from "ng-zorro-antd/avatar";
+import { SettingsComponent } from './pages/settings/settings.component';
 
 @NgModule({
     declarations: [
@@ -86,6 +95,10 @@ import { HttpRequestInterceptor } from "./core/interceptors/http-request.interce
         CpeVisualComponent,
         OntPortVisualComponent,
         DeviceVisualComponent,
+        LoginComponent,
+        CredentialsComponent,
+        EditPropertyComponent,
+        SettingsComponent,
     ],
     imports: [
         BrowserModule,
@@ -111,6 +124,11 @@ import { HttpRequestInterceptor } from "./core/interceptors/http-request.interce
         NzBadgeModule,
         NzSpaceModule,
         NzPopoverModule,
+        NzCheckboxModule,
+        NzSelectModule,
+        NzTypographyModule,
+        NzSwitchModule,
+        NzAvatarModule,
     ],
     providers: [
         {

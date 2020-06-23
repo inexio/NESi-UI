@@ -17,12 +17,14 @@ import { VlanConnectionComponent } from "./pages/devices/vlan-connection/vlan-co
 import { PortProfileComponent } from "./pages/devices/port-profile/port-profile.component";
 import { PortProfileConnectionComponent } from "./pages/devices/port-profile-connection/port-profile-connection.component";
 import { DeviceListComponent } from "./pages/devices/device-list/device-list.component";
+import { SettingsComponent } from "./pages/settings/settings.component";
 
 const routes: Routes = [
     {
         path: "",
         pathMatch: "full",
-        component: HomeComponent,
+        // component: HomeComponent,
+        redirectTo: "/devices",
     },
     {
         path: "devices",
@@ -87,8 +89,12 @@ const routes: Routes = [
         ],
     },
     {
+        path: "settings",
+        component: SettingsComponent,
+    },
+    {
         path: "**",
-        redirectTo: "/",
+        redirectTo: "/devices",
     },
 ];
 

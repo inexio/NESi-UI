@@ -1,0 +1,19 @@
+<p>
+    You are about to edit the value for property
+    <span class="field-value">
+        <span appCodeCopy>{{ key }}</span></span
+    >.
+</p>
+
+<h5>OLD VALUE</h5>
+<input style="width: 100%;" nz-input placeholder="Basic usage" [(ngModel)]="initialValue" [disabled]="true" />
+
+<h5 style="margin-top: 15px;">NEW VALUE</h5>
+<input style="width: 100%;" nz-input [placeholder]="initialValue" [(ngModel)]="value" />
+
+<nz-divider></nz-divider>
+
+<div class="buttons">
+    <button nz-button nzType="default" style="margin-right: 10px;" (click)="cancel()">Cancel</button>
+    <button nz-button nzType="primary" [nzLoading]="editRequest === 'pending'" (click)="editProperty()">Edit Property</button>
+</div>

@@ -1,0 +1,14 @@
+span.field-value {
+    color: #ffffff;
+    font-family: monospace;
+}
+
+span.field-value::before,
+span.field-value::after {
+    content: "`";
+}
+
+div.buttons {
+    display: flex;
+    justify-content: flex-end;
+}

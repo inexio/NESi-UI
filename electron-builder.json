@@ -1,8 +1,8 @@
 {
-  "productName": "angular-electron",
-  "directories": {
-    "output": "release/"
-  },
+    "productName": "Softboxes",
+    "directories": {
+        "output": "release/"
+    },
     "files": [
         "**/*",
         "!**/*.ts",
@@ -19,22 +19,13 @@
         "!tsconfig.json",
         "!tslint.json"
     ],
-  "win": {
-    "icon": "dist/assets/icons",
-    "target": [
-      "portable"
-    ]
-  },
-  "mac": {
-    "icon": "dist/assets/icons",
-    "target": [
-      "dmg"
-    ]
-  },
-  "linux": {
-    "icon": "dist/assets/icons",
-    "target": [
-      "AppImage"
-    ]
-  }
+    "win": {
+        "target": ["portable"]
+    },
+    "mac": {
+        "target": ["dmg"]
+    },
+    "linux": {
+        "target": ["AppImage"]
+    }
 }

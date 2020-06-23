@@ -37,3 +37,8 @@ div.ant-list-items {
     max-height: calc(100vh - 175px);
     overflow: scroll;
 }
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}

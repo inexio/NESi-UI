@@ -10,7 +10,7 @@ import { CoreService } from "./core/services/core/core.service";
     styleUrls: ["./app.component.css"],
 })
 export class AppComponent {
-    constructor(public electronService: ElectronService, private auth: AuthService, public core: CoreService) {
+    constructor(public electronService: ElectronService, public auth: AuthService, public core: CoreService) {
         // if (electronService.isElectron) {
         //     console.log(process.env);
         //     console.log("Mode electron");

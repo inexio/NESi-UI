@@ -1,23 +1,39 @@
-<ul
-    class="menu"
-    [ngStyle]="{ 'padding-left': electronService.isElectron ? '105px' : '0' }"
-    nz-menu
-    nzMode="horizontal"
-    style="-webkit-app-region: drag;"
->
-    <li class="logo" nz-menu-item nzSelected routerLink="/" [nzMatchRouter]="true" [nzMatchRouterExact]="true">
-        <i class="loading" *ngIf="core.requestPending; else appLogo" nz-icon [nzType]="'loading'"></i>
-    </li>
+<div>
+    <ng-container *ngIf="auth.credentials; else credentials">
+        <!-- Menu -->
+        <ul
+            class="menu"
+            [ngStyle]="{ 'padding-left': electronService.isElectron ? '105px' : '0' }"
+            nz-menu
+            nzMode="horizontal"
+            style="-webkit-app-region: drag;"
+        >
+            <li class="logo" nz-menu-item nzSelected routerLink="/" [nzMatchRouter]="true" [nzMatchRouterExact]="true">
+                <i class="loading" *ngIf="core.requestPending; else appLogo" nz-icon [nzType]="'loading'"></i>
+            </li>
 
-    <li nz-menu-item routerLink="devices" [nzMatchRouter]="true">
-        Devices
-    </li>
-    <li nz-menu-item routerLink="templates" [nzMatchRouter]="true">
-        Templates
-    </li>
-</ul>
+            <li nz-menu-item routerLink="devices" [nzMatchRouter]="true">
+                Devices
+            </li>
+            <li nz-menu-item routerLink="templates" [nzMatchRouter]="true">
+                Templates
+            </li>
 
-<router-outlet></router-outlet>
+            <li class="avatar" nz-menu-item routerLink="settings" [nzMatchRouter]="true">
+                <nz-badge [nzCount]="0">
+                    <nz-avatar nzIcon="user" nzShape="circle"></nz-avatar>
+                </nz-badge>
+            </li>
+        </ul>
+
+        <!-- Main Router Outlet -->
+        <router-outlet></router-outlet>
+    </ng-container>
+</div>
+
+<ng-template #credentials>
+    <app-credentials></app-credentials>
+</ng-template>
 
 <ng-template #appLogo>
     <img src="./assets/images/logo.svg" />

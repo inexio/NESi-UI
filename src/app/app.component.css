@@ -1,6 +1,8 @@
 ul.menu {
     height: 64px;
     line-height: 64px;
+    display: flex;
+    justify-content: flex-start;
 }
 
 ul.menu > li {
@@ -22,4 +24,8 @@ li.logo i.loading {
 li.logo img {
     height: 30px;
     margin: 0 20px;
+}
+
+li.avatar {
+    margin-left: auto;
 }

@@ -74,7 +74,5 @@ export class CardVisualComponent implements OnInit {
                 ]);
             }
         }
-
-        console.log(this.portPairs);
     }
 }

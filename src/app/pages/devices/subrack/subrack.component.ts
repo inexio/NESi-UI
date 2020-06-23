@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { RequestState } from "../../../core/interfaces/request-state.type";
 import { Subrack } from "../../../core/interfaces/subrack.interface";
 import { CoreService } from "../../../core/services/core/core.service";
+import { NzModalService } from "ng-zorro-antd/modal";
+import { EditPropertyComponent } from "../../../core/components/edit-property/edit-property.component";
 
 @Component({
     selector: "app-subrack",
@@ -17,6 +19,7 @@ export class SubrackComponent implements OnInit {
         public core: CoreService,
         private zone: NgZone,
         private router: Router,
+        private modal: NzModalService,
     ) {}
 
     /**
@@ -26,15 +29,14 @@ export class SubrackComponent implements OnInit {
     public subrackRequest: RequestState = "idle";
 
     /**
-     * Card Ids and Cards request status
-     */
-    public cards: { id: number }[] = [];
-    public cardsRequest: RequestState = "idle";
-
-    /**
      * Id of the parent device
      */
     public parentDeviceId: string;
+
+    /**
+     * Id of the Subrack
+     */
+    public subrackId: string;
 
     /**
      * Boolean if header is "affixed"
@@ -43,40 +45,31 @@ export class SubrackComponent implements OnInit {
 
     ngOnInit(): void {
         this.route.params.subscribe((params) => {
+            // Store parent device id and Subrack id
             this.parentDeviceId = params.id;
+            this.subrackId = params.subrack;
 
-            /**
-             * Get Subrack data
-             */
-            this.subrackRequest = "pending";
-            this.api.getSubrack(params.id, params.subrack).subscribe({
-                next: (subrack) => {
-                    this.subrack = subrack;
-                    this.subrackRequest = "success";
-                },
-                error: (error) => {
-                    console.error(error);
-                    this.subrackRequest = "error";
-                },
-            });
-
-            /**
-             * Get Cards data
-             */
-            this.cardsRequest = "pending";
-            this.api.getCards(params.id, params.subrack).subscribe({
-                next: (cards) => {
-                    this.cards = cards;
-                    this.cardsRequest = "success";
-                },
-                error: (error) => {
-                    console.error(error);
-                    this.cardsRequest = "error";
-                },
-            });
+            // Get Subrack data
+            this.getSubrack();
         });
     }
 
+    /**
+     * Get Subrack data
+     */
+    public getSubrack(): void {
+        this.subrackRequest = "pending";
+        this.api.getSubrack(Number(this.parentDeviceId), Number(this.subrackId)).subscribe({
+            next: (subrack) => {
+                this.subrack = subrack;
+                this.subrackRequest = "success";
+            },
+            error: (error) => {
+                console.error(error);
+                this.subrackRequest = "error";
+            },
+        });
+    }
     /**
      * Event handler called when affix state changes
      * @param value Boolean if affix is affixed
@@ -91,5 +84,32 @@ export class SubrackComponent implements OnInit {
      */
     public navigateUp(): void {
         this.router.navigate(["/devices", this.parentDeviceId]);
+    }
+
+    /**
+     * Open a modal where a specific property can be edited
+     * @param key Key of the property to edit
+     * @param initialValue Current value of the property to edit
+     */
+    public editProperty(key: string, initialValue: any) {
+        const modal = this.modal.create({
+            nzTitle: "Edit Property",
+            nzContent: EditPropertyComponent,
+            nzComponentParams: {
+                key,
+                initialValue,
+                objectType: "subracks",
+                deviceId: Number(this.parentDeviceId),
+                objectId: this.subrack.id,
+            },
+            nzMaskClosable: true,
+            nzFooter: null,
+            nzCancelDisabled: true,
+        });
+
+        // Refresh Subrack data after Property was edited
+        modal.afterClose.subscribe(() => {
+            this.getSubrack();
+        });
     }
 }

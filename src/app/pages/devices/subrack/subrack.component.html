@@ -16,10 +16,9 @@
     </div>
 
     <h5 style="margin-top: 35px;">CARDS</h5>
-    <i *ngIf="cardsRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
-    <ul *ngIf="cardsRequest === 'success'" style="padding-left: 25px;">
-        <li *ngFor="let card of cards">
-            <a nz-button nzType="link" nzSize="small" [routerLink]="['/devices', parentDeviceId, 'card', card.id]">Card {{ card.id }}</a>
+    <ul style="padding-left: 25px;">
+        <li *ngFor="let card of subrack.cards">
+            <a nz-button nzType="link" nzSize="small" [routerLink]="['/devices', parentDeviceId, 'card', card.id]">{{ card.name }}</a>
         </li>
     </ul>
 
@@ -30,24 +29,38 @@
             <span class="field-value"
                 ><span appCodeCopy>{{ subrack.serial_no }}</span></span
             >
+
+            <button class="edit" nz-button nzType="link" nzShape="circle" (click)="editProperty('serial_no', subrack.serial_no)">
+                <i nz-icon nzType="edit" style="font-size: 14px;"></i>
+            </button>
         </p>
         <p>
             Variant:
             <span class="field-value"
                 ><span appCodeCopy>{{ subrack.variant }}</span></span
             >
+
+            <button class="edit" nz-button nzType="link" nzShape="circle" (click)="editProperty('variant', subrack.variant)">
+                <i nz-icon nzType="edit" style="font-size: 14px;"></i>
+            </button>
         </p>
         <p>
             Subrack Class:
             <span class="field-value"
                 ><span appCodeCopy>{{ subrack.subrack_class }}</span></span
             >
+            <button class="edit" nz-button nzType="link" nzShape="circle" (click)="editProperty('subrack_class', subrack.subrack_class)">
+                <i nz-icon nzType="edit" style="font-size: 14px;"></i>
+            </button>
         </p>
         <p>
             Mode:
             <span class="field-value"
                 ><span appCodeCopy>{{ subrack.mode }}</span></span
             >
+            <button class="edit" nz-button nzType="link" nzShape="circle" (click)="editProperty('mode', subrack.mode)">
+                <i nz-icon nzType="edit" style="font-size: 14px;"></i>
+            </button>
         </p>
     </div>
 
@@ -58,12 +71,18 @@
             <span class="field-value"
                 ><span appCodeCopy>{{ subrack.planned_type }}</span></span
             >
+            <button class="edit" nz-button nzType="link" nzShape="circle" (click)="editProperty('planned_type', subrack.planned_type)">
+                <i nz-icon nzType="edit" style="font-size: 14px;"></i>
+            </button>
         </p>
         <p>
             Actual Type:
             <span class="field-value"
                 ><span appCodeCopy>{{ subrack.actual_type }}</span></span
             >
+            <button class="edit" nz-button nzType="link" nzShape="circle" (click)="editProperty('actual_type', subrack.actual_type)">
+                <i nz-icon nzType="edit" style="font-size: 14px;"></i>
+            </button>
         </p>
     </div>
 
@@ -74,18 +93,27 @@
             <span class="field-value"
                 ><span appCodeCopy>{{ subrack.adm_state }}</span></span
             >
+            <button class="edit" nz-button nzType="link" nzShape="circle" (click)="editProperty('adm_state', subrack.adm_state)">
+                <i nz-icon nzType="edit" style="font-size: 14px;"></i>
+            </button>
         </p>
         <p>
             Operating State:
             <span class="field-value"
                 ><span appCodeCopy>{{ subrack.opr_state }}</span></span
             >
+            <button class="edit" nz-button nzType="link" nzShape="circle" (click)="editProperty('opr_state', subrack.opr_state)">
+                <i nz-icon nzType="edit" style="font-size: 14px;"></i>
+            </button>
         </p>
         <p>
             Error State:
             <span class="field-value"
                 ><span appCodeCopy>{{ subrack.err_state }}</span></span
             >
+            <button class="edit" nz-button nzType="link" nzShape="circle" (click)="editProperty('err_state', subrack.err_state)">
+                <i nz-icon nzType="edit" style="font-size: 14px;"></i>
+            </button>
         </p>
     </div>
 </div>

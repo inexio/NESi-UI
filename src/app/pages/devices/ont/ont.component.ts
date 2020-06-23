@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { CoreService } from "../../../core/services/core/core.service";
 import { Port } from "../../../core/interfaces/port.interface";
 import { RequestState } from "../../../core/interfaces/request-state.type";
+import { NzModalService } from "ng-zorro-antd/modal";
+import { EditPropertyComponent } from "../../../core/components/edit-property/edit-property.component";
 
 @Component({
     selector: "app-ont",
@@ -17,6 +19,7 @@ export class OntComponent implements OnInit {
         public core: CoreService,
         private zone: NgZone,
         private router: Router,
+        private modal: NzModalService,
     ) {}
 
     /**
@@ -24,12 +27,6 @@ export class OntComponent implements OnInit {
      */
     public ont: Port;
     public ontRequest: RequestState = "idle";
-
-    /**
-     * ONT Ports and ONT Ports request
-     */
-    public ontPorts: { id: number }[];
-    public ontPortsRequest: RequestState = "idle";
 
     /**
      * Array of ONT attributes to display
@@ -42,55 +39,50 @@ export class OntComponent implements OnInit {
     public parentDeviceId: string;
 
     /**
+     * Id of the ONT
+     */
+    public ontId: string;
+
+    /**
      * Boolean if header is "affixed"
      */
     public isAffixed: boolean = false;
 
     ngOnInit(): void {
         this.route.params.subscribe((params) => {
+            // Store parent device id and ONT id
             this.parentDeviceId = params.id;
+            this.ontId = params.ont;
 
-            /**
-             * Get ONT data
-             */
-            this.ontRequest = "pending";
-            this.api.getOnt(params.id, params.ont).subscribe({
-                next: (ont) => {
-                    this.ont = ont;
+            // Get ONT data
+            this.getOnt();
+        });
+    }
 
-                    /**
-                     * Iterate over Port arguments and parse them into array
-                     */
-                    Object.keys(ont).map((key) => {
-                        if (["_links", "box", "box_id", "id"].includes(key)) return;
-                        this.attributes.push({
-                            key,
-                            value: ont[key],
-                        });
+    /**
+     * Get ONT data
+     */
+    public getOnt(): void {
+        this.ontRequest = "pending";
+        this.api.getOnt(Number(this.parentDeviceId), Number(this.ontId)).subscribe({
+            next: (ont) => {
+                this.ont = ont;
+
+                this.attributes = [];
+                Object.keys(ont).map((key) => {
+                    if (["_links", "box", "box_id", "id"].includes(key)) return;
+                    this.attributes.push({
+                        key,
+                        value: ont[key],
                     });
+                });
 
-                    this.ontRequest = "success";
-                },
-                error: (error) => {
-                    console.error(error);
-                    this.ontRequest = "error";
-                },
-            });
-
-            /**
-             * Get ONT Port Ids
-             */
-            this.ontPortsRequest = "pending";
-            this.api.getOntPorts(params.id, params.ont).subscribe({
-                next: (ports) => {
-                    this.ontPorts = ports;
-                    this.ontPortsRequest = "success";
-                },
-                error: (error) => {
-                    console.error(error);
-                    this.ontPortsRequest = "error";
-                },
-            });
+                this.ontRequest = "success";
+            },
+            error: (error) => {
+                console.error(error);
+                this.ontRequest = "error";
+            },
         });
     }
 
@@ -108,5 +100,32 @@ export class OntComponent implements OnInit {
      */
     public navigateUp(): void {
         this.router.navigate(["/devices", this.parentDeviceId, "port", this.ont.port_id]);
+    }
+
+    /**
+     * Open a modal where a specific property can be edited
+     * @param key Key of the property to edit
+     * @param initialValue Current value of the property to edit
+     */
+    public editProperty(key: string, initialValue: any) {
+        const modal = this.modal.create({
+            nzTitle: "Edit Property",
+            nzContent: EditPropertyComponent,
+            nzComponentParams: {
+                key,
+                initialValue,
+                objectType: "onts",
+                deviceId: Number(this.parentDeviceId),
+                objectId: this.ont.id,
+            },
+            nzMaskClosable: true,
+            nzFooter: null,
+            nzCancelDisabled: true,
+        });
+
+        // Refresh ONT data after Property was edited
+        modal.afterClose.subscribe(() => {
+            this.getOnt();
+        });
     }
 }

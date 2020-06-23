@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { CoreService } from "../../../core/services/core/core.service";
 import { Port } from "../../../core/interfaces/port.interface";
 import { RequestState } from "../../../core/interfaces/request-state.type";
+import { NzModalService } from "ng-zorro-antd/modal";
+import { EditPropertyComponent } from "../../../core/components/edit-property/edit-property.component";
 
 @Component({
     selector: "app-cpe",
@@ -17,6 +19,7 @@ export class CpeComponent implements OnInit {
         public core: CoreService,
         private zone: NgZone,
         private router: Router,
+        private modal: NzModalService,
     ) {}
 
     /**
@@ -24,12 +27,6 @@ export class CpeComponent implements OnInit {
      */
     public cpe: Port;
     public cpeRequest: RequestState = "idle";
-
-    /**
-     * CPE Ports and CPE Ports request
-     */
-    public cpePorts: { id: number }[];
-    public cpePortsRequest: RequestState = "idle";
 
     /**
      * Array of CPE attributes to display
@@ -42,55 +39,50 @@ export class CpeComponent implements OnInit {
     public parentDeviceId: string;
 
     /**
+     * Id of the CPE
+     */
+    public cpeId: string;
+
+    /**
      * Boolean if header is "affixed"
      */
     public isAffixed: boolean = false;
 
     ngOnInit(): void {
         this.route.params.subscribe((params) => {
+            // Store parent device Id
             this.parentDeviceId = params.id;
+            this.cpeId = params.cpe;
 
-            /**
-             * Get CPE data
-             */
-            this.cpeRequest = "pending";
-            this.api.getCpe(params.id, params.cpe).subscribe({
-                next: (cpe) => {
-                    this.cpe = cpe;
+            // Get CPE data
+            this.getCpe();
+        });
+    }
 
-                    /**
-                     * Iterate over object and parse attributes into array
-                     */
-                    Object.keys(cpe).map((key) => {
-                        if (["_links", "box", "box_id", "id"].includes(key)) return;
-                        this.attributes.push({
-                            key,
-                            value: cpe[key],
-                        });
+    /**
+     * Get CPE data
+     */
+    public getCpe(): void {
+        this.cpeRequest = "pending";
+        this.api.getCpe(Number(this.parentDeviceId), Number(this.cpeId)).subscribe({
+            next: (cpe) => {
+                this.cpe = cpe;
+
+                this.attributes = [];
+                Object.keys(cpe).map((key) => {
+                    if (["_links", "box", "box_id", "id"].includes(key)) return;
+                    this.attributes.push({
+                        key,
+                        value: cpe[key],
                     });
+                });
 
-                    this.cpeRequest = "success";
-                },
-                error: (error) => {
-                    console.error(error);
-                    this.cpeRequest = "error";
-                },
-            });
-
-            /**
-             * Get CPE Ports
-             */
-            this.cpePortsRequest = "pending";
-            this.api.getCpePorts(params.id, params.cpe).subscribe({
-                next: (cpePorts) => {
-                    this.cpePorts = cpePorts;
-                    this.cpePortsRequest = "success";
-                },
-                error: (error) => {
-                    console.error(error);
-                    this.cpePortsRequest = "error";
-                },
-            });
+                this.cpeRequest = "success";
+            },
+            error: (error) => {
+                console.error(error);
+                this.cpeRequest = "error";
+            },
         });
     }
 
@@ -108,5 +100,32 @@ export class CpeComponent implements OnInit {
      */
     public navigateUp(): void {
         this.router.navigate(["/devices", this.parentDeviceId, "ont-port", this.cpe.ont_port_id]);
+    }
+
+    /**
+     * Open a modal where a specific property can be edited
+     * @param key Key of the property to edit
+     * @param initialValue Current value of the property to edit
+     */
+    public editProperty(key: string, initialValue: any) {
+        const modal = this.modal.create({
+            nzTitle: "Edit Property",
+            nzContent: EditPropertyComponent,
+            nzComponentParams: {
+                key,
+                initialValue,
+                objectType: "cpes",
+                deviceId: Number(this.parentDeviceId),
+                objectId: this.cpe.id,
+            },
+            nzMaskClosable: true,
+            nzFooter: null,
+            nzCancelDisabled: true,
+        });
+
+        // Refresh CPE data after Property was edited
+        modal.afterClose.subscribe(() => {
+            this.getCpe();
+        });
     }
 }

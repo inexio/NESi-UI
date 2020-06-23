@@ -34,7 +34,7 @@
     <i *ngIf="subracksRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
     <ul *ngIf="subracksRequest === 'success'" style="padding-left: 25px;">
         <li *ngFor="let subrack of subracks">
-            <a nz-button nzType="link" nzSize="small" [routerLink]="['subrack', subrack.id]">Subrack {{ subrack.id }}</a>
+            <a nz-button nzType="link" nzSize="small" [routerLink]="['subrack', subrack.id]">{{ subrack.name }}</a>
         </li>
     </ul>
 
@@ -52,7 +52,7 @@
     <i *ngIf="vlansRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
     <ul *ngIf="vlansRequest === 'success'" style="padding-left: 25px;">
         <li *ngFor="let vlan of vlans">
-            <a nz-button nzType="link" nzSize="small" [routerLink]="['vlan', vlan.id]">V-Lan {{ vlan.id }}</a>
+            <a nz-button nzType="link" nzSize="small" [routerLink]="['vlan', vlan.id]">{{ vlan.name }}</a>
         </li>
     </ul>
 </div>

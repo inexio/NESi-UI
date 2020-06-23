@@ -12,26 +12,29 @@
     </nz-affix>
 
     <h5 style="margin-top: 35px;">PORT PROFILE CONNECTIONS</h5>
-    <i *ngIf="profileConnectionsRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
-    <ul *ngIf="profileConnectionsRequest === 'success'" style="padding-left: 25px;">
-        <li *ngFor="let profileConnection of profileConnections">
+    <ul style="padding-left: 25px;">
+        <li *ngFor="let profileConnection of profile.port_profile_connections">
             <a
                 nz-button
                 nzType="link"
                 nzSize="small"
                 [routerLink]="['/devices', parentDeviceId, 'port-profile-connection', profileConnection.id]"
-                >Port Profile Connection {{ profileConnection.id }}</a
+                >{{ profileConnection.name }}</a
             >
         </li>
     </ul>
 
     <h5 style="margin-top: 35px;">ATTRIBUTES</h5>
     <div class="details">
-        <p *ngFor="let attribute of attributes">
+        <p *ngFor="let attribute of attributes" class="attribute">
             {{ attribute.key }}:
-            <span class="field-value"
-                ><span appCodeCopy>{{ attribute.value }}</span></span
-            >
+            <span class="field-value">
+                <span appCodeCopy>{{ attribute.value }}</span>
+            </span>
+
+            <button class="edit" nz-button nzType="link" nzShape="circle" (click)="editProperty(attribute.key, attribute.value)">
+                <i nz-icon nzType="edit" style="font-size: 14px;"></i>
+            </button>
         </p>
     </div>
 </div>

@@ -16,22 +16,23 @@
     </div>
 
     <h5 style="margin-top: 35px;">ONT PORTS</h5>
-    <i *ngIf="ontPortsRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
-    <ul *ngIf="ontPortsRequest === 'success'" style="padding-left: 25px;">
-        <li *ngFor="let port of ontPorts">
-            <a nz-button nzType="link" nzSize="small" [routerLink]="['/devices', parentDeviceId, 'ont-port', port.id]"
-                >ONT Port {{ port.id }}</a
-            >
+    <ul style="padding-left: 25px;">
+        <li *ngFor="let port of ont.ont_ports">
+            <a nz-button nzType="link" nzSize="small" [routerLink]="['/devices', parentDeviceId, 'ont-port', port.id]"> {{ port.name }}</a>
         </li>
     </ul>
 
     <h5 style="margin-top: 35px;">ATTRIBUTES</h5>
     <div class="details">
-        <p *ngFor="let attribute of attributes">
+        <p *ngFor="let attribute of attributes" class="attribute">
             {{ attribute.key }}:
-            <span class="field-value"
-                ><span appCodeCopy>{{ attribute.value }}</span></span
-            >
+            <span class="field-value">
+                <span appCodeCopy>{{ attribute.value }}</span>
+            </span>
+
+            <button class="edit" nz-button nzType="link" nzShape="circle" (click)="editProperty(attribute.key, attribute.value)">
+                <i nz-icon nzType="edit" style="font-size: 14px;"></i>
+            </button>
         </p>
     </div>
 </div>

@@ -5,6 +5,8 @@ import { CoreService } from "../../../core/services/core/core.service";
 import { Vlan } from "../../../core/interfaces/Vlan.interface";
 import { RequestState } from "../../../core/interfaces/request-state.type";
 import { Profile } from "../../../core/interfaces/profile.interface";
+import { NzModalService } from "ng-zorro-antd/modal";
+import { EditPropertyComponent } from "../../../core/components/edit-property/edit-property.component";
 
 @Component({
     selector: "app-port-profile",
@@ -18,6 +20,7 @@ export class PortProfileComponent implements OnInit {
         public core: CoreService,
         private zone: NgZone,
         private router: Router,
+        private modal: NzModalService,
     ) {}
 
     /**
@@ -25,12 +28,6 @@ export class PortProfileComponent implements OnInit {
      */
     public profile: { [key: string]: any };
     public profileRequest: RequestState = "idle";
-
-    /**
-     * Port Profile Connections and Port Profile Connections request
-     */
-    public profileConnections: { id: string }[];
-    public profileConnectionsRequest: RequestState = "idle";
 
     /**
      * Array of Port Profiles attributes to display
@@ -43,52 +40,53 @@ export class PortProfileComponent implements OnInit {
     public parentDeviceId: string;
 
     /**
+     * Id of the Port Profile
+     */
+    public portProfileId: string;
+
+    /**
      * Boolean if header is "affixed"
      */
     public isAffixed: boolean = false;
 
     ngOnInit(): void {
         this.route.params.subscribe((params) => {
+            // Store parent device id and Port Profile id
             this.parentDeviceId = params.id;
+            this.portProfileId = params.portProfile;
 
-            /**
-             * Get Port Profile data
-             */
-            this.profileRequest = "pending";
-            this.api.getPortProfile(params.id, params.portProfile).subscribe({
-                next: (profile) => {
-                    this.profile = profile;
+            // Get Port Profile data
+            this.getPortProfile();
+        });
+    }
 
-                    /**
-                     * Iterate over Vlan Connection arguments and parse them into array
-                     */
-                    Object.keys(profile).map((key) => {
-                        if (["_links", "box", "box_id", "id"].includes(key)) return;
-                        this.attributes.push({
-                            key,
-                            value: profile[key],
-                        });
+    /**
+     * Get Port Profile data
+     */
+    public getPortProfile(): void {
+        /**
+         * Get Port Profile data
+         */
+        this.profileRequest = "pending";
+        this.api.getPortProfile(Number(this.parentDeviceId), Number(this.portProfileId)).subscribe({
+            next: (profile) => {
+                this.profile = profile;
+
+                this.attributes = [];
+                Object.keys(profile).map((key) => {
+                    if (["_links", "box", "box_id", "id"].includes(key)) return;
+                    this.attributes.push({
+                        key,
+                        value: profile[key],
                     });
+                });
 
-                    this.profileRequest = "success";
-                },
-                error: (error) => {
-                    console.error(error);
-                    this.profileRequest = "error";
-                },
-            });
-
-            this.profileConnectionsRequest = "pending";
-            this.api.getPortProfileConnections(params.id).subscribe({
-                next: (profileConnections) => {
-                    this.profileConnections = profileConnections;
-                    this.profileConnectionsRequest = "success";
-                },
-                error: (error) => {
-                    console.error(error);
-                    this.profileConnectionsRequest = "error";
-                },
-            });
+                this.profileRequest = "success";
+            },
+            error: (error) => {
+                console.error(error);
+                this.profileRequest = "error";
+            },
         });
     }
 
@@ -106,5 +104,32 @@ export class PortProfileComponent implements OnInit {
      */
     public navigateUp(): void {
         this.router.navigate(["/devices", this.parentDeviceId]);
+    }
+
+    /**
+     * Open a modal where a specific property can be edited
+     * @param key Key of the property to edit
+     * @param initialValue Current value of the property to edit
+     */
+    public editProperty(key: string, initialValue: any) {
+        const modal = this.modal.create({
+            nzTitle: "Edit Property",
+            nzContent: EditPropertyComponent,
+            nzComponentParams: {
+                key,
+                initialValue,
+                objectType: "port_profiles",
+                deviceId: Number(this.parentDeviceId),
+                objectId: this.profile.id,
+            },
+            nzMaskClosable: true,
+            nzFooter: null,
+            nzCancelDisabled: true,
+        });
+
+        // Refresh Port Profile data after Property was edited
+        modal.afterClose.subscribe(() => {
+            this.getPortProfile();
+        });
     }
 }

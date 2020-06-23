@@ -30,3 +30,12 @@ span.field-value::before,
 span.field-value::after {
     content: "`";
 }
+
+p > button.edit {
+    opacity: 0;
+    transition: all 0.25s ease;
+}
+
+p:hover > button.edit {
+    opacity: 1;
+}

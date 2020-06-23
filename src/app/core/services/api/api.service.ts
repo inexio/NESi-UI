@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 import { Device } from "../../interfaces/device.interface";
 import { Profile } from "../../interfaces/profile.interface";
 import { Subrack } from "../../interfaces/subrack.interface";
-import { map } from "rxjs/operators";
+import { map, delay } from "rxjs/operators";
 import { Card } from "../../interfaces/card.interface";
 import { Port } from "../../interfaces/port.interface";
 import { Ont } from "../../interfaces/ont.interface";
@@ -402,6 +402,6 @@ Hint: login credentials: admin/secret
         objectId: number,
         properties: { [key: string]: any },
     ): Observable<any> {
-        return this.http.put<any>(`boxen/${deviceId}/${objectType}/${objectId}`, properties);
+        return this.http.put<any>(`boxen/${deviceId}/${objectType}/${objectId}`, properties).pipe(delay(1000));
     }
 }

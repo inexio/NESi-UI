@@ -5,7 +5,8 @@ export interface Credentials {
     host: string;
     port: string;
     auth: {
-        type: "basic";
+        enabled?: boolean;
+        type: "basic" | "header";
         username: string;
         password: string;
     };

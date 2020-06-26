@@ -3,17 +3,20 @@
         <!-- Menu -->
         <ul
             class="menu"
-            [ngStyle]="{ 'padding-left': electronService.isElectron ? '105px' : '0' }"
+            [ngStyle]="{ 'padding-left': core.isElectron ? '105px' : '0' }"
             nz-menu
             nzMode="horizontal"
             style="-webkit-app-region: drag;"
         >
-            <li class="logo" nz-menu-item nzSelected routerLink="/" [nzMatchRouter]="true" [nzMatchRouterExact]="true">
+            <!-- <li class="logo" nz-menu-item nzSelected routerLink="/" [nzMatchRouter]="true" [nzMatchRouterExact]="true">
                 <i class="loading" *ngIf="core.requestPending; else appLogo" nz-icon [nzType]="'loading'"></i>
-            </li>
+            </li> -->
 
             <li nz-menu-item routerLink="devices" [nzMatchRouter]="true">
                 Devices
+            </li>
+            <li nz-menu-item routerLink="terminal" [nzMatchRouter]="true">
+                Terminal
             </li>
             <li nz-menu-item routerLink="templates" [nzMatchRouter]="true">
                 Templates

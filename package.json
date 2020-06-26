@@ -1,8 +1,8 @@
 {
-    "name": "softboxen-ui",
+    "name": "softbox-ui",
     "version": "1.0.0",
-    "description": "A web and desktop app to interact with the Softboxen CLI",
-    "homepage": "https://github.com/inexio/softboxen-ui",
+    "description": "A web and desktop app to interact with the Softbox CLI",
+    "homepage": "https://github.com/inexio/softbox-ui",
     "author": {
         "name": "Juri Adams",
         "email": "juri@adams.sh"

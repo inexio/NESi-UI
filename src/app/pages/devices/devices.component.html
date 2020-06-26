@@ -1,38 +1,18 @@
 <div class="page">
     <ul class="menu" nz-menu nzMode="inline">
+        <li style="margin-top: 12px;" nz-menu-item routerLink="/devices" [nzMatchRouter]="true" [nzMatchRouterExact]="true">
+            All Devices
+        </li>
+
+        <nz-divider style="margin: 12px 0;"></nz-divider>
+
         <li *ngFor="let name of api.vendorNames" nz-submenu [nzTitle]="name">
             <ul>
-                <li
-                    nz-menu-item
-                    *ngFor="let device of api.vendors[name].devices"
-                    [routerLink]="[device.uuid]"
-                    [nzMatchRouter]="true"
-                >
+                <li nz-menu-item *ngFor="let device of api.vendors[name].devices" [routerLink]="[device.id]" [nzMatchRouter]="true">
                     {{ device.model }} {{ device.version }}
                 </li>
             </ul>
         </li>
-
-        <!-- <li *ngFor="let name of api.vendorNames" nz-submenu [nzTitle]="name">
-            <ul>
-                <li
-                    *ngFor="let device of api.vendors[name].devices"
-                    nz-submenu
-                    [nzTitle]="device.model + ' ' + device.version"
-                >
-                    <ul>
-                        <li nz-menu-item [routerLink]="[device.uuid]" [nzMatchRouter]="true">Overview</li>
-                        <li nz-menu-item [routerLink]="[device.uuid]" [nzMatchRouter]="true">Subracks</li>
-                        <li nz-menu-item [routerLink]="[device.uuid]" [nzMatchRouter]="true">Cards</li>
-                        <li nz-menu-item [routerLink]="[device.uuid]" [nzMatchRouter]="true">Ports</li>
-                        <li nz-menu-item [routerLink]="[device.uuid]" [nzMatchRouter]="true">ONTs</li>
-                        <li nz-menu-item [routerLink]="[device.uuid]" [nzMatchRouter]="true">ONT Ports</li>
-                        <li nz-menu-item [routerLink]="[device.uuid]" [nzMatchRouter]="true">CPEs</li>
-                        <li nz-menu-item [routerLink]="[device.uuid]" [nzMatchRouter]="true">CPE Ports</li>
-                    </ul>
-                </li>
-            </ul>
-        </li> -->
 
         <nz-divider style="margin: 12px 0;"></nz-divider>
 

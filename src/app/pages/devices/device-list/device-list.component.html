@@ -1,5 +1,5 @@
 <div class="devices">
-    <div class="device" *ngFor="let device of api.devices" (click)="router.navigate(['/devices', device.uuid])">
+    <div class="device" *ngFor="let device of api.devices" (click)="router.navigate(['/devices', device.id])">
         <div class="image-wrapper">
             <img src="assets/images/box.svg" />
         </div>

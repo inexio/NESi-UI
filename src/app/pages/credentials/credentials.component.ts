@@ -9,19 +9,19 @@ import { trigger, transition, query, style, stagger, animate } from "@angular/an
     templateUrl: "./credentials.component.html",
     styleUrls: ["./credentials.component.css"],
     animations: [
-        trigger("stepAnimation", [
+        trigger("fadeInOut", [
             transition(":enter", [
-                style({ opacity: 0, transform: "translateY(-100px)" }),
-                animate("250ms ease-out", style({ opacity: 1, transform: "translateY(0)" })),
+                style({ opacity: 0, transform: "translateY(100px)" }),
+                animate("150ms 50ms ease-out", style({ opacity: 1, transform: "translateY(0)" })),
             ]),
             transition(":leave", [
                 style({ opacity: 1, transform: "translateY(0)" }),
-                animate("250ms ease-out", style({ opacity: 0, transform: "translateY(-100px)" })),
+                animate("150ms ease-out", style({ opacity: 0, transform: "translateY(100px)" })),
             ]),
         ]),
     ],
 })
-export class CredentialsComponent implements OnInit {
+export class CredentialsComponent {
     /**
      * Object containing credentials values
      */
@@ -78,6 +78,4 @@ export class CredentialsComponent implements OnInit {
             },
         });
     }
-
-    ngOnInit(): void {}
 }

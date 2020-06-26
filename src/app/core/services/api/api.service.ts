@@ -31,21 +31,6 @@ export class ApiService {
     constructor(private http: HttpClient) {
         // Get Devices on start up
         this.getDevices().subscribe({
-            next: (devices) => {
-                // Store Devices
-                this.devices = devices;
-
-                // Parse devices into vendors array and object
-                devices.map((device) => {
-                    if (!this.vendorNames.includes(device.vendor)) {
-                        this.vendorNames.push(device.vendor);
-                        this.vendors[device.vendor] = { devices: [] };
-                        this.vendors[device.vendor].devices = [device];
-                    } else {
-                        this.vendors[device.vendor].devices.push(device);
-                    }
-                });
-            },
             error: () => {
                 throw new Error("An Error occurred trying to request Devices");
             },
@@ -56,7 +41,28 @@ export class ApiService {
      * Get array of all created Devices
      */
     public getDevices(): Observable<Device[]> {
-        return this.http.get<{ count: number; members: Device[] }>("boxen").pipe(map((res) => res.members));
+        return this.http.get<{ count: number; members: Device[] }>("boxen").pipe(
+            map((res) => {
+                // Store devices inside service
+                this.devices = res.members;
+
+                // Clear Device list
+                this.vendorNames = [];
+                this.vendors = {};
+
+                // Parse devices into vendors array and object
+                res.members.map((device) => {
+                    if (!this.vendorNames.includes(device.vendor)) {
+                        this.vendorNames.push(device.vendor);
+                        this.vendors[device.vendor] = { devices: [device] };
+                    } else {
+                        this.vendors[device.vendor].devices.push(device);
+                    }
+                });
+
+                return res.members;
+            }),
+        );
     }
 
     /**
@@ -72,7 +78,7 @@ export class ApiService {
      * @param id Id of the device to get name for
      */
     public getDeviceName(id: number | string): string {
-        const device = this.devices.find((device) => device.uuid === id);
+        const device = this.devices.find((device) => device.id === id);
         return device ? `${device.vendor} ${device.model} ${device.version}` : "DEVICE NOT FOUND";
     }
 
@@ -403,5 +409,21 @@ Hint: login credentials: admin/secret
         properties: { [key: string]: any },
     ): Observable<any> {
         return this.http.put<any>(`boxen/${deviceId}/${objectType}/${objectId}`, properties).pipe(delay(1000));
+    }
+
+    /**
+     * Clones/duplicates a Device by its Id
+     * @param deviceId Id of the Device to clone
+     */
+    public cloneDevice(deviceId: number): Observable<Device> {
+        return this.http.put<Device>(`boxen/${deviceId}/clone`, {});
+    }
+
+    /**
+     * Deletes a Device by its Id
+     * @param deviceId Id of the Device to delete
+     */
+    public deleteDevice(deviceId: number): Observable<any> {
+        return this.http.delete<any>(`boxen/${deviceId}`);
     }
 }

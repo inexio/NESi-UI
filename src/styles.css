@@ -21,6 +21,13 @@ div.page > div.content {
     overflow: scroll;
 }
 
+span.code {
+    font-family: monospace;
+    padding: 3px 3px 3px 6px;
+    color: #ffffff;
+    font-weight: 700;
+}
+
 div.code {
     font-family: monospace;
     padding: 5px 5px 5px 10px;

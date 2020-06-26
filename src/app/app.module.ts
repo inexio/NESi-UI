@@ -64,6 +64,7 @@ import { EditPropertyComponent } from "./core/components/edit-property/edit-prop
 import { NzSwitchModule } from "ng-zorro-antd/switch";
 import { NzAvatarModule } from "ng-zorro-antd/avatar";
 import { SettingsComponent } from "./pages/settings/settings.component";
+import { NzNotificationModule } from "ng-zorro-antd/notification";
 
 @NgModule({
     declarations: [
@@ -127,6 +128,7 @@ import { SettingsComponent } from "./pages/settings/settings.component";
         NzTypographyModule,
         NzSwitchModule,
         NzAvatarModule,
+        NzNotificationModule,
     ],
     providers: [
         {

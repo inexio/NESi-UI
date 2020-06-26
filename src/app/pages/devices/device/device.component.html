@@ -3,13 +3,18 @@
     <p class="description">{{ device.description }}</p>
 
     <!-- Quick Access buttons -->
-    <button nz-button nzShape="circle" nzType="primary" (click)="openSshModal(ssh)">
-        <i nz-icon nzType="block" nzTheme="outline"></i>
+    <button nz-button nzShape="circle" nzType="primary" nz-tooltip nzTooltipTitle="Connect with SSH" (click)="openSshModal(ssh)">
+        <i nz-icon nzType="link" nzTheme="outline"></i>
     </button>
-    <button nz-button nzShape="circle" nzType="primary" [routerLink]="['terminal']">
+    <button nz-button nzShape="circle" nzType="primary" nz-tooltip nzTooltipTitle="Open in-app Terminal" [routerLink]="['terminal']">
         <i nz-icon nzType="code" nzTheme="outline"></i>
     </button>
-    <button nz-button nzShape="circle" nzType="danger"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+    <button nz-button nzShape="circle" nzType="primary" nz-tooltip nzTooltipTitle="Clone Device" (click)="cloneDevice()">
+        <i nz-icon nzType="copy" nzTheme="outline"></i>
+    </button>
+    <button nz-button nzShape="circle" nzType="danger" nz-tooltip nzTooltipTitle="Delete Device" (click)="deleteDevice()">
+        <i nz-icon nzType="delete" nzTheme="outline"></i>
+    </button>
 
     <!-- Show Credentials button -->
     <h5 style="margin-top: 35px;">CREDENTIALS</h5>

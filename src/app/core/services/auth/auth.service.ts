@@ -33,17 +33,14 @@ export class AuthService {
                         `Basic ${btoa(`${parsed.auth.username}:${parsed.auth.password}`)}`,
                     );
 
-                    console.log("🔐 Found `credentials` item in localStorage");
                     subscriber.next(parsed);
                     subscriber.complete();
                 } catch (error) {
-                    console.error("Error parsing `credentials` item from localStorage");
-                    subscriber.error(error);
+                    subscriber.error("Error parsing `credentials` item from localStorage");
                     subscriber.complete();
                 }
             } else {
-                console.warn("🔒 No `credentials` item found in localStorage");
-                subscriber.error();
+                subscriber.error("🔒 No `credentials` item found in localStorage");
                 subscriber.complete();
             }
         });

@@ -1,5 +1,5 @@
 {
-    "productName": "Softboxes",
+    "productName": "Softbox",
     "directories": {
         "output": "release/"
     },
@@ -20,12 +20,9 @@
         "!tslint.json"
     ],
     "win": {
+        "icon": "dist/assets/images/app_icon",
         "target": ["portable"]
     },
-    "mac": {
-        "target": ["dmg"]
-    },
-    "linux": {
-        "target": ["AppImage"]
-    }
+    "mac": { "icon": "dist/assets/images/app_icon", "target": ["dmg"] },
+    "linux": { "icon": "dist/assets/images/app_icon", "target": ["AppImage"] }
 }

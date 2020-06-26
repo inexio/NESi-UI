@@ -16,6 +16,9 @@ export class SettingsComponent implements OnInit {
 
     constructor(public auth: AuthService, private modal: NzModalService) {}
 
+    /**
+     * Opens a Modal confirming removal of Credentials from localStorage
+     */
     public confirmCredentialsRemoval(): void {
         this.modal.confirm({
             nzTitle: "Are you sure?",

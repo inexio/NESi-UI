@@ -1,12 +1,13 @@
 import { Component, OnInit, TemplateRef } from "@angular/core";
 import { Device } from "../../../core/interfaces/device.interface";
 import { ApiService } from "../../../core/services/api/api.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Profile } from "../../../core/interfaces/profile.interface";
 import { Subrack } from "../../../core/interfaces/subrack.interface";
 import { Vlan } from "../../../core/interfaces/Vlan.interface";
 import { RequestState } from "../../../core/interfaces/request-state.type";
 import { NzModalService } from "ng-zorro-antd/modal";
+import { NzMessageService } from "ng-zorro-antd/message";
 
 @Component({
     selector: "app-device",
@@ -14,19 +15,37 @@ import { NzModalService } from "ng-zorro-antd/modal";
     styleUrls: ["./device.component.css"],
 })
 export class DeviceComponent implements OnInit {
+    /**
+     * Device data and Device data request
+     */
     public device: Device;
     public deviceRequest: RequestState = "idle";
 
+    /**
+     * Array of Device Profiles and Profiles data request
+     */
     public profiles: Profile[];
     public profilesRequest: RequestState = "idle";
 
+    /**
+     * Array of Device Subracks and Subrack data request
+     */
     public subracks: Subrack[];
     public subracksRequest: RequestState = "idle";
 
+    /**
+     * Array of Device V-Lans and V-Lan data request
+     */
     public vlans: Vlan[];
     public vlansRequest: RequestState = "idle";
 
-    constructor(private api: ApiService, private route: ActivatedRoute, private modal: NzModalService) {}
+    constructor(
+        private api: ApiService,
+        private route: ActivatedRoute,
+        private modal: NzModalService,
+        private message: NzMessageService,
+        private router: Router,
+    ) {}
 
     ngOnInit(): void {
         this.route.params.subscribe((params) => {
@@ -84,6 +103,10 @@ export class DeviceComponent implements OnInit {
         });
     }
 
+    /**
+     * Opens a Modal showing the SSH Connection details
+     * @param sshModalContent TemplateRef of the Modal contents
+     */
     public openSshModal(sshModalContent: TemplateRef<any>): void {
         this.modal.create({
             nzTitle: "Connect via SSH",
@@ -94,6 +117,10 @@ export class DeviceComponent implements OnInit {
         });
     }
 
+    /**
+     * Opens a MOdal showing the Device login Credentials
+     * @param credentialsModalContent TemplateRef of the Modal contents
+     */
     public openCredentialsModal(credentialsModalContent: TemplateRef<any>): void {
         this.modal.create({
             nzTitle: "Device Credentials",
@@ -101,6 +128,69 @@ export class DeviceComponent implements OnInit {
             nzMaskClosable: true,
             nzFooter: null,
             nzCancelDisabled: true,
+        });
+    }
+
+    /**
+     * Opens a Modal confirming that the Device will be cloned
+     */
+    public cloneDevice(): void {
+        const message = this.message.loading("Cloning Device...").messageId;
+        this.api.cloneDevice(this.device.id).subscribe({
+            next: () => {
+                this.message.remove(message);
+                this.message.success("Device cloned!");
+
+                // Refresh Device list
+                this.api.getDevices().subscribe({
+                    error: () => {
+                        throw new Error("An Error occurred trying to request Devices");
+                    },
+                });
+            },
+            error: (error) => {
+                console.error(error);
+                this.message.remove(message);
+                this.message.error("Error cloning Device");
+            },
+        });
+    }
+
+    /**
+     * Opens a Modal confirming that the Device will be delete
+     */
+    public deleteDevice(): void {
+        this.modal.confirm({
+            nzTitle: "Are you sure?",
+            nzContent: "The Device and all of its children will be deleted.",
+            nzOkText: "Yes",
+            nzOkType: "danger",
+            nzOnOk: () => {
+                const message = this.message.loading("Deleting Device...").messageId;
+                this.api.deleteDevice(this.device.id).subscribe({
+                    next: () => {
+                        this.message.remove(message);
+                        this.message.success("Device deleted!");
+
+                        // Refresh Device list
+                        this.api.getDevices().subscribe({
+                            error: () => {
+                                throw new Error("An Error occurred trying to request Devices");
+                            },
+                        });
+
+                        // Navigate to Home Page
+                        this.router.navigate(["/"]);
+                    },
+                    error: (error) => {
+                        console.error(error);
+                        this.message.remove(message);
+                        this.message.error("Error deleting Device");
+                    },
+                });
+            },
+            nzCancelText: "No",
+            nzAutofocus: null,
         });
     }
 }

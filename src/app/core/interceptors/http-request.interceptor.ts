@@ -1,17 +1,18 @@
-import { HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest, HttpResponse } from "@angular/common/http";
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, throwError } from "rxjs";
 import { AuthService } from "../services/auth/auth.service";
 import { CoreService } from "../services/core/core.service";
-import { map, delay } from "rxjs/operators";
+import { map, catchError } from "rxjs/operators";
 import * as moment from "moment";
+import { NzNotificationModule, NzNotificationService } from "ng-zorro-antd/notification";
 
 @Injectable()
 export class HttpRequestInterceptor implements HttpInterceptor {
     // Number of how many Requests have been made
     private requestCount: number = 0;
 
-    constructor(private auth: AuthService, private core: CoreService) {}
+    constructor(private auth: AuthService, private core: CoreService, private notification: NzNotificationService) {}
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // Set `requestPending` to true inside of Core Service
@@ -37,38 +38,48 @@ export class HttpRequestInterceptor implements HttpInterceptor {
                     this.requestCount++;
 
                     // Log success message in console
-                    if (event.status.toString().startsWith("1") || event.status.toString().startsWith("2")) {
-                        console.log(
-                            `✅ | #${this.requestCount} %c${req.method}%c | \`/${
-                                req.urlWithParams.split("/")[req.urlWithParams.split("/").length - 1]
-                            }\` (${event.status}) ${moment().diff(requestStart)}ms`,
-                            "font-weight: 700;",
-                            "font-weight: normal",
-                        );
-                    }
-
-                    if (event.status.toString().startsWith("3")) {
-                        console.warn(
-                            `⚡ | #${this.requestCount} %c${req.method}%c | \`/${
-                                req.urlWithParams.split("/")[req.urlWithParams.split("/").length - 1]
-                            }\` (${event.status}) ${moment().diff(requestStart)}ms`,
-                            "font-weight: 700;",
-                            "font-weight: normal",
-                        );
-                    }
-
-                    if (event.status.toString().startsWith("4") || event.status.toString().startsWith("5")) {
-                        console.error(
-                            `🚨 | #${this.requestCount} %c${req.method}%c | \`/${
-                                req.urlWithParams.split("/")[req.urlWithParams.split("/").length - 1]
-                            }\` (${event.status}) ${moment().diff(requestStart)}ms`,
-                            "font-weight: 700;",
-                            "font-weight: normal",
-                        );
-                    }
+                    console.log(
+                        `‣ ${req.method} %c/${req.urlWithParams.split("/")[req.urlWithParams.split("/").length - 1]}%c (${event.status} ${
+                            event.statusText
+                        }) ${moment().diff(requestStart)}ms`,
+                        "font-weight: 700; text-decoration: underline;",
+                        "font-weight: normal",
+                    );
                 }
 
                 return event;
+            }),
+            catchError((error: HttpErrorResponse) => {
+                // Set `requestPending` to false inside of Core Service
+                this.core.requestPending = false;
+
+                // Get request path from full URL
+                const path = request.url.split("/")[request.url.split("/").length - 1];
+
+                // Log error message in console
+                console.log(
+                    `‣ ${req.method} %c/${req.urlWithParams.split("/")[req.urlWithParams.split("/").length - 1]}%c (${error.status} ${
+                        error.statusText
+                    }) ${moment().diff(requestStart)}ms`,
+                    "font-weight: 700; text-decoration: underline;",
+                    "font-weight: normal",
+                );
+
+                // Different handling for client side requests
+                if (error.error instanceof ErrorEvent) {
+                    this.notification.create("error", "Error making request. (Client Side)", error.error.message);
+                    return throwError(error.error.message);
+                } else {
+                    this.notification.create(
+                        "error",
+                        `Error making ${request.method} request.`,
+                        `${request.method} request <span class="code">/${path}</span> failed with error code ${error.status}.`,
+                        {
+                            nzDuration: 0, // Doesn't disappear until user clicks it away
+                        },
+                    );
+                    return throwError(`Response Status ${error.status}: ${error.message}`);
+                }
             }),
         );
     }

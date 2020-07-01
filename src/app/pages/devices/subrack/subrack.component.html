@@ -91,18 +91,24 @@
         <p>
             Admin State:
             <span class="field-value"
-                ><span appCodeCopy>{{ subrack.adm_state }}</span></span
+                ><span appCodeCopy>{{ subrack.admin_state }}</span></span
             >
-            <button class="edit" nz-button nzType="link" nzShape="circle" (click)="editProperty('adm_state', subrack.adm_state)">
+            <button class="edit" nz-button nzType="link" nzShape="circle" (click)="editProperty('admin_state', subrack.admin_state)">
                 <i nz-icon nzType="edit" style="font-size: 14px;"></i>
             </button>
         </p>
         <p>
             Operating State:
             <span class="field-value"
-                ><span appCodeCopy>{{ subrack.opr_state }}</span></span
+                ><span appCodeCopy>{{ subrack.operational_state }}</span></span
             >
-            <button class="edit" nz-button nzType="link" nzShape="circle" (click)="editProperty('opr_state', subrack.opr_state)">
+            <button
+                class="edit"
+                nz-button
+                nzType="link"
+                nzShape="circle"
+                (click)="editProperty('operational_state', subrack.operational_state)"
+            >
                 <i nz-icon nzType="edit" style="font-size: 14px;"></i>
             </button>
         </p>

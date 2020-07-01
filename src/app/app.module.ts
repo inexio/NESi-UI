@@ -4,7 +4,7 @@ import "../polyfills";
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { CoreModule } from "./core/core.module";
 import { SharedModule } from "./shared/shared.module";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -28,7 +28,6 @@ import { NzInputModule } from "ng-zorro-antd/input";
 import { NzBreadCrumbModule } from "ng-zorro-antd/breadcrumb";
 import { CodeCopyDirective } from "./core/directives/code-copy/code-copy.directive";
 import { HidePasswordDirective } from "./core/directives/hide-password/hide-password.directive";
-import { TerminalComponent } from "./pages/devices/terminal/terminal.component";
 import { CardComponent } from "./pages/devices/card/card.component";
 import { NzAffixModule } from "ng-zorro-antd/affix";
 import { NzPageHeaderModule } from "ng-zorro-antd/page-header";
@@ -65,6 +64,9 @@ import { NzSwitchModule } from "ng-zorro-antd/switch";
 import { NzAvatarModule } from "ng-zorro-antd/avatar";
 import { SettingsComponent } from "./pages/settings/settings.component";
 import { NzNotificationModule } from "ng-zorro-antd/notification";
+import { TerminalComponent } from "./pages/devices/terminal/terminal.component";
+import { CommonModule } from "@angular/common";
+import { CreateComponent } from './pages/devices/create/create.component';
 
 @NgModule({
     declarations: [
@@ -75,7 +77,6 @@ import { NzNotificationModule } from "ng-zorro-antd/notification";
         DeviceComponent,
         CodeCopyDirective,
         HidePasswordDirective,
-        TerminalComponent,
         CardComponent,
         PortComponent,
         OntComponent,
@@ -98,10 +99,13 @@ import { NzNotificationModule } from "ng-zorro-antd/notification";
         CredentialsComponent,
         EditPropertyComponent,
         SettingsComponent,
+        TerminalComponent,
+        CreateComponent,
     ],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
+        CommonModule,
         FormsModule,
         HttpClientModule,
         CoreModule,

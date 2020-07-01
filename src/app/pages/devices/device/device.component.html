@@ -6,7 +6,15 @@
     <button nz-button nzShape="circle" nzType="primary" nz-tooltip nzTooltipTitle="Connect with SSH" (click)="openSshModal(ssh)">
         <i nz-icon nzType="link" nzTheme="outline"></i>
     </button>
-    <button nz-button nzShape="circle" nzType="primary" nz-tooltip nzTooltipTitle="Open in-app Terminal" [routerLink]="['terminal']">
+    <button
+        nz-button
+        nzShape="circle"
+        nzType="primary"
+        nz-tooltip
+        nzTooltipTitle="Open in-app Terminal"
+        [routerLink]="['terminal']"
+        disabled
+    >
         <i nz-icon nzType="code" nzTheme="outline"></i>
     </button>
     <button nz-button nzShape="circle" nzType="primary" nz-tooltip nzTooltipTitle="Clone Device" (click)="cloneDevice()">

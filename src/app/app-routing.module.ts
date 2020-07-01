@@ -4,8 +4,6 @@ import { Routes, RouterModule } from "@angular/router";
 import { DevicesComponent } from "./pages/devices/devices.component";
 import { DeviceComponent } from "./pages/devices/device/device.component";
 import { SubrackComponent } from "./pages/devices/subrack/subrack.component";
-import { HomeComponent } from "./pages/home/home.component";
-import { TerminalComponent } from "./pages/devices/terminal/terminal.component";
 import { CardComponent } from "./pages/devices/card/card.component";
 import { PortComponent } from "./pages/devices/port/port.component";
 import { OntComponent } from "./pages/devices/ont/ont.component";
@@ -18,12 +16,13 @@ import { PortProfileComponent } from "./pages/devices/port-profile/port-profile.
 import { PortProfileConnectionComponent } from "./pages/devices/port-profile-connection/port-profile-connection.component";
 import { DeviceListComponent } from "./pages/devices/device-list/device-list.component";
 import { SettingsComponent } from "./pages/settings/settings.component";
+import { TerminalComponent } from "./pages/devices/terminal/terminal.component";
+import { CreateComponent } from "./pages/devices/create/create.component";
 
 const routes: Routes = [
     {
         path: "",
         pathMatch: "full",
-        // component: HomeComponent,
         redirectTo: "/devices",
     },
     {
@@ -35,12 +34,16 @@ const routes: Routes = [
                 component: DeviceListComponent,
             },
             {
-                path: ":id",
-                component: DeviceComponent,
+                path: "create",
+                component: CreateComponent,
             },
             {
                 path: ":id/terminal",
                 component: TerminalComponent,
+            },
+            {
+                path: ":id",
+                component: DeviceComponent,
             },
             {
                 path: ":id/subrack/:subrack",
@@ -88,6 +91,7 @@ const routes: Routes = [
             },
         ],
     },
+
     {
         path: "settings",
         component: SettingsComponent,

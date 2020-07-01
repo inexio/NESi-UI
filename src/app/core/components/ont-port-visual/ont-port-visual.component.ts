@@ -4,6 +4,9 @@ import { RequestState } from "../../interfaces/request-state.type";
 import { ActivatedRoute } from "@angular/router";
 import { ApiService } from "../../services/api/api.service";
 
+import Achorn from "achorn";
+const achorn = new Achorn();
+
 @Component({
     selector: "app-ont-port-visual",
     templateUrl: "./ont-port-visual.component.html",
@@ -48,7 +51,8 @@ export class OntPortVisualComponent implements OnInit {
                         this.ontPortRequest = "success";
                     },
                     error: (error) => {
-                        console.error(error);
+                        // @ts-ignore
+                        achorn.error(error);
                         this.ontPortRequest = "error";
                     },
                 });

@@ -7,6 +7,9 @@ import { RequestState } from "../../../core/interfaces/request-state.type";
 import { EditPropertyComponent } from "../../../core/components/edit-property/edit-property.component";
 import { NzModalService } from "ng-zorro-antd/modal";
 
+import Achorn from "achorn";
+const achorn = new Achorn();
+
 @Component({
     selector: "app-port",
     templateUrl: "./port.component.html",
@@ -81,8 +84,8 @@ export class PortComponent implements OnInit {
                 this.port = port;
 
                 // Update switch values
-                this.oprState = port.opr_state === "up";
-                this.admState = port.adm_state === "up";
+                this.oprState = port.operational_state === "up";
+                this.admState = port.admin_state === "up";
 
                 this.attributes = [];
                 Object.keys(port).map((key) => {
@@ -96,7 +99,8 @@ export class PortComponent implements OnInit {
                 this.portRequest = "success";
             },
             error: (error) => {
-                console.error(error);
+                // @ts-ignore
+                achorn.error(error);
                 this.portRequest = "error";
             },
         });
@@ -125,7 +129,7 @@ export class PortComponent implements OnInit {
         this.admRequest = "pending";
         this.api
             .updateObjectProperty(Number(this.parentDeviceId), "ports", this.port.id, {
-                adm_state: this.admState ? "up" : "down",
+                admin_state: this.admState ? "up" : "down",
             })
             .subscribe({
                 next: () => {
@@ -145,7 +149,7 @@ export class PortComponent implements OnInit {
         this.oprRequest = "pending";
         this.api
             .updateObjectProperty(Number(this.parentDeviceId), "ports", this.port.id, {
-                opr_state: this.oprState ? "up" : "down",
+                operational_state: this.oprState ? "up" : "down",
             })
             .subscribe({
                 next: () => {

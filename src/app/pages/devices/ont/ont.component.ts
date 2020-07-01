@@ -7,6 +7,9 @@ import { RequestState } from "../../../core/interfaces/request-state.type";
 import { NzModalService } from "ng-zorro-antd/modal";
 import { EditPropertyComponent } from "../../../core/components/edit-property/edit-property.component";
 
+import Achorn from "achorn";
+const achorn = new Achorn();
+
 @Component({
     selector: "app-ont",
     templateUrl: "./ont.component.html",
@@ -80,7 +83,8 @@ export class OntComponent implements OnInit {
                 this.ontRequest = "success";
             },
             error: (error) => {
-                console.error(error);
+                // @ts-ignore
+                achorn.error(error);
                 this.ontRequest = "error";
             },
         });

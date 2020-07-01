@@ -4,6 +4,9 @@ import { RequestState } from "../../interfaces/request-state.type";
 import { ApiService } from "../../services/api/api.service";
 import { ActivatedRoute } from "@angular/router";
 
+import Achorn from "achorn";
+const achorn = new Achorn();
+
 @Component({
     selector: "app-subrack-visual",
     templateUrl: "./subrack-visual.component.html",
@@ -48,7 +51,8 @@ export class SubrackVisualComponent implements OnInit {
                         this.subrackRequest = "success";
                     },
                     error: (error) => {
-                        console.error(error);
+                        // @ts-ignore
+                        achorn.error(error);
                         this.subrackRequest = "error";
                     },
                 });

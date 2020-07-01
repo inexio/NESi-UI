@@ -9,6 +9,9 @@ import { RequestState } from "../../../core/interfaces/request-state.type";
 import { NzModalService } from "ng-zorro-antd/modal";
 import { NzMessageService } from "ng-zorro-antd/message";
 
+import Achorn from "achorn";
+const achorn = new Achorn();
+
 @Component({
     selector: "app-device",
     templateUrl: "./device.component.html",
@@ -57,7 +60,8 @@ export class DeviceComponent implements OnInit {
                     this.deviceRequest = "success";
                 },
                 error: (error) => {
-                    console.error(error);
+                    // @ts-ignore
+                    achorn.error(error);
                     this.deviceRequest = "error";
                 },
             });
@@ -70,7 +74,8 @@ export class DeviceComponent implements OnInit {
                     this.profilesRequest = "success";
                 },
                 error: (error) => {
-                    console.error(error);
+                    // @ts-ignore
+                    achorn.error(error);
                     this.profilesRequest = "error";
                 },
             });
@@ -83,7 +88,8 @@ export class DeviceComponent implements OnInit {
                     this.subracksRequest = "success";
                 },
                 error: (error) => {
-                    console.error(error);
+                    // @ts-ignore
+                    achorn.error(error);
                     this.subracksRequest = "error";
                 },
             });
@@ -96,7 +102,8 @@ export class DeviceComponent implements OnInit {
                     this.vlansRequest = "success";
                 },
                 error: (error) => {
-                    console.error(error);
+                    // @ts-ignore
+                    achorn.error(error);
                     this.vlansRequest = "error";
                 },
             });
@@ -149,7 +156,8 @@ export class DeviceComponent implements OnInit {
                 });
             },
             error: (error) => {
-                console.error(error);
+                // @ts-ignore
+                achorn.error(error);
                 this.message.remove(message);
                 this.message.error("Error cloning Device");
             },
@@ -183,7 +191,8 @@ export class DeviceComponent implements OnInit {
                         this.router.navigate(["/"]);
                     },
                     error: (error) => {
-                        console.error(error);
+                        // @ts-ignore
+                        achorn.error(error);
                         this.message.remove(message);
                         this.message.error("Error deleting Device");
                     },

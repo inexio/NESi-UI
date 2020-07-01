@@ -5,6 +5,9 @@ import { Subrack } from "../../interfaces/subrack.interface";
 import { Port } from "../../interfaces/port.interface";
 import { ActivatedRoute } from "@angular/router";
 
+import Achorn from "achorn";
+const achorn = new Achorn();
+
 @Component({
     selector: "app-port-visual",
     templateUrl: "./port-visual.component.html",
@@ -49,7 +52,8 @@ export class PortVisualComponent implements OnInit {
                         this.portRequest = "success";
                     },
                     error: (error) => {
-                        console.error(error);
+                        // @ts-ignore
+                        achorn.error(error);
                         this.portRequest = "error";
                     },
                 });

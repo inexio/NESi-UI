@@ -4,6 +4,9 @@ import { RequestState } from "../../interfaces/request-state.type";
 import { Ont } from "../../interfaces/ont.interface";
 import { ActivatedRoute } from "@angular/router";
 
+import Achorn from "achorn";
+const achorn = new Achorn();
+
 @Component({
     selector: "app-ont-visual",
     templateUrl: "./ont-visual.component.html",
@@ -54,7 +57,8 @@ export class OntVisualComponent implements OnInit {
                         this.ontRequest = "success";
                     },
                     error: (error) => {
-                        console.error(error);
+                        // @ts-ignore
+                        achorn.error(error);
                         this.ontRequest = "error";
                     },
                 });
@@ -69,7 +73,7 @@ export class OntVisualComponent implements OnInit {
      */
     public parsePorts(): void {
         for (let i = 0; i < Number(this.ont.ppc || 8); i++) {
-            this.ports.push(this.ont.ont_ports[i] ? this.ont.ont_ports[i] : { id: null, opr_state: null });
+            this.ports.push(this.ont.ont_ports[i] ? this.ont.ont_ports[i] : { id: null, operational_state: null });
         }
     }
 }

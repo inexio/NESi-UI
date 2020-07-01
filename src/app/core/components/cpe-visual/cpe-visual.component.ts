@@ -4,6 +4,9 @@ import { RequestState } from "../../interfaces/request-state.type";
 import { ActivatedRoute } from "@angular/router";
 import { ApiService } from "../../services/api/api.service";
 
+import Achorn from "achorn";
+const achorn = new Achorn();
+
 @Component({
     selector: "app-cpe-visual",
     templateUrl: "./cpe-visual.component.html",
@@ -54,7 +57,8 @@ export class CpeVisualComponent implements OnInit {
                         this.cpeRequest = "success";
                     },
                     error: (error) => {
-                        console.error(error);
+                        // @ts-ignore
+                        achorn.error(error);
                         this.cpeRequest = "error";
                     },
                 });
@@ -69,7 +73,7 @@ export class CpeVisualComponent implements OnInit {
      */
     public parsePorts(): void {
         for (let i = 0; i < Number(this.cpe.ppc || 4); i++) {
-            this.ports.push(this.cpe.cpe_ports[i] ? this.cpe.cpe_ports[i] : { id: null, opr_state: null });
+            this.ports.push(this.cpe.cpe_ports[i] ? this.cpe.cpe_ports[i] : { id: null, operational_state: null });
         }
     }
 }

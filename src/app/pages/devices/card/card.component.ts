@@ -8,6 +8,9 @@ import { NzModalService } from "ng-zorro-antd/modal";
 import { EditPropertyComponent } from "../../../core/components/edit-property/edit-property.component";
 import { stringify } from "querystring";
 
+import Achorn from "achorn";
+const achorn = new Achorn();
+
 @Component({
     selector: "app-card",
     templateUrl: "./card.component.html",
@@ -81,7 +84,8 @@ export class CardComponent implements OnInit {
                 this.cardRequest = "success";
             },
             error: (error) => {
-                console.error(error);
+                // @ts-ignore
+                achorn.error(error);
                 this.cardRequest = "error";
             },
         });

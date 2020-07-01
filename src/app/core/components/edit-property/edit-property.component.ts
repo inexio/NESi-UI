@@ -4,6 +4,9 @@ import { RequestState } from "../../interfaces/request-state.type";
 import { NzModalRef } from "ng-zorro-antd/modal";
 import { delay } from "rxjs/operators";
 
+import Achorn from "achorn";
+const achorn = new Achorn();
+
 @Component({
     selector: "app-edit-property",
     templateUrl: "./edit-property.component.html",
@@ -56,7 +59,8 @@ export class EditPropertyComponent implements OnInit {
     constructor(private api: ApiService, private modal: NzModalRef) {}
 
     ngOnInit(): void {
-        console.log(this);
+        // @ts-ignore
+        achorn.info(this);
         this.value = this.initialValue;
     }
 
@@ -76,7 +80,8 @@ export class EditPropertyComponent implements OnInit {
                     this.modal.close();
                 },
                 error: (error) => {
-                    console.error(error);
+                    // @ts-ignore
+                    achorn.error(error);
                     this.editRequest = "error";
                 },
             });

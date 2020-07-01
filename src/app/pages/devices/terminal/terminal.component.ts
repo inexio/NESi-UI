@@ -1,12 +1,15 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { RequestState } from "../../../core/interfaces/request-state.type";
-import * as moment from "moment";
+import { Device } from "../../../core/interfaces/device.interface";
 import { ApiService } from "../../../core/services/api/api.service";
 import { CoreService } from "../../../core/services/core/core.service";
-import { Device } from "../../../core/interfaces/device.interface";
 import { ActivatedRoute } from "@angular/router";
-import { delay } from "rxjs/operators";
 import { NzMessageService } from "ng-zorro-antd/message";
+import { delay } from "rxjs/operators";
+import * as moment from "moment";
+
+import Achorn from "achorn";
+const achorn = new Achorn();
 
 @Component({
     selector: "app-terminal",
@@ -142,7 +145,8 @@ export class TerminalComponent implements OnInit {
                         }, 3000);
                     },
                     error: (error) => {
-                        console.error(error);
+                        // @ts-ignore
+                        achorn.error(error);
                         this.terminalInit = "error";
                     },
                 });
@@ -192,7 +196,8 @@ export class TerminalComponent implements OnInit {
                 this.commandRequest = "success";
             },
             error: (error) => {
-                console.error(error);
+                // @ts-ignore
+                achorn.error(error);
                 this.commandRequest = "error";
             },
         });

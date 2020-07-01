@@ -7,6 +7,9 @@ import { CoreService } from "../../../core/services/core/core.service";
 import { NzModalService } from "ng-zorro-antd/modal";
 import { EditPropertyComponent } from "../../../core/components/edit-property/edit-property.component";
 
+import Achorn from "achorn";
+const achorn = new Achorn();
+
 @Component({
     selector: "app-subrack",
     templateUrl: "./subrack.component.html",
@@ -65,7 +68,8 @@ export class SubrackComponent implements OnInit {
                 this.subrackRequest = "success";
             },
             error: (error) => {
-                console.error(error);
+                // @ts-ignore
+                achorn.error(error);
                 this.subrackRequest = "error";
             },
         });

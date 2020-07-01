@@ -7,6 +7,9 @@ import { RequestState } from "../../../core/interfaces/request-state.type";
 import { NzModalService } from "ng-zorro-antd/modal";
 import { EditPropertyComponent } from "../../../core/components/edit-property/edit-property.component";
 
+import Achorn from "achorn";
+const achorn = new Achorn();
+
 @Component({
     selector: "app-cpe",
     templateUrl: "./cpe.component.html",
@@ -80,7 +83,8 @@ export class CpeComponent implements OnInit {
                 this.cpeRequest = "success";
             },
             error: (error) => {
-                console.error(error);
+                // @ts-ignore
+                achorn.error(error);
                 this.cpeRequest = "error";
             },
         });

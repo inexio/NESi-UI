@@ -4,6 +4,9 @@ import { CoreService } from "./core/services/core/core.service";
 
 import { buildInfo } from "../build";
 
+import Achorn from "achorn";
+const achorn = new Achorn();
+
 @Component({
     selector: "app-root",
     templateUrl: "./app.component.html",
@@ -37,10 +40,14 @@ export class AppComponent {
         this.auth.getStoredCredentials().subscribe({
             next: (credentials) => {
                 this.auth.credentials = credentials;
-                console.log("\n🔐 Found `credentials` item in localStorage\n", credentials);
+                // @ts-ignore
+                achorn.success("Found `credentials` item in localStorage");
+                // @ts-ignore
+                achorn.info(credentials);
             },
             error: (error) => {
-                console.warn(error);
+                // @ts-ignore
+                achorn.warn(error);
             },
         });
     }

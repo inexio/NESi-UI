@@ -7,6 +7,9 @@ import { Vlan } from "../../../core/interfaces/Vlan.interface";
 import { NzModalService } from "ng-zorro-antd/modal";
 import { EditPropertyComponent } from "../../../core/components/edit-property/edit-property.component";
 
+import Achorn from "achorn";
+const achorn = new Achorn();
+
 @Component({
     selector: "app-vlan",
     templateUrl: "./vlan.component.html",
@@ -80,7 +83,8 @@ export class VlanComponent implements OnInit {
                 this.vlanRequest = "success";
             },
             error: (error) => {
-                console.error(error);
+                // @ts-ignore
+                achorn.error(error);
                 this.vlanRequest = "error";
             },
         });

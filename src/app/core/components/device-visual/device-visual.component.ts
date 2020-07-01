@@ -4,6 +4,9 @@ import { ActivatedRoute } from "@angular/router";
 import { ApiService } from "../../services/api/api.service";
 import { RequestState } from "../../interfaces/request-state.type";
 
+import Achorn from "achorn";
+const achorn = new Achorn();
+
 @Component({
     selector: "app-device-visual",
     templateUrl: "./device-visual.component.html",
@@ -35,7 +38,8 @@ export class DeviceVisualComponent implements OnInit {
                     this.deviceRequest = "success";
                 },
                 error: (error) => {
-                    console.error(error);
+                    // @ts-ignore
+                    achorn.error(error);
                     this.deviceRequest = "error";
                 },
             });

@@ -4,8 +4,10 @@ import { Observable, throwError } from "rxjs";
 import { AuthService } from "../services/auth/auth.service";
 import { CoreService } from "../services/core/core.service";
 import { map, catchError } from "rxjs/operators";
-import * as moment from "moment";
-import { NzNotificationModule, NzNotificationService } from "ng-zorro-antd/notification";
+import { NzNotificationService } from "ng-zorro-antd/notification";
+
+import Achorn from "achorn";
+const achorn = new Achorn();
 
 @Injectable()
 export class HttpRequestInterceptor implements HttpInterceptor {
@@ -18,8 +20,14 @@ export class HttpRequestInterceptor implements HttpInterceptor {
         // Set `requestPending` to true inside of Core Service
         this.core.requestPending = true;
 
-        // Save request start moment
-        const requestStart = moment();
+        // Get last part of request path
+        const path = `/${request.url.split("/")[request.url.split("/").length - 1]}`;
+
+        // Create achorn timer to track request duration
+        const timer = achorn.timer({
+            key: `${path}`,
+            silent: true,
+        });
 
         // Clone Request and attach headers
         const req = request.clone({
@@ -37,14 +45,8 @@ export class HttpRequestInterceptor implements HttpInterceptor {
                     // Increment Request count by 1
                     this.requestCount++;
 
-                    // Log success message in console
-                    console.log(
-                        `‣ ${req.method} %c/${req.urlWithParams.split("/")[req.urlWithParams.split("/").length - 1]}%c (${event.status} ${
-                            event.statusText
-                        }) ${moment().diff(requestStart)}ms`,
-                        "font-weight: 700; text-decoration: underline;",
-                        "font-weight: normal",
-                    );
+                    // Log success message
+                    timer.success(`${req.method} ${path} successful`);
                 }
 
                 return event;
@@ -53,17 +55,10 @@ export class HttpRequestInterceptor implements HttpInterceptor {
                 // Set `requestPending` to false inside of Core Service
                 this.core.requestPending = false;
 
-                // Get request path from full URL
-                const path = request.url.split("/")[request.url.split("/").length - 1];
-
-                // Log error message in console
-                console.log(
-                    `‣ ${req.method} %c/${req.urlWithParams.split("/")[req.urlWithParams.split("/").length - 1]}%c (${error.status} ${
-                        error.statusText
-                    }) ${moment().diff(requestStart)}ms`,
-                    "font-weight: 700; text-decoration: underline;",
-                    "font-weight: normal",
-                );
+                // Log error message
+                timer.error(`${req.method} ${path} failed`);
+                // @ts-ignore
+                achorn.error(error);
 
                 // Different handling for client side requests
                 if (error.error instanceof ErrorEvent) {

@@ -5,6 +5,9 @@ import { RequestState } from "../../interfaces/request-state.type";
 import { ActivatedRoute } from "@angular/router";
 import { Port } from "../../interfaces/port.interface";
 
+import Achorn from "achorn";
+const achorn = new Achorn();
+
 @Component({
     selector: "app-card-visual",
     templateUrl: "./card-visual.component.html",
@@ -52,7 +55,8 @@ export class CardVisualComponent implements OnInit {
                         this.cardRequest = "success";
                     },
                     error: (error) => {
-                        console.error(error);
+                        // @ts-ignore
+                        achorn.error(error);
                         this.cardRequest = "error";
                     },
                 });
@@ -69,8 +73,8 @@ export class CardVisualComponent implements OnInit {
         for (let i = 0; i < Number(this.card.ppc); i++) {
             if (!(i % 2)) {
                 this.portPairs.push([
-                    this.card.ports[i] ? this.card.ports[i] : { id: null, opr_state: null },
-                    this.card.ports[i + 1] ? this.card.ports[i + 1] : { id: null, opr_state: null },
+                    this.card.ports[i] ? this.card.ports[i] : { id: null, operational_state: null },
+                    this.card.ports[i + 1] ? this.card.ports[i + 1] : { id: null, operational_state: null },
                 ]);
             }
         }

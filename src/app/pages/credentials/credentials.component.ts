@@ -4,6 +4,9 @@ import { RequestState } from "../../core/interfaces/request-state.type";
 import { AuthService } from "../../core/services/auth/auth.service";
 import { trigger, transition, query, style, stagger, animate } from "@angular/animations";
 
+import Achorn from "achorn";
+const achorn = new Achorn();
+
 @Component({
     selector: "app-credentials",
     templateUrl: "./credentials.component.html",
@@ -73,7 +76,8 @@ export class CredentialsComponent {
                 }
             },
             error: (error) => {
-                console.error(error);
+                // @ts-ignore
+                achorn.error(error);
                 this.checkRequest = "error";
             },
         });

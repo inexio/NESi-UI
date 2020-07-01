@@ -2,6 +2,17 @@
     <ul class="menu" nz-menu nzMode="inline">
         <li style="margin-top: 12px;" nz-menu-item routerLink="/devices" [nzMatchRouter]="true" [nzMatchRouterExact]="true">
             All Devices
+
+            <a
+                nz-button
+                nzType="link"
+                style="float: right;"
+                nz-tooltip
+                nzTooltipTitle="Reload Devices"
+                (click)="api.getDevices().subscribe()"
+            >
+                <i nz-icon nzType="reload" nzTheme="outline" style="font-size: 18px; margin-bottom: -7px;"></i>
+            </a>
         </li>
 
         <nz-divider style="margin: 12px 0;"></nz-divider>
@@ -10,13 +21,25 @@
             <ul>
                 <li nz-menu-item *ngFor="let device of api.vendors[name].devices" [routerLink]="[device.id]" [nzMatchRouter]="true">
                     {{ device.model }} {{ device.version }}
+
+                    <a
+                        nz-button
+                        nzType="link"
+                        style="display: inline-block; margin-left: 5px;"
+                        nz-tooltip
+                        nzTooltipTitle="Terminal session open"
+                        (click)="openTerminal(device.id)"
+                        *ngIf="api.hasOpenSession(device.id)"
+                    >
+                        <i nz-icon nzType="code" nzTheme="outline" style="font-size: 18px;"></i>
+                    </a>
                 </li>
             </ul>
         </li>
 
         <nz-divider style="margin: 12px 0;"></nz-divider>
 
-        <li nz-menu-item><i nz-icon nzType="plus" nzTheme="outline"></i>Create New</li>
+        <li nz-menu-item [routerLink]="['create']"><i nz-icon nzType="plus" nzTheme="outline"></i>Create New</li>
     </ul>
 
     <div class="content" #contentWrapper>

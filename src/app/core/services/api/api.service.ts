@@ -28,6 +28,16 @@ export class ApiService {
      */
     public vendors: { [key: string]: { devices: Device[] } } = {};
 
+    /**
+     * Array of Terminal sessions
+     */
+    public terminalSessions: { id: number; deviceId: number }[] = [
+        // {
+        //     id: 1,
+        //     deviceId: 1,
+        // },
+    ];
+
     constructor(private http: HttpClient) {
         // Get Devices on start up
         this.getDevices().subscribe({
@@ -409,6 +419,14 @@ Hint: login credentials: admin/secret
         properties: { [key: string]: any },
     ): Observable<any> {
         return this.http.put<any>(`boxen/${deviceId}/${objectType}/${objectId}`, properties).pipe(delay(1000));
+    }
+
+    /**
+     * Checks if a Device has an open Terminal session
+     * @param deviceId Id of the Device to check
+     */
+    public hasOpenSession(deviceId: number): boolean {
+        return this.terminalSessions.some((session) => session.deviceId === deviceId);
     }
 
     /**

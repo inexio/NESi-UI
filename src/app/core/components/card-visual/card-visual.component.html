@@ -1,7 +1,7 @@
 <div class="card" *ngIf="card">
     <!-- "Status LED" and Name of the card -->
     <h4 class="name" [routerLink]="['/devices', parentDeviceId, 'card', card.id]">
-        <nz-badge [nzStatus]="card.opr_state === 'enabled' ? 'success' : 'error'"></nz-badge>Card {{ card.name.toUpperCase() }}
+        <nz-badge [nzStatus]="card.operational_state === 'enabled' ? 'success' : 'error'"></nz-badge>Card {{ card.name.toUpperCase() }}
         <span class="description">{{ card.description ? card.description.toUpperCase() : "" }}</span>
     </h4>
 
@@ -20,8 +20,8 @@
                     </p>
                     <img
                         [src]="
-                            pair[1].adm_state === 'up'
-                                ? pair[1].opr_state === 'up'
+                            pair[1].admin_state === 'up'
+                                ? pair[1].operational_state === 'up'
                                     ? 'assets/images/port_opr.svg'
                                     : 'assets/images/port_adm.svg'
                                 : 'assets/images/port.svg'
@@ -40,8 +40,8 @@
                 >
                     <img
                         [src]="
-                            pair[0].adm_state === 'up'
-                                ? pair[0].opr_state === 'up'
+                            pair[0].admin_state === 'up'
+                                ? pair[0].operational_state === 'up'
                                     ? 'assets/images/port_opr.svg'
                                     : 'assets/images/port_adm.svg'
                                 : 'assets/images/port.svg'

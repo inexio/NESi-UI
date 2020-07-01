@@ -1,8 +1,8 @@
 <img
     class="port"
     [src]="
-        ontPort.adm_state === 'up'
-            ? ontPort.opr_state === 'up'
+        ontPort.admin_state === 'up'
+            ? ontPort.operational_state === 'up'
                 ? 'assets/images/port_opr.svg'
                 : 'assets/images/port_adm.svg'
             : 'assets/images/port.svg'

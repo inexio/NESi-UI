@@ -5,8 +5,8 @@ export interface Subrack {
     name?: string;
     planned_type?: string;
     actual_type?: string;
-    adm_state?: string;
-    opr_state?: string;
+    admin_state?: string;
+    operational_state?: string;
     err_state?: string;
     description?: string;
     serial_no?: string;

@@ -44,8 +44,8 @@
                     [nzPopoverTitle]="port.name ? 'CPE Port ' + port.name : 'Unassigned Port'"
                     [nzPopoverContent]="port.name ? 'Click on Port to see more details' : 'This Port has not been assigned yet'"
                     [src]="
-                        port.adm_state === 'up'
-                            ? port.opr_state === 'up'
+                        port.admin_state === 'up'
+                            ? port.operational_state === 'up'
                                 ? 'assets/images/port_opr.svg'
                                 : 'assets/images/port_adm.svg'
                             : 'assets/images/port.svg'

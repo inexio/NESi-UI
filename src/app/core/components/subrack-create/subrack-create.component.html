@@ -1,0 +1,35 @@
+<p>You are about to add new Subracks to Device {{ deviceName }} (ID: {{ deviceId }}) .</p>
+
+<nz-alert
+    *ngFor="let batch of batches; let index = index"
+    nzType="info"
+    [nzMessage]="batch.length + 'x ' + batch[0].name"
+    nzCloseText="Remove"
+    (nzOnClose)="removeBatch(index)"
+></nz-alert>
+
+<form #form="ngForm">
+    <h5>SUBRACK COUNT</h5>
+    <nz-slider [(ngModel)]="createCount" #count="ngModel" name="count" [nzMin]="1" [nzMax]="10000"></nz-slider>
+
+    <h5 style="margin-top: 20px;">SUBRACK DETAILS</h5>
+    <input [(ngModel)]="subrackForm.name" #name="ngModel" name="name" style="width: 100%;" nz-input placeholder="Name" required />
+    <input
+        [(ngModel)]="subrackForm.description"
+        #description="ngModel"
+        name="description"
+        style="width: 100%; margin-top: 10px;"
+        nz-input
+        placeholder="Description"
+        required
+    />
+
+    <button nz-button nzType="default" style="margin-top: 20px;" [disabled]="form.invalid" (click)="addBatch()">Add to List</button>
+</form>
+
+<nz-divider></nz-divider>
+
+<div class="buttons">
+    <button nz-button nzType="default" style="margin-right: 10px;" (click)="cancel()">Cancel</button>
+    <button nz-button nzType="primary" [nzLoading]="createSubracksRequest === 'pending'" (click)="createSubracks()">Create Subracks</button>
+</div>

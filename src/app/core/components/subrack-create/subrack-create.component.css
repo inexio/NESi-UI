@@ -1,0 +1,12 @@
+nz-alert {
+    margin-bottom: 10px;
+}
+
+nz-alter:last-child {
+    margin-bottom: 20px;
+}
+
+div.buttons {
+    display: flex;
+    justify-content: flex-end;
+}

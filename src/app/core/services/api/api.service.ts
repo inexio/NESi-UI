@@ -8,6 +8,7 @@ import { map, delay } from "rxjs/operators";
 import { Card } from "../../interfaces/card.interface";
 import { Port } from "../../interfaces/port.interface";
 import { Ont } from "../../interfaces/ont.interface";
+import { Vendors } from "../../interfaces/vendors.interface";
 
 @Injectable({
     providedIn: "root",
@@ -93,6 +94,14 @@ export class ApiService {
     }
 
     /**
+     * Create a new device with given vendor, model and version
+     * @param device Device object containing vendor, model and version
+     */
+    public createDevice(device: { vendor: string; model: string; version: string }): Observable<Device> {
+        return this.http.post<Device>("boxen", device);
+    }
+
+    /**
      * Get Profiles for specific Device
      * @param deviceId Id of the Device to get Profiles for
      */
@@ -124,6 +133,15 @@ export class ApiService {
      */
     public getSubrack(deviceId: number | string, subrackId: number | string): Observable<Subrack> {
         return this.http.get<Subrack>(`boxen/${deviceId}/subracks/${subrackId}`);
+    }
+
+    /**
+     * Creates a number of Subracks
+     * @param deviceId Id of the Device to create Subracks for
+     * @param subracks Array of Subrack objects to add
+     */
+    public createSubracks(deviceId: number, subracks: { name: string; description: string }[]): Observable<any> {
+        return this.http.post<any>(`boxen/${deviceId}/subracks`, subracks);
     }
 
     /**
@@ -443,5 +461,12 @@ Hint: login credentials: admin/secret
      */
     public deleteDevice(deviceId: number): Observable<any> {
         return this.http.delete<any>(`boxen/${deviceId}`);
+    }
+
+    /**
+     * Gets a list of available vendors including their device models and versions
+     */
+    public getVendors(): Observable<Vendors> {
+        return this.http.get<Vendors>("vendors");
     }
 }

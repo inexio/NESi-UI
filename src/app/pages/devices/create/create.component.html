@@ -1,1 +1,80 @@
-<p>create works!</p>
+<h1>Create a new Device</h1>
+
+<form #form="ngForm">
+    <div>
+        <h5>DEVICE VENDOR</h5>
+        <nz-select
+            [(ngModel)]="deviceForm.vendor"
+            #vendor="ngModel"
+            name="vendor"
+            (ngModelChange)="deviceForm.model = ''; deviceForm.version = ''"
+            nzPlaceHolder="Select Vendor"
+            required
+        >
+            <nz-option *ngFor="let vendor of vendorNames" [nzValue]="vendor" [nzLabel]="vendor"></nz-option>
+        </nz-select>
+    </div>
+
+    <div style="margin-top: 20px;" *ngIf="deviceForm.vendor">
+        <h5>MODEL</h5>
+        <nz-select
+            [(ngModel)]="deviceForm.model"
+            #model="ngModel"
+            name="model"
+            (ngModelChange)="deviceForm.version = ''"
+            nzPlaceHolder="Select Model"
+            required
+        >
+            <nz-option *ngFor="let model of getModelsForVendor(deviceForm.vendor)" [nzValue]="model" [nzLabel]="model"></nz-option>
+        </nz-select>
+    </div>
+
+    <div style="margin-top: 20px;" *ngIf="deviceForm.model">
+        <h5>MODEL VERSION</h5>
+        <nz-select [(ngModel)]="deviceForm.version" #version="ngModel" name="version" nzPlaceHolder="Select Version" required>
+            <nz-option
+                *ngFor="let version of getVersionsForModel(deviceForm.vendor, deviceForm.model)"
+                [nzValue]="version"
+                [nzLabel]="version"
+            ></nz-option>
+        </nz-select>
+    </div>
+
+    <div *ngIf="deviceForm.version" style="margin-top: 20px;">
+        <h5>DEVICE DETAILS</h5>
+        <input
+            nz-input
+            placeholder="Description (optional)"
+            [(ngModel)]="deviceForm.description"
+            #description="ngModel"
+            name="description"
+            style="width: 300px;"
+        />
+
+        <br />
+
+        <input
+            nz-input
+            placeholder="Hostname (optional)"
+            [(ngModel)]="deviceForm.hostname"
+            #description="ngModel"
+            name="description"
+            style="width: 300px; margin-top: 10px;"
+        />
+    </div>
+
+    <button
+        style="margin-top: 20px;"
+        nz-button
+        nzType="primary"
+        [disabled]="form.invalid"
+        [nzLoading]="createDeviceState === 'pending'"
+        (click)="createDevice()"
+    >
+        {{
+            deviceForm.vendor
+                ? "Create " + deviceForm.vendor + " " + (deviceForm.model || "") + " " + (deviceForm.version || "")
+                : "Create Device"
+        }}
+    </button>
+</form>

@@ -10,6 +10,7 @@ import { NzModalService } from "ng-zorro-antd/modal";
 import { NzMessageService } from "ng-zorro-antd/message";
 
 import Achorn from "achorn";
+import { SubrackCreateComponent } from "../../../core/components/subrack-create/subrack-create.component";
 const achorn = new Achorn();
 
 @Component({
@@ -22,6 +23,7 @@ export class DeviceComponent implements OnInit {
      * Device data and Device data request
      */
     public device: Device;
+    public deviceId: number;
     public deviceRequest: RequestState = "idle";
 
     /**
@@ -52,61 +54,85 @@ export class DeviceComponent implements OnInit {
 
     ngOnInit(): void {
         this.route.params.subscribe((params) => {
-            // Get Device
-            this.deviceRequest = "pending";
-            this.api.getDevice(params.id).subscribe({
-                next: (device) => {
-                    this.device = device;
-                    this.deviceRequest = "success";
-                },
-                error: (error) => {
-                    // @ts-ignore
-                    achorn.error(error);
-                    this.deviceRequest = "error";
-                },
-            });
+            // Store Device id
+            this.deviceId = params.id;
 
-            // Get Profiles
-            this.profilesRequest = "pending";
-            this.api.getProfiles(params.id).subscribe({
-                next: (profiles) => {
-                    this.profiles = profiles;
-                    this.profilesRequest = "success";
-                },
-                error: (error) => {
-                    // @ts-ignore
-                    achorn.error(error);
-                    this.profilesRequest = "error";
-                },
-            });
+            this.getDevice();
+            this.getSubracks();
+            this.getProfiles();
+            this.getVlans();
+        });
+    }
 
-            // Get Subracks
-            this.subracksRequest = "pending";
-            this.api.getSubracks(params.id).subscribe({
-                next: (subracks) => {
-                    this.subracks = subracks;
-                    this.subracksRequest = "success";
-                },
-                error: (error) => {
-                    // @ts-ignore
-                    achorn.error(error);
-                    this.subracksRequest = "error";
-                },
-            });
+    /**
+     * Get Device data
+     */
+    public getDevice(): void {
+        this.deviceRequest = "pending";
+        this.api.getDevice(this.deviceId).subscribe({
+            next: (device) => {
+                this.device = device;
+                this.deviceRequest = "success";
+            },
+            error: (error) => {
+                // @ts-ignore
+                achorn.error(error);
+                this.deviceRequest = "error";
+            },
+        });
+    }
 
-            // Get Vlans
-            this.vlansRequest = "pending";
-            this.api.getVlans(params.id).subscribe({
-                next: (vlans) => {
-                    this.vlans = vlans;
-                    this.vlansRequest = "success";
-                },
-                error: (error) => {
-                    // @ts-ignore
-                    achorn.error(error);
-                    this.vlansRequest = "error";
-                },
-            });
+    /**
+     * Get Device Profiles
+     */
+    public getProfiles(): void {
+        this.profilesRequest = "pending";
+        this.api.getProfiles(this.deviceId).subscribe({
+            next: (profiles) => {
+                this.profiles = profiles;
+                this.profilesRequest = "success";
+            },
+            error: (error) => {
+                // @ts-ignore
+                achorn.error(error);
+                this.profilesRequest = "error";
+            },
+        });
+    }
+
+    /**
+     * Get Device Subracks
+     */
+    public getSubracks(): void {
+        this.subracksRequest = "pending";
+        this.api.getSubracks(this.deviceId).subscribe({
+            next: (subracks) => {
+                this.subracks = subracks;
+                this.subracksRequest = "success";
+            },
+            error: (error) => {
+                // @ts-ignore
+                achorn.error(error);
+                this.subracksRequest = "error";
+            },
+        });
+    }
+
+    /**
+     * Get Device V-Lans
+     */
+    public getVlans(): void {
+        this.vlansRequest = "pending";
+        this.api.getVlans(this.deviceId).subscribe({
+            next: (vlans) => {
+                this.vlans = vlans;
+                this.vlansRequest = "success";
+            },
+            error: (error) => {
+                // @ts-ignore
+                achorn.error(error);
+                this.vlansRequest = "error";
+            },
         });
     }
 
@@ -200,6 +226,28 @@ export class DeviceComponent implements OnInit {
             },
             nzCancelText: "No",
             nzAutofocus: null,
+        });
+    }
+
+    /**
+     * Opens a modal where the user can create more Subracks
+     */
+    public openCreateSubracksModal() {
+        const modal = this.modal.create({
+            nzTitle: "Create Subracks",
+            nzContent: SubrackCreateComponent,
+            nzComponentParams: {
+                deviceId: this.deviceId,
+                deviceName: this.device.hostname,
+            },
+            nzMaskClosable: true,
+            nzFooter: null,
+            nzCancelDisabled: true,
+        });
+
+        // Refresh Subrack data after Property was edited
+        modal.afterClose.subscribe(() => {
+            this.getSubracks();
         });
     }
 }

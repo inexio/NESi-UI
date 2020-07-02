@@ -66,7 +66,10 @@ import { SettingsComponent } from "./pages/settings/settings.component";
 import { NzNotificationModule } from "ng-zorro-antd/notification";
 import { TerminalComponent } from "./pages/devices/terminal/terminal.component";
 import { CommonModule } from "@angular/common";
-import { CreateComponent } from './pages/devices/create/create.component';
+import { CreateComponent } from "./pages/devices/create/create.component";
+import { SubrackCreateComponent } from "./core/components/subrack-create/subrack-create.component";
+import { NzAlertModule } from "ng-zorro-antd/alert";
+import { NzSliderModule } from "ng-zorro-antd/slider";
 
 @NgModule({
     declarations: [
@@ -101,6 +104,7 @@ import { CreateComponent } from './pages/devices/create/create.component';
         SettingsComponent,
         TerminalComponent,
         CreateComponent,
+        SubrackCreateComponent,
     ],
     imports: [
         BrowserModule,
@@ -133,6 +137,8 @@ import { CreateComponent } from './pages/devices/create/create.component';
         NzSwitchModule,
         NzAvatarModule,
         NzNotificationModule,
+        NzAlertModule,
+        NzSliderModule,
     ],
     providers: [
         {

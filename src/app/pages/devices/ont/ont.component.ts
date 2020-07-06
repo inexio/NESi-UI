@@ -8,6 +8,7 @@ import { NzModalService } from "ng-zorro-antd/modal";
 import { EditPropertyComponent } from "../../../core/components/edit-property/edit-property.component";
 
 import Achorn from "achorn";
+import { OntPortCreateComponent } from "../../../core/components/ont-port-create/ont-port-create.component";
 const achorn = new Achorn();
 
 @Component({
@@ -39,7 +40,7 @@ export class OntComponent implements OnInit {
     /**
      * Id of the parent device
      */
-    public parentDeviceId: string;
+    public parentDeviceId: number;
 
     /**
      * Id of the ONT
@@ -128,6 +129,27 @@ export class OntComponent implements OnInit {
         });
 
         // Refresh ONT data after Property was edited
+        modal.afterClose.subscribe(() => {
+            this.getOnt();
+        });
+    }
+
+    /**
+     * Open a Modal where the User can create new ONT Ports
+     */
+    public openCreateOntPortsModal() {
+        const modal = this.modal.create({
+            nzTitle: "Create ONT Ports",
+            nzContent: OntPortCreateComponent,
+            nzComponentParams: {
+                parentDeviceId: this.parentDeviceId,
+                ont: this.ont,
+            },
+            nzMaskClosable: true,
+            nzFooter: null,
+            nzCancelDisabled: true,
+        });
+
         modal.afterClose.subscribe(() => {
             this.getOnt();
         });

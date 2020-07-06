@@ -1,0 +1,50 @@
+<form #form="ngForm">
+    <nz-alert
+        nzType="error"
+        nzMessage="Unable to add more Ports"
+        nzDescription="The maximum number of Ports has been reached for this Card. Delete some Ports to make space for new ones."
+        nzShowIcon
+        *ngIf="availablePorts === 0"
+    ></nz-alert>
+
+    <p>
+        You are about to add new {{ createCount }} {{ createCount === 1 ? "Port" : "Ports" }} to Card {{ card.name }} (ID: {{ card.id }}).
+    </p>
+
+    <h5>PORT COUNT</h5>
+    <nz-slider
+        [(ngModel)]="createCount"
+        #count="ngModel"
+        name="count"
+        [nzMin]="1"
+        [nzMax]="availablePorts"
+        [nzDisabled]="availablePorts === 0"
+    ></nz-slider>
+
+    <h5 style="margin-top: 20px;">PORT DETAILS</h5>
+    <input
+        [(ngModel)]="portForm.description"
+        #description="ngModel"
+        name="description"
+        style="width: 100%; margin-top: 10px;"
+        nz-input
+        placeholder="Description"
+        [disabled]="availablePorts === 0"
+        required
+    />
+
+    <nz-divider></nz-divider>
+
+    <div class="buttons">
+        <button nz-button nzType="default" style="margin-right: 10px;" (click)="modal.close()">Cancel</button>
+        <button
+            nz-button
+            nzType="primary"
+            [disabled]="form.invalid || this.availablePorts === 0"
+            [nzLoading]="createPortsRequest === 'pending'"
+            (click)="createPorts()"
+        >
+            Create Ports
+        </button>
+    </div>
+</form>

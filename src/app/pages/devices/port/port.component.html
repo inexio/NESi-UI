@@ -24,9 +24,15 @@
     </div>
 
     <h5 style="margin-top: 35px;">ONTS</h5>
+
+    <p *ngIf="port.onts.length === 0">Port has no ONT(s)</p>
     <ul style="padding-left: 25px;">
         <li *ngFor="let ont of port.onts">
             <a nz-button nzType="link" nzSize="small" [routerLink]="['/devices', parentDeviceId, 'ont', ont.id]">{{ ont.name }}</a>
+        </li>
+
+        <li>
+            <a nz-button nzType="link" nzSize="small" (click)="openCreateOntsModal()">Add ONT(s)</a>
         </li>
     </ul>
 

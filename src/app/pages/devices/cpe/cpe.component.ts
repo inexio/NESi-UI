@@ -8,6 +8,7 @@ import { NzModalService } from "ng-zorro-antd/modal";
 import { EditPropertyComponent } from "../../../core/components/edit-property/edit-property.component";
 
 import Achorn from "achorn";
+import { CpePortCreateComponent } from "../../../core/components/cpe-port-create/cpe-port-create.component";
 const achorn = new Achorn();
 
 @Component({
@@ -39,7 +40,7 @@ export class CpeComponent implements OnInit {
     /**
      * Id of the parent device
      */
-    public parentDeviceId: string;
+    public parentDeviceId: number;
 
     /**
      * Id of the CPE
@@ -128,6 +129,27 @@ export class CpeComponent implements OnInit {
         });
 
         // Refresh CPE data after Property was edited
+        modal.afterClose.subscribe(() => {
+            this.getCpe();
+        });
+    }
+
+    /**
+     * Open a Modal where the User can create new CPE Ports
+     */
+    public openCreateCpePortsModal() {
+        const modal = this.modal.create({
+            nzTitle: "Create CPE Ports",
+            nzContent: CpePortCreateComponent,
+            nzComponentParams: {
+                parentDeviceId: this.parentDeviceId,
+                cpe: this.cpe,
+            },
+            nzMaskClosable: true,
+            nzFooter: null,
+            nzCancelDisabled: true,
+        });
+
         modal.afterClose.subscribe(() => {
             this.getCpe();
         });

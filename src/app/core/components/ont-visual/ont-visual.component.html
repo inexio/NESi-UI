@@ -8,19 +8,25 @@
     <div class="content">
         <!-- Power Port -->
         <div class="port disabled" style="margin: 17px 20px 0 10px;">
-            <img class="power" src="assets/images/power_in.svg" />
+            <img class="power" src="assets/images/power_in.svg" style="cursor: not-allowed;" />
             <p class="port-label">POWER</p>
         </div>
 
         <!-- Optical Input Port -->
         <div class="port disabled">
-            <img class="in" src="assets/images/port_alt.svg" />
+            <img class="in" src="assets/images/port_alt.svg" style="cursor: not-allowed;" />
             <p class="port-label">OPT IN</p>
         </div>
 
         <!-- List of available ONT Ports the user can interact with -->
         <div class="ports">
-            <div class="port" *ngFor="let port of ports; let i = index" [ngClass]="{ disabled: port.id === null }">
+            <div
+                class="port"
+                *ngFor="let port of ports; let i = index"
+                [ngClass]="{ disabled: port.id === null }"
+                (click)="port.id === null ? openCreateOntPortsModal() : null"
+                [routerLink]="port.id === null ? null : ['/devices', parentDeviceId, 'ont-port', port.id]"
+            >
                 <img
                     nz-popover
                     [nzPopoverTitle]="port.name ? 'ONT Port ' + port.name : 'Unassigned Port'"
@@ -32,7 +38,6 @@
                                 : 'assets/images/port_adm.svg'
                             : 'assets/images/port.svg'
                     "
-                    [routerLink]="['/devices', parentDeviceId, 'ont-port', port.id]"
                 />
                 <p class="port-label">LAN {{ i + 1 }}</p>
             </div>

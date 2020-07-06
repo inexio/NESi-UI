@@ -16,9 +16,15 @@
     </div>
 
     <h5 style="margin-top: 35px;">ONT PORTS</h5>
+
+    <p *ngIf="ont.ont_ports.length === 0">ONT has no ONT Port(s)</p>
     <ul style="padding-left: 25px;">
         <li *ngFor="let port of ont.ont_ports">
             <a nz-button nzType="link" nzSize="small" [routerLink]="['/devices', parentDeviceId, 'ont-port', port.id]"> {{ port.name }}</a>
+        </li>
+
+        <li>
+            <a nz-button nzType="link" nzSize="small" (click)="openCreateOntPortsModal()">Add ONT Port(s)</a>
         </li>
     </ul>
 

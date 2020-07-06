@@ -16,11 +16,17 @@
     </div>
 
     <h5 style="margin-top: 35px;">CPE PORTS</h5>
+
+    <p *ngIf="cpe.cpe_ports.length === 0">CPE has no CPE Port(s)</p>
     <ul style="padding-left: 25px;">
         <li *ngFor="let cpePort of cpe.cpe_ports">
             <a nz-button nzType="link" nzSize="small" [routerLink]="['/devices', parentDeviceId, 'cpe-port', cpePort.id]">{{
                 cpePort.name
             }}</a>
+        </li>
+
+        <li>
+            <a nz-button nzType="link" nzSize="small" (click)="openCreateCpePortsModal()">Add CPE Port(s)</a>
         </li>
     </ul>
 

@@ -1,15 +1,15 @@
 <form #form="ngForm">
     <p>
-        You are about to add {{ createCount }} new {{ createCount === 1 ? "Subrack" : "Subracks" }} to Device {{ deviceName }} (ID:
-        {{ deviceId }}).
+        You are about to add {{ createCount }} new {{ createCount === 1 ? "CPE" : "CPEs" }} to ONT Port {{ ontPortName }} (ID:
+        {{ ontPortId }}).
     </p>
 
-    <h5>SUBRACK COUNT</h5>
+    <h5>CPE COUNT</h5>
     <nz-slider [(ngModel)]="createCount" #count="ngModel" name="count" [nzMin]="1" [nzMax]="4"></nz-slider>
 
-    <h5 style="margin-top: 20px;">SUBRACK DETAILS</h5>
+    <h5 style="margin-top: 20px;">CPE DETAILS</h5>
     <input
-        [(ngModel)]="subrackForm.description"
+        [(ngModel)]="cpeForm.description"
         #description="ngModel"
         name="description"
         style="width: 100%; margin-top: 10px;"
@@ -22,14 +22,8 @@
 
     <div class="buttons">
         <button nz-button nzType="default" style="margin-right: 10px;" (click)="modal.close()">Cancel</button>
-        <button
-            nz-button
-            nzType="primary"
-            [disabled]="form.invalid"
-            [nzLoading]="createSubracksRequest === 'pending'"
-            (click)="createSubracks()"
-        >
-            Create Subracks
+        <button nz-button nzType="primary" [disabled]="form.invalid" [nzLoading]="createCpesReqeust === 'pending'" (click)="createCpes()">
+            Create CPEs
         </button>
     </div>
 </form>

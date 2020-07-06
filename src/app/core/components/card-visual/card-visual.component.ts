@@ -6,6 +6,8 @@ import { ActivatedRoute } from "@angular/router";
 import { Port } from "../../interfaces/port.interface";
 
 import Achorn from "achorn";
+import { NzModalService } from "ng-zorro-antd/modal";
+import { PortCreateComponent } from "../port-create/port-create.component";
 const achorn = new Achorn();
 
 @Component({
@@ -17,13 +19,13 @@ export class CardVisualComponent implements OnInit {
     /**
      * Id of the parent device used to
      */
-    public parentDeviceId: number | string;
+    public parentDeviceId: number;
 
     /**
      * Card object, either given as input or retrieved through the API
      */
     @Input("card") public card?: Card;
-    @Input("cardId") public cardId?: number | string;
+    @Input("cardId") public cardId?: number;
 
     /**
      * Request state of the Subrack if it has to be retrieved through the API
@@ -32,7 +34,7 @@ export class CardVisualComponent implements OnInit {
 
     public portPairs: [Port, Port][] = [];
 
-    constructor(private route: ActivatedRoute, private api: ApiService) {}
+    constructor(private route: ActivatedRoute, private api: ApiService, private modal: NzModalService) {}
 
     ngOnInit(): void {
         // Get id of parent device from route
@@ -46,20 +48,7 @@ export class CardVisualComponent implements OnInit {
                     throw new Error("Missing `parentDeviceId` or `cardId` which are needed to request Card data");
                 }
 
-                // Get Subrack data
-                this.cardRequest = "pending";
-                this.api.getCard(this.parentDeviceId, this.cardId).subscribe({
-                    next: (card) => {
-                        this.card = card;
-                        this.parsePorts();
-                        this.cardRequest = "success";
-                    },
-                    error: (error) => {
-                        // @ts-ignore
-                        achorn.error(error);
-                        this.cardRequest = "error";
-                    },
-                });
+                this.getCard();
             } else {
                 this.parsePorts();
             }
@@ -67,9 +56,31 @@ export class CardVisualComponent implements OnInit {
     }
 
     /**
+     * Get Card data
+     */
+    public getCard(): void {
+        // Get Card data
+        this.cardRequest = "pending";
+
+        this.api.getCard(this.parentDeviceId, this.cardId || this.card.id).subscribe({
+            next: (card) => {
+                this.card = card;
+                this.parsePorts();
+                this.cardRequest = "success";
+            },
+            error: (error) => {
+                // @ts-ignore
+                achorn.error(error);
+                this.cardRequest = "error";
+            },
+        });
+    }
+
+    /**
      * Parse card ports into array of port pairs to display them
      */
     public parsePorts(): void {
+        this.portPairs = [];
         for (let i = 0; i < Number(this.card.ppc); i++) {
             if (!(i % 2)) {
                 this.portPairs.push([
@@ -78,5 +89,27 @@ export class CardVisualComponent implements OnInit {
                 ]);
             }
         }
+    }
+
+    /**
+     * Open a Modal where the User can create new Ports
+     */
+    public openCreatePortsModal() {
+        const modal = this.modal.create({
+            nzTitle: "Create Ports",
+            nzContent: PortCreateComponent,
+            nzComponentParams: {
+                parentDeviceId: this.parentDeviceId,
+                card: this.card,
+            },
+            nzMaskClosable: true,
+            nzFooter: null,
+            nzCancelDisabled: true,
+        });
+
+        // Refresh Subrack data after Property was edited
+        modal.afterClose.subscribe(() => {
+            this.getCard();
+        });
     }
 }

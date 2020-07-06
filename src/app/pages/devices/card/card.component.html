@@ -16,9 +16,15 @@
     </div>
 
     <h5 style="margin-top: 35px;">PORTS</h5>
+
+    <p *ngIf="card.ports.length === 0">Card has no Port(s)</p>
     <ul style="padding-left: 25px;">
         <li *ngFor="let port of card.ports">
             <a nz-button nzType="link" nzSize="small" [routerLink]="['/devices', parentDeviceId, 'port', port.id]">{{ port.name }}</a>
+        </li>
+
+        <li>
+            <a nz-button nzType="link" nzSize="small" (click)="openCreatePortsModal()">Add Port(s)</a>
         </li>
     </ul>
 

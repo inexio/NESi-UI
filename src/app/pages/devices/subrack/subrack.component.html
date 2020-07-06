@@ -16,9 +16,15 @@
     </div>
 
     <h5 style="margin-top: 35px;">CARDS</h5>
+
+    <p *ngIf="subrack.cards.length === 0">Subrack has no Card(s)</p>
     <ul style="padding-left: 25px;">
         <li *ngFor="let card of subrack.cards">
             <a nz-button nzType="link" nzSize="small" [routerLink]="['/devices', parentDeviceId, 'card', card.id]">{{ card.name }}</a>
+        </li>
+
+        <li>
+            <a nz-button nzType="link" nzSize="small" (click)="openCreateCardsModal()">Add Card(s)</a>
         </li>
     </ul>
 

@@ -8,6 +8,7 @@ import { NzModalService } from "ng-zorro-antd/modal";
 import { EditPropertyComponent } from "../../../core/components/edit-property/edit-property.component";
 
 import Achorn from "achorn";
+import { CardCreateComponent } from "../../../core/components/card-create/card-create.component";
 const achorn = new Achorn();
 
 @Component({
@@ -34,7 +35,7 @@ export class SubrackComponent implements OnInit {
     /**
      * Id of the parent device
      */
-    public parentDeviceId: string;
+    public parentDeviceId: number;
 
     /**
      * Id of the Subrack
@@ -105,6 +106,29 @@ export class SubrackComponent implements OnInit {
                 objectType: "subracks",
                 deviceId: Number(this.parentDeviceId),
                 objectId: this.subrack.id,
+            },
+            nzMaskClosable: true,
+            nzFooter: null,
+            nzCancelDisabled: true,
+        });
+
+        // Refresh Subrack data after Property was edited
+        modal.afterClose.subscribe(() => {
+            this.getSubrack();
+        });
+    }
+
+    /**
+     * Opens a modal where the user can create new Cards
+     */
+    public openCreateCardsModal() {
+        const modal = this.modal.create({
+            nzTitle: "Create Cards",
+            nzContent: CardCreateComponent,
+            nzComponentParams: {
+                parentDeviceId: this.parentDeviceId,
+                subrackId: this.subrack.id,
+                subrackName: this.subrack.name,
             },
             nzMaskClosable: true,
             nzFooter: null,

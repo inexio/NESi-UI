@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, ObservableInput } from "rxjs";
 import { Device } from "../../interfaces/device.interface";
 import { Profile } from "../../interfaces/profile.interface";
 import { Subrack } from "../../interfaces/subrack.interface";
@@ -136,7 +136,7 @@ export class ApiService {
     }
 
     /**
-     * Creates a number of Subracks
+     * Create multiple Subracks at once
      * @param deviceId Id of the Device to create Subracks for
      * @param subracks Array of Subrack objects to add
      */
@@ -164,8 +164,18 @@ export class ApiService {
      * @param deviceId Id of the Device which holds the Card
      * @param cardId Id of the Card to get
      */
-    public getCard(deviceId: number | string, cardId: number | string): Observable<Card> {
+    public getCard(deviceId: number, cardId: number): Observable<Card> {
         return this.http.get<Card>(`boxen/${deviceId}/cards/${cardId}`);
+    }
+
+    /**
+     * Create multiple Cards at once
+     * @param deviceId Id of the parent Device
+     * @param subrackId Id of the Subrack the Cards will be added to
+     * @param cards Array of Cards to add
+     */
+    public createCards(deviceId: number, subrackId: number, cards: any[]): Observable<any> {
+        return this.http.post<any>(`boxen/${deviceId}/cards`, cards);
     }
 
     /**
@@ -193,6 +203,16 @@ export class ApiService {
     }
 
     /**
+     * Create multiple Ports at once
+     * @param deviceId Id of the parent Device
+     * @param cardId Id of the Card to add the Ports to
+     * @param ports Array of Ports to create
+     */
+    public createPorts(deviceId: number, cardId: number, ports: any[]): Observable<any> {
+        return this.http.post<any>(`boxen/${deviceId}/ports`, ports);
+    }
+
+    /**
      * Get a list of ONTs attached to a Port
      * @param deviceId Id of the Device containing the ONTs
      * @param portId Id of the Port the ONT is attached to
@@ -214,6 +234,16 @@ export class ApiService {
      */
     public getOnt(deviceId: number | string, ontId: number | string): Observable<Ont> {
         return this.http.get<Ont>(`boxen/${deviceId}/onts/${ontId}`);
+    }
+
+    /**
+     * Create multiple ONTs at once
+     * @param deviceId Id of the parent Device
+     * @param portId Id of the Port to add the ONTs to
+     * @param onts Array of ONTs to create
+     */
+    public createOnts(deviceId: number, portdId: number, onts: any[]): Observable<any> {
+        return this.http.post<any>(`boxen/${deviceId}/onts`, onts);
     }
 
     /**
@@ -241,6 +271,16 @@ export class ApiService {
     }
 
     /**
+     * Create multiple ONT Ports at once
+     * @param deviceId Id of the parent Device
+     * @param ontId Id of the ONT to add the ONT Ports to
+     * @param ontPorts Array of ONT Ports to create
+     */
+    public createOntPorts(deviceId: number, ontId: number, ontPorts: any[]): Observable<any> {
+        return this.http.post<any>(`boxen/${deviceId}/ont_ports`, ontPorts);
+    }
+
+    /**
      * Get a list of CPEs attached to given ONT Port
      * @param deviceId Id of the device containing the CPEs
      * @param ontPortId Id of the ONT Port to get CPEs for
@@ -265,6 +305,16 @@ export class ApiService {
     }
 
     /**
+     * Create multiple CPEs at once
+     * @param deviceId Id of the parent Device
+     * @param ontPortId Id of the ONT Port to add the CPEs to
+     * @param cpes Array of CPEs to create
+     */
+    public createCpes(deviceId: number, ontPortId: number, cpes: any[]): Observable<any> {
+        return this.http.post<any>(`boxen/${deviceId}/cpes`, cpes);
+    }
+
+    /**
      * Get CPE Ports of a specific CPE
      * @param deviceId Id of the Device which contains teh CPE
      * @param cpeId Id of the CPE of the Ports we want to get
@@ -286,6 +336,16 @@ export class ApiService {
      */
     public getCpePort(deviceId: number, cpePortId: number): Observable<{ [key: string]: any }> {
         return this.http.get<{ [key: string]: any }>(`boxen/${deviceId}/cpe_ports/${cpePortId}`);
+    }
+
+    /**
+     * Create multiple CPE Ports at once
+     * @param deviceId Id of the parent Device
+     * @param cpeId Id of the CPE to add the CPE Ports to
+     * @param cpePorts Array of CPE Ports to create
+     */
+    public createCpePorts(deviceId: number, cpeId: number, cpePorts: any[]): Observable<any> {
+        return this.http.post<any>(`boxen/${deviceId}/cpe_ports`, cpePorts);
     }
 
     /**

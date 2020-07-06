@@ -70,6 +70,12 @@ import { CreateComponent } from "./pages/devices/create/create.component";
 import { SubrackCreateComponent } from "./core/components/subrack-create/subrack-create.component";
 import { NzAlertModule } from "ng-zorro-antd/alert";
 import { NzSliderModule } from "ng-zorro-antd/slider";
+import { CardCreateComponent } from "./core/components/card-create/card-create.component";
+import { CpeCreateComponent } from "./core/components/cpe-create/cpe-create.component";
+import { OntPortCreateComponent } from "./core/components/ont-port-create/ont-port-create.component";
+import { OntCreateComponent } from "./core/components/ont-create/ont-create.component";
+import { PortCreateComponent } from "./core/components/port-create/port-create.component";
+import { CpePortCreateComponent } from "./core/components/cpe-port-create/cpe-port-create.component";
 
 @NgModule({
     declarations: [
@@ -105,6 +111,12 @@ import { NzSliderModule } from "ng-zorro-antd/slider";
         TerminalComponent,
         CreateComponent,
         SubrackCreateComponent,
+        CardCreateComponent,
+        CpeCreateComponent,
+        OntPortCreateComponent,
+        OntCreateComponent,
+        PortCreateComponent,
+        CpePortCreateComponent,
     ],
     imports: [
         BrowserModule,

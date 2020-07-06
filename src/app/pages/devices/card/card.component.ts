@@ -9,6 +9,7 @@ import { EditPropertyComponent } from "../../../core/components/edit-property/ed
 import { stringify } from "querystring";
 
 import Achorn from "achorn";
+import { PortCreateComponent } from "../../../core/components/port-create/port-create.component";
 const achorn = new Achorn();
 
 @Component({
@@ -31,7 +32,7 @@ export class CardComponent implements OnInit {
     /**
      * Id of the parent device
      */
-    public parentDeviceId: string;
+    public parentDeviceId: number;
 
     /**
      * Id of the Card
@@ -68,7 +69,7 @@ export class CardComponent implements OnInit {
      */
     public getCard(): void {
         this.cardRequest = "pending";
-        this.api.getCard(this.parentDeviceId, this.cardId).subscribe({
+        this.api.getCard(this.parentDeviceId, this.card ? this.card.id : this.cardId).subscribe({
             next: (card) => {
                 this.card = card;
 
@@ -129,6 +130,28 @@ export class CardComponent implements OnInit {
         });
 
         // Refresh Card data after Property was edited
+        modal.afterClose.subscribe(() => {
+            this.getCard();
+        });
+    }
+
+    /**
+     * Open a Modal where the User can create new Ports
+     */
+    public openCreatePortsModal() {
+        const modal = this.modal.create({
+            nzTitle: "Create Ports",
+            nzContent: PortCreateComponent,
+            nzComponentParams: {
+                parentDeviceId: this.parentDeviceId,
+                card: this.card,
+            },
+            nzMaskClosable: true,
+            nzFooter: null,
+            nzCancelDisabled: true,
+        });
+
+        // Refresh Subrack data after Property was edited
         modal.afterClose.subscribe(() => {
             this.getCard();
         });

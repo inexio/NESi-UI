@@ -8,6 +8,7 @@ import { EditPropertyComponent } from "../../../core/components/edit-property/ed
 import { NzModalService } from "ng-zorro-antd/modal";
 
 import Achorn from "achorn";
+import { OntCreateComponent } from "../../../core/components/ont-create/ont-create.component";
 const achorn = new Achorn();
 
 @Component({
@@ -39,7 +40,7 @@ export class PortComponent implements OnInit {
     /**
      * Id of the parent device
      */
-    public parentDeviceId: string;
+    public parentDeviceId: number;
 
     /**
      * Id of the Port
@@ -184,6 +185,29 @@ export class PortComponent implements OnInit {
         });
 
         // Refresh Port data after Property was edited
+        modal.afterClose.subscribe(() => {
+            this.getPort();
+        });
+    }
+
+    /**
+     * Open a Modal where the User can create new ONTs
+     */
+    public openCreateOntsModal() {
+        const modal = this.modal.create({
+            nzTitle: "Create ONTs",
+            nzContent: OntCreateComponent,
+            nzComponentParams: {
+                parentDeviceId: this.parentDeviceId,
+                portId: this.port.id,
+                portName: this.port.name,
+            },
+            nzMaskClosable: true,
+            nzFooter: null,
+            nzCancelDisabled: true,
+        });
+
+        // Refresh Subrack data after Property was edited
         modal.afterClose.subscribe(() => {
             this.getPort();
         });

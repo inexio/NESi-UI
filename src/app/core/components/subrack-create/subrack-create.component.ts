@@ -20,11 +20,6 @@ export class SubrackCreateComponent {
     public deviceName: string;
 
     /**
-     * Array of Subrack batches to create
-     */
-    public batches: { name: string; description: string }[][] = [];
-
-    /**
      * Number of how many Subracks in current batch
      */
     public createCount: number = 1;
@@ -33,10 +28,8 @@ export class SubrackCreateComponent {
      * Single Subrack form
      */
     public subrackForm: {
-        name: string;
         description: string;
     } = {
-        name: "",
         description: "",
     };
 
@@ -45,44 +38,16 @@ export class SubrackCreateComponent {
      */
     public createSubracksRequest: RequestState = "idle";
 
-    constructor(private api: ApiService, private modal: NzModalRef) {}
-
-    /**
-     * Multiplies subrackForm by createCount and pushes it to Batches array
-     */
-    public addBatch(): void {
-        // Add batch to batches array
-        const batch = [];
-        for (let i = 0; i < this.createCount; i++) {
-            batch.push(this.subrackForm);
-        }
-
-        this.batches.push(batch);
-
-        // Reset Form
-        this.createCount = 1;
-        this.subrackForm = {
-            name: "",
-            description: "",
-        };
-    }
-
-    /**
-     * Removes batch at given index
-     * @param index Index to remove batch at
-     */
-    public removeBatch(index: number): void {
-        this.batches.splice(index, 1);
-    }
+    constructor(private api: ApiService, public modal: NzModalRef) {}
 
     /**
      * Http Request to create Subracks
      */
     public createSubracks(): void {
         let subracks = [];
-        this.batches.map((batch) => {
-            subracks = subracks.concat(batch);
-        });
+        for (let i = 0; i < this.createCount; i++) {
+            subracks.push(this.subrackForm);
+        }
 
         this.createSubracksRequest = "pending";
         this.api.createSubracks(this.deviceId, subracks).subscribe({
@@ -94,12 +59,5 @@ export class SubrackCreateComponent {
                 this.createSubracksRequest = "pending";
             },
         });
-    }
-
-    /**
-     * Close modal
-     */
-    public cancel(): void {
-        this.modal.destroy();
     }
 }

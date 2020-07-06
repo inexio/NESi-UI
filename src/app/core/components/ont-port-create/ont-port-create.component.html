@@ -1,0 +1,48 @@
+<form #form="ngForm">
+    <nz-alert
+        nzType="error"
+        nzMessage="Unable to add more ONT Ports"
+        nzDescription="The maximum number of ONTS Ports has been reached for this ONT. Delete some ONT Ports to make space for new ones."
+        nzShowIcon
+        *ngIf="availablePorts === 0"
+    ></nz-alert>
+
+    <p>You are about to add new ONT Ports to ONT {{ ont.name }} (ID: {{ ont.id }}).</p>
+
+    <h5>ONT PORT COUNT</h5>
+    <nz-slider
+        [(ngModel)]="createCount"
+        #count="ngModel"
+        name="count"
+        [nzMin]="1"
+        [nzMax]="availablePorts"
+        [nzDisabled]="availablePorts === 0"
+    ></nz-slider>
+
+    <h5 style="margin-top: 20px;">ONT PORT DETAILS</h5>
+    <input
+        [(ngModel)]="ontPortForm.description"
+        #description="ngModel"
+        name="description"
+        style="width: 100%; margin-top: 10px;"
+        nz-input
+        placeholder="Description"
+        required
+        [disabled]="availablePorts === 0"
+    />
+
+    <nz-divider></nz-divider>
+
+    <div class="buttons">
+        <button nz-button nzType="default" style="margin-right: 10px;" (click)="modal.close()">Cancel</button>
+        <button
+            nz-button
+            nzType="primary"
+            [disabled]="form.invalid || availablePorts === 0"
+            [nzLoading]="createOntPortsRequest === 'pending'"
+            (click)="createOntPorts()"
+        >
+            Create ONT Portss
+        </button>
+    </div>
+</form>

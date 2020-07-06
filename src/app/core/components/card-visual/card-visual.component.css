@@ -32,7 +32,6 @@ div.card div.pair > div.port {
 
 div.card div.pair > div.port.disabled img {
     opacity: 0.5;
-    cursor: not-allowed;
 }
 
 div.card div.pair > div.port:nth-child(2) > img {

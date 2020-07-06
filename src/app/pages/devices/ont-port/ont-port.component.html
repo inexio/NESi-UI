@@ -16,9 +16,15 @@
     </div>
 
     <h5 style="margin-top: 35px;">CPES</h5>
+
+    <p *ngIf="ontPort.cpes.length === 0">ONT has no ONT Port(s)</p>
     <ul style="padding-left: 25px;">
         <li *ngFor="let cpe of ontPort.cpes">
             <a nz-button nzType="link" nzSize="small" [routerLink]="['/devices', parentDeviceId, 'cpe', cpe.id]">{{ cpe.name }}</a>
+        </li>
+
+        <li>
+            <a nz-button nzType="link" nzSize="small" (click)="openCreateCpesModal()">Add CPE(s)</a>
         </li>
     </ul>
 

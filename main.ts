@@ -6,6 +6,14 @@ import * as path from "path";
 import * as url from "url";
 
 /**
+ * Initiate Auto Updater
+ */
+require("update-electron-app")({
+    repo: "inexio/softbox-ui",
+    updateInterval: "1 hour",
+});
+
+/**
  * Create new BrowserWindow
  */
 let win: BrowserWindow = null;

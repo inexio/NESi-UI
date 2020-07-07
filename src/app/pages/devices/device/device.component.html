@@ -62,7 +62,7 @@
     <p *ngIf="subracksRequest === 'success' && subracks.length === 0">Device has no Subrack(s)</p>
     <ul *ngIf="subracksRequest === 'success'" style="padding-left: 25px;">
         <li *ngFor="let subrack of subracks">
-            <a nz-button nzType="link" nzSize="small" [routerLink]="['subrack', subrack.id]">{{ subrack.name }}</a>
+            <a nz-button nzType="link" nzSize="small" [routerLink]="['subrack', subrack.id]">{{ subrack.name || "Unnamed Subrack" }}</a>
         </li>
 
         <li>

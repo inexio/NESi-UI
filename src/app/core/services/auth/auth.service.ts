@@ -52,7 +52,7 @@ export class AuthService {
      */
     public checkCredentials(credentials: Credentials): Observable<Credentials> {
         return this.http
-            .get<any>(`${credentials.protocol}://${credentials.host}:${credentials.port}/softboxen/v1/boxen`, {
+            .get<any>(`${credentials.protocol}://${credentials.host}:${credentials.port}/nesi/v1/boxen`, {
                 headers: new HttpHeaders().append(
                     "Authorization",
                     `Basic ${btoa(`${credentials.auth.username}:${credentials.auth.password}`)}`,

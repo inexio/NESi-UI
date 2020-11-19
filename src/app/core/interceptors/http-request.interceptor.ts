@@ -31,7 +31,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
 
         // Clone Request and attach headers
         const req = request.clone({
-            url: this.auth.credentials ? `${this.auth.credentials.requestUrl}/softboxen/v1/${request.url}` : request.urlWithParams,
+            url: this.auth.credentials ? `${this.auth.credentials.requestUrl}/nesi/v1/${request.url}` : request.urlWithParams,
             headers: this.auth.credentials && this.auth.credentials.auth.enabled ? this.auth.credentials.requestHeaders : request.headers,
         });
 

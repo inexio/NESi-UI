@@ -1,0 +1,37 @@
+nz-page-header.page-header {
+    padding: 8px 0;
+    background-color: #000000;
+    transition: all 0.25s ease;
+}
+
+nz-page-header.page-header.affixed {
+    padding: 10px 16px 8px 16px;
+    box-shadow: 0px 1px 0px 0px #303030;
+}
+
+div.details > p {
+    margin: 0;
+}
+
+span.field-value {
+    color: #ffffff;
+    font-family: monospace;
+}
+
+span.field-value::before,
+span.field-value::after {
+    content: "`";
+}
+
+div.switches {
+    margin-top: 35px;
+}
+
+p.attribute > button.edit {
+    opacity: 0;
+    transition: all 0.25s ease;
+}
+
+p.attribute:hover > button.edit {
+    opacity: 1;
+}

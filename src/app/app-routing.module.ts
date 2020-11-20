@@ -19,6 +19,9 @@ import { SettingsComponent } from "./pages/settings/settings.component";
 import { TerminalComponent } from "./pages/devices/terminal/terminal.component";
 import { CreateComponent } from "./pages/devices/create/create.component";
 import { UserComponent } from "./pages/devices/user/user.component";
+import { MgmtCardComponent } from "./pages/devices/mgmt-card/mgmt-card.component";
+import { MgmtPortVisualComponent } from "./core/components/mgmt-port-visual/mgmt-port-visual.component";
+import { MgmtPortComponent } from "./pages/devices/mgmt-port/mgmt-port.component";
 
 const routes: Routes = [
     {
@@ -59,8 +62,16 @@ const routes: Routes = [
                 component: CardComponent,
             },
             {
+                path: ":id/mgmt-card/:card",
+                component: MgmtCardComponent,
+            },
+            {
                 path: ":id/port/:port",
                 component: PortComponent,
+            },
+            {
+                path: ":id/mgmt-port/:port",
+                component: MgmtPortComponent,
             },
             {
                 path: ":id/ont/:ont",

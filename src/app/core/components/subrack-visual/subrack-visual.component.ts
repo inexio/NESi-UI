@@ -19,6 +19,11 @@ export class SubrackVisualComponent implements OnInit {
     private parentDeviceId: string;
 
     /**
+     * Array of Management Cards
+     */
+    public managementCards: any[];
+
+    /**
      * Subrack object, either given as input or retrieved through the API
      */
     @Input("subrack") public subrack?: Subrack;
@@ -57,6 +62,13 @@ export class SubrackVisualComponent implements OnInit {
                     },
                 });
             }
+
+            // Get Management Cards
+            this.api.getManagementCards(this.parentDeviceId, this.subrack.id || this.subrackId).subscribe({
+                next: (cards) => {
+                    this.managementCards = cards;
+                },
+            });
         });
     }
 }

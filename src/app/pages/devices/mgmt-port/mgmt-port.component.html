@@ -1,0 +1,31 @@
+<div *ngIf="port">
+    <nz-affix [nzOffsetTop]="0" [nzTarget]="core.devicesContentWrapper.nativeElement" (nzChange)="affixEvent($event)">
+        <nz-page-header
+            class="page-header"
+            [ngClass]="{ affixed: isAffixed }"
+            nzBackIcon
+            [nzTitle]="'Management Port ' + port.name"
+            [nzSubtitle]="port.description"
+            (nzBack)="navigateUp()"
+        >
+        </nz-page-header>
+    </nz-affix>
+
+    <div style="margin-top: 25px">
+        <app-mgmt-port-visual [port]="port"></app-mgmt-port-visual>
+    </div>
+
+    <h5 style="margin-top: 35px">ATTRIBUTES</h5>
+    <div class="details">
+        <p *ngFor="let attribute of attributes" class="attribute">
+            {{ attribute.key }}:
+            <span class="field-value">
+                <span appCodeCopy>{{ attribute.value }}</span>
+            </span>
+
+            <button class="edit" nz-button nzType="link" nzShape="circle" (click)="editProperty(attribute.key, attribute.value)">
+                <i nz-icon nzType="edit" style="font-size: 14px"></i>
+            </button>
+        </p>
+    </div>
+</div>

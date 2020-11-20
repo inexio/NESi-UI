@@ -1,0 +1,61 @@
+div.card {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border: 2px solid #ffffff;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+}
+
+div.card div.ports {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+div.card div.pair {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 50px;
+}
+
+div.card div.pair > div.port {
+    margin: 5px;
+    cursor: pointer;
+}
+
+div.card div.pair > div.port.disabled img {
+    opacity: 0.5;
+}
+
+div.card div.pair > div.port:nth-child(2) > img {
+    transform: scaleY(-1);
+}
+
+div.card div.pair > div.port > img {
+    width: 42px;
+}
+
+div.card div.pair > div.port > p.port-index {
+    text-align: center;
+    margin: 0;
+    font-weight: 700;
+}
+
+h4.name {
+    margin: 10px 0 0 10px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+h4.name > span.description {
+    color: #ffffffa7;
+    font-weight: 400;
+    margin-left: 10px;
+}

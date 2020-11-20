@@ -75,6 +75,7 @@ export class SubrackComponent implements OnInit {
             },
         });
     }
+
     /**
      * Event handler called when affix state changes
      * @param value Boolean if affix is affixed

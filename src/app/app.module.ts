@@ -79,6 +79,10 @@ import { CpePortCreateComponent } from "./core/components/cpe-port-create/cpe-po
 import { UserComponent } from "./pages/devices/user/user.component";
 import { CredentialsCreateComponent } from "./core/components/credentials-create/credentials-create.component";
 import { UserCreateComponent } from "./core/components/user-create/user-create.component";
+import { MgmtCardVisualComponent } from "./core/components/mgmt-card-visual/mgmt-card-visual.component";
+import { MgmtPortVisualComponent } from "./core/components/mgmt-port-visual/mgmt-port-visual.component";
+import { MgmtCardComponent } from './pages/devices/mgmt-card/mgmt-card.component';
+import { MgmtPortComponent } from './pages/devices/mgmt-port/mgmt-port.component';
 
 @NgModule({
     declarations: [
@@ -123,6 +127,10 @@ import { UserCreateComponent } from "./core/components/user-create/user-create.c
         UserComponent,
         CredentialsCreateComponent,
         UserCreateComponent,
+        MgmtCardVisualComponent,
+        MgmtPortVisualComponent,
+        MgmtCardComponent,
+        MgmtPortComponent,
     ],
     imports: [
         BrowserModule,

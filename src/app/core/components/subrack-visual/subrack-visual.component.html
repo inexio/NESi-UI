@@ -1,4 +1,8 @@
 <div class="subrack" *ngIf="subrack">
+    <div class="card" *ngFor="let card of managementCards || []">
+        <app-mgmt-card-visual [card]="card"></app-mgmt-card-visual>
+    </div>
+
     <div class="card" *ngFor="let card of subrack.cards || []">
         <app-card-visual [card]="card"></app-card-visual>
     </div>

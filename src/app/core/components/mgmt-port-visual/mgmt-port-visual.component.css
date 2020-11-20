@@ -1,0 +1,12 @@
+img.port {
+    width: 42px;
+    cursor: pointer;
+}
+
+div.onts div.ont {
+    padding-left: 50px;
+    margin-top: 20px;
+    background-image: url(assets/images/arrow.svg);
+    background-repeat: no-repeat;
+    background-position: left 20px top -28px;
+}

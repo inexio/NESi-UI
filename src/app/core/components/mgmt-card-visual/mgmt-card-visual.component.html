@@ -1,0 +1,59 @@
+<div class="card" *ngIf="card">
+    <!-- "Status LED" and Name of the card -->
+    <h4 class="name" [routerLink]="['/devices', parentDeviceId, 'mgmt-card', card.id]">
+        <nz-badge [nzStatus]="card.operational_state === 'enabled' ? 'success' : 'error'"></nz-badge>Management Card
+        {{ card.name.toUpperCase() }}
+        <span class="description">{{ card.description ? card.description.toUpperCase() : "" }}</span>
+    </h4>
+
+    <!-- Labeled list of ports (in pairs) -->
+    <div class="ports">
+        <ng-container *ngFor="let pair of portPairs; let index = index">
+            <div class="pair">
+                <!-- Upper Port -->
+                <div
+                    class="port"
+                    [ngClass]="{ disabled: pair[1].id === null }"
+                    [routerLink]="pair[1].id !== null ? ['/devices', parentDeviceId, 'mgmt-port', pair[1].id] : null"
+                >
+                    <p class="port-index">
+                        {{ index * 2 + 2 }}
+                    </p>
+                    <img
+                        [src]="
+                            pair[1].admin_state === 'up'
+                                ? pair[1].operational_state === 'up'
+                                    ? 'assets/images/port_opr.svg'
+                                    : 'assets/images/port_adm.svg'
+                                : 'assets/images/port.svg'
+                        "
+                        nz-popover
+                        [nzPopoverTitle]="pair[1].name ? 'Port ' + pair[1].name : 'Unassigned Port'"
+                        [nzPopoverContent]="pair[1].name ? 'Click on Port to see more details' : 'This Port has not been assigned yet'"
+                    />
+                </div>
+
+                <!-- Lower Port -->
+                <div
+                    class="port"
+                    [ngClass]="{ disabled: pair[0].id === null }"
+                    [routerLink]="pair[0].id !== null ? ['/devices', parentDeviceId, 'mgmt-port', pair[0].id] : null"
+                >
+                    <img
+                        [src]="
+                            pair[0].admin_state === 'up'
+                                ? pair[0].operational_state === 'up'
+                                    ? 'assets/images/port_opr.svg'
+                                    : 'assets/images/port_adm.svg'
+                                : 'assets/images/port.svg'
+                        "
+                        nz-popover
+                        [nzPopoverTitle]="pair[0].name ? 'Port ' + pair[0].name : 'Unassigned Port'"
+                        [nzPopoverContent]="pair[0].name ? 'Click on Port to see more details' : 'This Port has not been assigned yet'"
+                    />
+                    <p class="port-index">{{ index * 2 + 1 }}</p>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<img
+    *ngIf="port"
+    class="port"
+    [src]="
+        port.admin_state === 'up'
+            ? port.operational_state === 'up'
+                ? 'assets/images/port_opr.svg'
+                : 'assets/images/port_adm.svg'
+            : 'assets/images/port.svg'
+    "
+    [routerLink]="['/devices', parentDeviceId, 'mgmt-card', port.mgmt_card_id]"
+    nz-popover
+    [nzPopoverTitle]="'Management Port ' + port.name"
+    [nzPopoverContent]="'Click to go back to Management Card view'"
+/>

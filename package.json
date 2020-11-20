@@ -1,8 +1,8 @@
 {
-    "name": "softbox-ui",
+    "name": "nesi-ui",
     "version": "1.0.0",
-    "description": "A web and desktop app to interact with the Softbox CLI",
-    "homepage": "https://github.com/inexio/softbox-ui",
+    "description": "A web and desktop app to interact with the NESi CLI",
+    "homepage": "https://github.com/inexio/nesi-ui",
     "author": {
         "name": "Juri Adams",
         "email": "juri@adams.sh"

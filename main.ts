@@ -9,7 +9,7 @@ import * as url from "url";
  * Initiate Auto Updater
  */
 require("update-electron-app")({
-    repo: "inexio/softbox-ui",
+    repo: "inexio/nesi-ui",
     updateInterval: "1 hour",
 });
 

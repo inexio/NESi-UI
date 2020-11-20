@@ -14,18 +14,11 @@ const achorn = new Achorn();
 })
 export class AppComponent {
     constructor(public core: CoreService, public auth: AuthService) {
-        // Print App name
-        console.log(
-            "%c            __ _   _ \n           / _| | | |\n ___  ___ | |_| |_| |__   _____  __\n/ __|/ _ \\|  _| __| '_ \\ / _ \\ \\/ /\n\\__ \\ (_) | | | |_| |_) | (_) >  <\n|___/\\___/|_|  \\__|_.__/ \\___/_/\\_\\%c\n\n Do you know what you're doing? 👀\n",
-            "font-weight: 700;",
-            "font-weight: unset;",
-        );
-
         // Print Repository link
-        console.log("\n%cGitHub Repository:%c\nhttps://github.com/inexio/softbox-ui\n", "font-weight: 700;", "font-weight: unset;");
+        console.log("\n%cGitHub Repository:%c\nhttps://github.com/inexio/nesi-ui\n", "font-weight: 700;", "font-weight: unset;");
 
         // Print Support link
-        console.log("\n%cIssues/Support:%c\nhttps://github.com/inexio/softbox-ui/issues\n", "font-weight: 700;", "font-weight: unset;");
+        console.log("\n%cIssues/Support:%c\nhttps://github.com/inexio/nesi-ui/issues\n", "font-weight: 700;", "font-weight: unset;");
 
         // Print basic App information
         console.log(

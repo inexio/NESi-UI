@@ -90,6 +90,14 @@ export class UserComponent implements OnInit {
         });
     }
 
+    public deleteUser(): void {
+        this.api.deleteUser(this.parentDeviceId, this.user.id).subscribe({
+            next: () => {
+                this.navigateUp();
+            },
+        });
+    }
+
     /**
      * Event handler called when affix state changes
      * @param value Boolean if affix is affixed

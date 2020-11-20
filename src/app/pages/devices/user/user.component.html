@@ -11,6 +11,10 @@
         </nz-page-header>
     </nz-affix>
 
+    <button nz-button nzShape="circle" nzType="danger" nz-tooltip nzTooltipTitle="Delete User" (click)="deleteUser()">
+        <i nz-icon nzType="delete" nzTheme="outline"></i>
+    </button>
+
     <h5 style="margin-top: 35px">CREDENTIALS</h5>
 
     <p *ngIf="user.credential_details.length === 0">User has no Credentials</p>

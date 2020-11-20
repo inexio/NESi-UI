@@ -143,6 +143,10 @@ export class ApiService {
         return this.http.post(`boxen/${deviceId}/users`, user);
     }
 
+    public deleteUser(deviceId: number | string, userId: number | string): Observable<any> {
+        return this.http.delete(`boxen/${deviceId}/users/${userId}`);
+    }
+
     /**
      * Update the `lock_status` of a specific User
      * @param deviceId Id of the Device to update the User for

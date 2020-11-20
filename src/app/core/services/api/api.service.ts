@@ -119,6 +119,55 @@ export class ApiService {
     }
 
     /**
+     * Get specific User from specific Device
+     * @param deviceId Id of the Device to get User for
+     * @param userId Id of the User to get
+     */
+    public getUser(deviceId: number | string, userId: number | string): Observable<Profile> {
+        return this.http.get<Profile>(`boxen/${deviceId}/users/${userId}`);
+    }
+
+    /**
+     * Create a new User for a specific Device
+     * @param deviceId Id of the Device to create the User for
+     * @param user User object containing all necessary data for the new User
+     */
+    public createUser(
+        deviceId: number | string,
+        user: {
+            name: string;
+            profile: "root" | "admin" | "operator" | "commonuser";
+            level: "Super" | "Admin" | "Operator" | "User";
+        },
+    ): Observable<any> {
+        return this.http.post(`boxen/${deviceId}/users`, user);
+    }
+
+    /**
+     * Update the `lock_status` of a specific User
+     * @param deviceId Id of the Device to update the User for
+     * @param userId Id of the User to update
+     * @param lockStatus New locked
+     */
+    public updateUserLockStatus(deviceId: number | string, userId: number | string, lockStatus: "locked" | "unlocked"): Observable<any> {
+        return this.http.put(`boxen/${deviceId}/users/${userId}`, { lock_status: lockStatus });
+    }
+
+    /**
+     * Create a new pair of Credentials for a specific User
+     * @param deviceId Id of the Device which holds the User
+     * @param userId Id of the User to add the Credentials to
+     * @param credentials Object containing the username and password of the new Credentials pair
+     */
+    public createCredentials(
+        deviceId: number | string,
+        userId: number | string,
+        credentials: { username: string; password: string },
+    ): Observable<any> {
+        return this.http.post(`boxen/${deviceId}/credentials`, { user_id: userId, ...credentials });
+    }
+
+    /**
      * Get list of Subracks inside Device
      * @param deviceId Id of the Device to get Subracks for
      */
@@ -160,12 +209,36 @@ export class ApiService {
     }
 
     /**
+     * Get list of Management Cards inside specific Subrack of a Device
+     * @param deviceId Id of the Device which holds the Cards
+     * @param subrackId Id of the Subrack which holds the Cards
+     */
+    public getManagementCards(deviceId: number | string, subrackId: number | string): Observable<{ id: number }[]> {
+        return this.http
+            .get<{ count: number; members: { id: number }[] }>(`boxen/${deviceId}/mgmt_cards`, {
+                params: {
+                    subrack_id: subrackId.toString(),
+                },
+            })
+            .pipe(map((res) => res.members));
+    }
+
+    /**
      * Get a Card by its Id
      * @param deviceId Id of the Device which holds the Card
      * @param cardId Id of the Card to get
      */
     public getCard(deviceId: number, cardId: number): Observable<Card> {
         return this.http.get<Card>(`boxen/${deviceId}/cards/${cardId}`);
+    }
+
+    /**
+     * Get a Management Card by its Id
+     * @param deviceId Id of the Device which holds the Card
+     * @param cardId Id of the Card to get
+     */
+    public getManagementCard(deviceId: number, cardId: number): Observable<Card> {
+        return this.http.get<Card>(`boxen/${deviceId}/mgmt_cards/${cardId}`);
     }
 
     /**
@@ -176,6 +249,16 @@ export class ApiService {
      */
     public createCards(deviceId: number, subrackId: number, cards: any[]): Observable<any> {
         return this.http.post<any>(`boxen/${deviceId}/cards`, cards);
+    }
+
+    /**
+     * Create multiple Cards at once
+     * @param deviceId Id of the parent Device
+     * @param subrackId Id of the Subrack the Cards will be added to
+     * @param cards Array of Management Cards to add
+     */
+    public createManagementCards(deviceId: number, subrackId: number, cards: any[]): Observable<any> {
+        return this.http.post<any>(`boxen/${deviceId}/mgmt_cards`, cards);
     }
 
     /**
@@ -194,12 +277,36 @@ export class ApiService {
     }
 
     /**
+     * Get a list of all Management Ports of a Card
+     * @param deviceId Id of the Device which holds the Card
+     * @param cardId Id of the Card to get Ports for
+     */
+    public getManagementPorts(deviceId: number | string, cardId: number | string): Observable<{ id: number }[]> {
+        return this.http
+            .get<{ count: number; members: { id: number }[] }>(`boxen/${deviceId}/mgmt_ports`, {
+                params: {
+                    card_id: cardId.toString(),
+                },
+            })
+            .pipe(map((res) => res.members));
+    }
+
+    /**
      * Get a Port by its Id
      * @param deviceId Id of the Device which contains the Port
      * @param portId Id of the Port to get
      */
     public getPort(deviceId: number | string, portId: number | string): Observable<Port> {
         return this.http.get<Port>(`boxen/${deviceId}/ports/${portId}`);
+    }
+
+    /**
+     * Get a Management Port by its Id
+     * @param deviceId Id of the Device which contains the Port
+     * @param portId Id of the Port to get
+     */
+    public getManagementPort(deviceId: number | string, portId: number | string): Observable<Port> {
+        return this.http.get<Port>(`boxen/${deviceId}/mgmt_ports/${portId}`);
     }
 
     /**
@@ -210,6 +317,16 @@ export class ApiService {
      */
     public createPorts(deviceId: number, cardId: number, ports: any[]): Observable<any> {
         return this.http.post<any>(`boxen/${deviceId}/ports`, ports);
+    }
+
+    /**
+     * Create multiple Management Ports at once
+     * @param deviceId Id of the parent Device
+     * @param cardId Id of the Card to add the Ports to
+     * @param ports Array of Ports to create
+     */
+    public createManagementPorts(deviceId: number, cardId: number, ports: any[]): Observable<any> {
+        return this.http.post<any>(`boxen/${deviceId}/mgmt_ports`, ports);
     }
 
     /**

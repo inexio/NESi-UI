@@ -1,0 +1,63 @@
+<div *ngIf="user">
+    <nz-affix [nzOffsetTop]="0" [nzTarget]="core.devicesContentWrapper.nativeElement" (nzChange)="affixEvent($event)">
+        <nz-page-header
+            class="page-header"
+            [ngClass]="{ affixed: isAffixed }"
+            nzBackIcon
+            [nzTitle]="status"
+            [nzSubtitle]="'ID: ' + user.id"
+            (nzBack)="navigateUp()"
+        >
+        </nz-page-header>
+    </nz-affix>
+
+    <h5 style="margin-top: 35px">CREDENTIALS</h5>
+
+    <p *ngIf="user.credential_details.length === 0">User has no Credentials</p>
+    <ul style="padding-left: 25px">
+        <li *ngFor="let credential of user.credential_details; let index = index">
+            <a nz-button nzType="link" nzSize="small" (click)="openCredentialsModal(credentials)">Credentials</a>
+        </li>
+
+        <li *ngIf="user.credential_details.length === 0">
+            <a nz-button nzType="link" nzSize="small" (click)="openCreateCredentialsModal()">Create Credentials</a>
+        </li>
+    </ul>
+
+    <h5 style="margin-top: 35px">LOCKED STATUS</h5>
+
+    <ul style="padding-left: 25px">
+        <li>
+            <nz-switch
+                nzSize="small"
+                [ngModel]="user.lock_status === 'locked'"
+                [nzLoading]="updateUserLockStatusRequest === 'pending'"
+                (ngModelChange)="updateUserLockStatus(user.lock_status === 'locked' ? 'unlocked' : 'locked')"
+            ></nz-switch>
+
+            {{ user.lock_status }}
+        </li>
+    </ul>
+</div>
+
+<ng-template #status>
+    <nz-badge nz-tooltip [nzTooltipTitle]="'User is ' + user.status" [nzStatus]="user.status === 'online' ? 'success' : 'error'"></nz-badge>
+    {{ user.name }}
+</ng-template>
+
+<!-- Credentials modal template -->
+<ng-template #credentials>
+    <h5>USERNAME</h5>
+    <div class="code">
+        <p>
+            <span appCodeCopy>{{ user.credential_details[0].username }}</span>
+        </p>
+    </div>
+
+    <h5 style="margin-top: 20px">PASSWORD</h5>
+    <div class="code">
+        <p>
+            <span appCodeCopy appHidePassword>{{ user.credential_details[0].password }}</span>
+        </p>
+    </div>
+</ng-template>

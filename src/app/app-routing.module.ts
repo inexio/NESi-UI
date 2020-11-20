@@ -18,6 +18,7 @@ import { DeviceListComponent } from "./pages/devices/device-list/device-list.com
 import { SettingsComponent } from "./pages/settings/settings.component";
 import { TerminalComponent } from "./pages/devices/terminal/terminal.component";
 import { CreateComponent } from "./pages/devices/create/create.component";
+import { UserComponent } from "./pages/devices/user/user.component";
 
 const routes: Routes = [
     {
@@ -44,6 +45,10 @@ const routes: Routes = [
             {
                 path: ":id",
                 component: DeviceComponent,
+            },
+            {
+                path: ":id/user/:user",
+                component: UserComponent,
             },
             {
                 path: ":id/subrack/:subrack",

@@ -1,0 +1,39 @@
+<form #form="ngForm">
+    <p>You are about to create a new User for th .</p>
+
+    <h5>NAME</h5>
+    <input
+        [(ngModel)]="userForm.name"
+        #username="ngModel"
+        name="username"
+        style="width: 100%; margin-top: 10px"
+        nz-input
+        placeholder="Username"
+        required
+    />
+
+    <h5 style="margin-top: 20px">PROFILE</h5>
+    <nz-select [(ngModel)]="userForm.profile" #profile="ngModel" name="profile">
+        <nz-option nzValue="root" nzLabel="Root"></nz-option>
+        <nz-option nzValue="admin" nzLabel="Admin"></nz-option>
+        <nz-option nzValue="operator" nzLabel="Operator"></nz-option>
+        <nz-option nzValue="commonuser" nzLabel="Common User"></nz-option>
+    </nz-select>
+
+    <h5 style="margin-top: 20px">LEVEL</h5>
+    <nz-select [(ngModel)]="userForm.level" #level="ngModel" name="level">
+        <nz-option nzValue="Super" nzLabel="Super"></nz-option>
+        <nz-option nzValue="Admin" nzLabel="Admin"></nz-option>
+        <nz-option nzValue="Operator" nzLabel="Operator"></nz-option>
+        <nz-option nzValue="User" nzLabel="User"></nz-option>
+    </nz-select>
+
+    <nz-divider></nz-divider>
+
+    <div class="buttons">
+        <button nz-button nzType="default" style="margin-right: 10px" (click)="modal.close()">Cancel</button>
+        <button nz-button nzType="primary" [disabled]="form.invalid" [nzLoading]="createUserRequest === 'pending'" (click)="createUser()">
+            Create User
+        </button>
+    </div>
+</form>

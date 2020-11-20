@@ -76,6 +76,9 @@ import { OntPortCreateComponent } from "./core/components/ont-port-create/ont-po
 import { OntCreateComponent } from "./core/components/ont-create/ont-create.component";
 import { PortCreateComponent } from "./core/components/port-create/port-create.component";
 import { CpePortCreateComponent } from "./core/components/cpe-port-create/cpe-port-create.component";
+import { UserComponent } from "./pages/devices/user/user.component";
+import { CredentialsCreateComponent } from "./core/components/credentials-create/credentials-create.component";
+import { UserCreateComponent } from "./core/components/user-create/user-create.component";
 
 @NgModule({
     declarations: [
@@ -117,6 +120,9 @@ import { CpePortCreateComponent } from "./core/components/cpe-port-create/cpe-po
         OntCreateComponent,
         PortCreateComponent,
         CpePortCreateComponent,
+        UserComponent,
+        CredentialsCreateComponent,
+        UserCreateComponent,
     ],
     imports: [
         BrowserModule,

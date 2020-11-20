@@ -32,17 +32,26 @@
         <i nz-icon nzType="delete" nzTheme="outline"></i>
     </button>
 
-    <!-- Show Credentials button -->
-    <h5 style="margin-top: 35px;">CREDENTIALS</h5>
-    <button
-        nz-button
-        nzType="primary"
-        [disabled]="!device.credential_details || device.credential_details.length === 0"
-        (click)="openCredentialsModal(credentials)"
-    >
-        <i nz-icon nzType="lock"></i>
-        Show Credentials
-    </button>
+    <!-- Users List -->
+    <h5 style="margin-top: 35px">USERS</h5>
+
+    <p *ngIf="device.user_details?.length === 0">Device has no User(s)</p>
+    <ul *ngIf="device.user_details?.length > 0" style="padding-left: 25px">
+        <li *ngFor="let user of device.user_details">
+            <a nz-button nzType="link" nzSize="small" [routerLink]="['user', user.id]">
+                <nz-badge
+                    nz-tooltip
+                    [nzTooltipTitle]="'User is ' + user.status"
+                    [nzStatus]="user.status === 'online' ? 'success' : 'error'"
+                ></nz-badge>
+                {{ user.name || "Unnamed User" }}
+            </a>
+        </li>
+
+        <li>
+            <a nz-button nzType="link" nzSize="small" (click)="openCreateUserModal()">Add User</a>
+        </li>
+    </ul>
 
     <!-- Device Preview -->
     <!-- <div style="margin-top: 25px;">
@@ -50,17 +59,17 @@
     </div> -->
 
     <!-- Device details -->
-    <h5 style="margin-top: 35px;">DETAILS</h5>
-    <p style="margin: 0;">Vendor: {{ device.vendor }}</p>
-    <p style="margin: 0;">Model: {{ device.model }}</p>
-    <p style="margin: 0;">Version: {{ device.version }}</p>
+    <h5 style="margin-top: 35px">DETAILS</h5>
+    <p style="margin: 0">Vendor: {{ device.vendor }}</p>
+    <p style="margin: 0">Model: {{ device.model }}</p>
+    <p style="margin: 0">Version: {{ device.version }}</p>
 
     <!-- Subracks list -->
-    <h5 style="margin-top: 35px;">SUBRACKS</h5>
-    <i *ngIf="subracksRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
+    <h5 style="margin-top: 35px">SUBRACKS</h5>
+    <i *ngIf="subracksRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px"></i>
 
     <p *ngIf="subracksRequest === 'success' && subracks.length === 0">Device has no Subrack(s)</p>
-    <ul *ngIf="subracksRequest === 'success'" style="padding-left: 25px;">
+    <ul *ngIf="subracksRequest === 'success'" style="padding-left: 25px">
         <li *ngFor="let subrack of subracks">
             <a nz-button nzType="link" nzSize="small" [routerLink]="['subrack', subrack.id]">{{ subrack.name || "Unnamed Subrack" }}</a>
         </li>
@@ -71,11 +80,11 @@
     </ul>
 
     <!-- Profiles list -->
-    <h5 style="margin-top: 35px;">PROFILES</h5>
-    <i *ngIf="profilesRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
+    <h5 style="margin-top: 35px">PROFILES</h5>
+    <i *ngIf="profilesRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px"></i>
 
     <p *ngIf="profilesRequest === 'success' && profiles.length === 0">Device has no Profile(s)</p>
-    <ul *ngIf="profilesRequest === 'success'" style="padding-left: 25px;">
+    <ul *ngIf="profilesRequest === 'success'" style="padding-left: 25px">
         <li *ngFor="let profile of profiles">
             <a nz-button nzType="link" nzSize="small" [routerLink]="['port-profile', profile.id]">Profile {{ profile.id }}</a>
         </li>
@@ -86,12 +95,12 @@
     </ul>
 
     <!-- V-Lans list -->
-    <h5 style="margin-top: 35px;">V-LANS</h5>
-    <i *ngIf="vlansRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px;"></i>
+    <h5 style="margin-top: 35px">V-LANS</h5>
+    <i *ngIf="vlansRequest === 'pending'" nz-icon [nzType]="'loading'" style="font-size: 24px"></i>
 
     <p *ngIf="vlansRequest === 'success' && vlans.length === 0">Device has no V-Lan(s)</p>
 
-    <ul *ngIf="vlansRequest === 'success'" style="padding-left: 25px;">
+    <ul *ngIf="vlansRequest === 'success'" style="padding-left: 25px">
         <li *ngFor="let vlan of vlans">
             <a nz-button nzType="link" nzSize="small" [routerLink]="['vlan', vlan.id]">{{ vlan.name }}</a>
         </li>
@@ -107,29 +116,12 @@
     <h5>SSH COMMAND</h5>
     <div class="code">
         <p>
-            <span style="user-select: none;">$ </span
+            <span style="user-select: none">$ </span
             ><span appCodeCopy>ssh {{ device.credential_details[0].username }}@{{ device.mgmt_address }} -p {{ device.network_port }}</span>
         </p>
     </div>
 
-    <h5 style="margin-top: 20px;">PASSWORD</h5>
-    <div class="code">
-        <p>
-            <span appCodeCopy appHidePassword>{{ device.credential_details[0].password }}</span>
-        </p>
-    </div>
-</ng-template>
-
-<!-- Credentials modal template -->
-<ng-template #credentials>
-    <h5>USERNAME</h5>
-    <div class="code">
-        <p>
-            <span appCodeCopy>{{ device.credential_details[0].username }}</span>
-        </p>
-    </div>
-
-    <h5 style="margin-top: 20px;">PASSWORD</h5>
+    <h5 style="margin-top: 20px">PASSWORD</h5>
     <div class="code">
         <p>
             <span appCodeCopy appHidePassword>{{ device.credential_details[0].password }}</span>

@@ -11,6 +11,7 @@ import { NzMessageService } from "ng-zorro-antd/message";
 
 import Achorn from "achorn";
 import { SubrackCreateComponent } from "../../../core/components/subrack-create/subrack-create.component";
+import { UserCreateComponent } from "../../../core/components/user-create/user-create.component";
 const achorn = new Achorn();
 
 @Component({
@@ -151,20 +152,6 @@ export class DeviceComponent implements OnInit {
     }
 
     /**
-     * Opens a MOdal showing the Device login Credentials
-     * @param credentialsModalContent TemplateRef of the Modal contents
-     */
-    public openCredentialsModal(credentialsModalContent: TemplateRef<any>): void {
-        this.modal.create({
-            nzTitle: "Device Credentials",
-            nzContent: credentialsModalContent,
-            nzMaskClosable: true,
-            nzFooter: null,
-            nzCancelDisabled: true,
-        });
-    }
-
-    /**
      * Opens a Modal confirming that the Device will be cloned
      */
     public cloneDevice(): void {
@@ -248,6 +235,28 @@ export class DeviceComponent implements OnInit {
         // Refresh Subrack data after Property was edited
         modal.afterClose.subscribe(() => {
             this.getSubracks();
+        });
+    }
+
+    /**
+     * Opens a modal where the user can create a new User
+     */
+    public openCreateUserModal() {
+        const modal = this.modal.create({
+            nzTitle: "Create User",
+            nzContent: UserCreateComponent,
+            nzComponentParams: {
+                deviceId: this.deviceId,
+                deviceName: this.device.hostname,
+            },
+            nzMaskClosable: true,
+            nzFooter: null,
+            nzCancelDisabled: true,
+        });
+
+        // Refresh Device data after Property was edited
+        modal.afterClose.subscribe(() => {
+            this.getDevice();
         });
     }
 }
